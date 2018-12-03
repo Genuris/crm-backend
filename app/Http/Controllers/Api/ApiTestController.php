@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ApiController extends BaseController
+class ApiTestController extends BaseController
 {
     public function __construct()
     {
