@@ -21,13 +21,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//card_categories
-Route::get('card_categories', 'CardCategoriesController@index');
-Route::get('card_categories/{id}', 'CardCategoriesController@show');
-Route::post('card_categories', 'CardCategoriesController@store');
-Route::delete('card_categories/{id}', 'CardCategoriesController@delete');
+//Route::group(['middleware' => 'auth:api'], function () {
 
+    //card_categories
+    Route::get('card_categories', 'CardCategoriesController@index');
+    Route::get('card_categories/{id}', 'CardCategoriesController@show');
+    Route::post('card_categories', 'CardCategoriesController@store');
+    Route::delete('card_categories/{id}', 'CardCategoriesController@delete');
+    //files
+    Route::post('files', 'FilesController@store');
+    Route::delete('files/{id}', 'FilesController@delete');
+    //files
+    Route::post('user', 'ApiRegisterController@store')->middleware('auth:api');
+//});
 
-//files
-Route::post('files', 'FilesController@store');
-Route::delete('files/{id}', 'FilesController@delete');
