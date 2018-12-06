@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\File;
 use Illuminate\Support\Facades\Input;
 
-class FilesController extends Controller
+class ApiFilesController extends Controller
 {
 
     public function store(Request $request)

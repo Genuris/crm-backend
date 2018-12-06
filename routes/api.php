@@ -17,21 +17,23 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('check-api', 'ApiTestController@checkApi');
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user_profile', function (Request $request) {
     return $request->user();
 });
 
-//Route::group(['middleware' => 'auth:api'], function () {
+//card_categories
+Route::get('card_categories', 'ApiCardCategoriesController@index');
+Route::get('card_categories/{id}', 'ApiCardCategoriesController@show');
+Route::post('card_categories', 'ApiCardCategoriesController@store');
+Route::put('card_categories', 'ApiCardCategoriesController@update');
+Route::delete('card_categories/{id}', 'ApiCardCategoriesController@delete');
+//files
+Route::post('files', 'ApiFilesController@store');
+Route::delete('files/{id}', 'ApiFilesController@delete');
 
-    //card_categories
-    Route::get('card_categories', 'CardCategoriesController@index');
-    Route::get('card_categories/{id}', 'CardCategoriesController@show');
-    Route::post('card_categories', 'CardCategoriesController@store');
-    Route::delete('card_categories/{id}', 'CardCategoriesController@delete');
-    //files
-    Route::post('files', 'FilesController@store');
-    Route::delete('files/{id}', 'FilesController@delete');
-    //files
-    Route::post('user', 'ApiRegisterController@store')->middleware('auth:api');
-//});
+//user
+Route::get('user', 'ApiCardCategoriesController@index');
+Route::get('user/{id}', 'ApiCardCategoriesController@show');
+Route::put('user/{id}', 'ApiCardCategoriesController@update');
+
 

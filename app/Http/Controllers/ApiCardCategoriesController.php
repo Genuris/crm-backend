@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CardCategories;
 
-class CardCategoriesController extends Controller
+class ApiCardCategoriesController extends Controller
 {
     public function index()
     {
