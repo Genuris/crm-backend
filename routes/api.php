@@ -29,6 +29,13 @@ Route::put('card_categories', 'ApiCardCategoriesController@update');
 Route::delete('card_categories/{id}', 'ApiCardCategoriesController@delete');
 
 
+//social_networks
+Route::get('social_networks', 'ApiSocialNetworksController@index');
+Route::get('social_networks/{id}', 'ApiSocialNetworksController@show');
+Route::post('social_networks', 'ApiSocialNetworksController@store');
+Route::put('social_networks', 'ApiSocialNetworksController@update');
+Route::delete('social_networks/{id}', 'ApiSocialNetworksController@delete');
+
 
 //currencies
 Route::get('currencies', 'ApiCurrenciesController@index');

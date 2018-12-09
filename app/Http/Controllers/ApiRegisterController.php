@@ -29,6 +29,14 @@ class ApiRegisterController extends Controller
             return response()->json(array('error' => array('status' => 400, 'message' => 'role_id is empty')), 400);
         }
 
+        if (empty($request->get('surname')) || is_null($request->get('surname'))) {
+            return response()->json(array('error' => array('status' => 400, 'message' => 'surname is empty')), 400);
+        }
+
+        if (empty($request->get('middle_name')) || is_null($request->get('middle_name'))) {
+            return response()->json(array('error' => array('status' => 400, 'message' => 'middle_name is empty')), 400);
+        }
+
         $role = Role::find($request->get('role_id'));
 
         if (!$role) {
