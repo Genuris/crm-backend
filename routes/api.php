@@ -49,8 +49,11 @@ Route::post('files', 'ApiFilesController@store');
 Route::delete('files/{id}', 'ApiFilesController@delete');
 
 //user
-Route::get('user', 'ApiCardCategoriesController@index');
-Route::get('user/{id}', 'ApiCardCategoriesController@show');
-Route::put('user/{id}', 'ApiCardCategoriesController@update');
+Route::get('user', 'ApiUserController@index');
+Route::get('user/{id}', 'ApiUserController@show');
+Route::put('user/{id}', 'ApiUserController@update');
+
+//сreate user
+Route::post('create_user', 'ApiRegisterController@store');
 
 

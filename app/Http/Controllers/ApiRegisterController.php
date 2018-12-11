@@ -52,22 +52,24 @@ class ApiRegisterController extends Controller
             'email' => $request->get('email'),
             'role_id' => $request->get('role_id'),
             'password' => bcrypt($request->get('password')),
-            'middle_name' => bcrypt($request->get('middle_name')),
-            'surname' => bcrypt($request->get('surname')),
+            'middle_name' => $request->get('middle_name'),
+            'time_zone' => $request->get('time_zone'),
+            'surname' => $request->get('surname'),
         ]);
 
         if ($user) {
 
             if (!empty($request->get('user_details')) && is_array($request->get('user_details'))) {
 
-                $user_details_data = $request->get('users_details');
-                $user_details = new UserDetails();
-                $user_details->user_id = $user->id;
-                $user_details->city = $user_details_data['city'];
-                $user_details->postal_code = $user_details_data['postal_code'];
-                $user_details->profile_image_id = $user_details_data['profile_image_id'];
+                $user_details_data = $request->get('user_details');
+                UserDetails::create([
+                    'user_id' => $user->id,
+                    'city' => (isset($user_details_data['city']) ? $user_details_data['city'] : ''),
+                    'postal_code' => (isset($user_details_data['postal_code']) ? $user_details_data['postal_code'] : ''),
+                    'profile_image_id' => (isset($user_details_data['profile_image_id']) ? $user_details_data['profile_image_id'] : ''),
+                    'currency' => (isset($user_details_data['currency']) ? $user_details_data['currency'] : '')
+                ]);
 
-                $user_details->save();
             }
 
             if (!empty($request->get('user_phones')) && is_array($request->get('user_phones'))) {
@@ -78,10 +80,10 @@ class ApiRegisterController extends Controller
 
                     foreach ($user_phones_data as $user_phone_data) {
 
-                        $user_phone = new UserPhones();
-                        $user_phone->user_id = $user->id;
-                        $user_phone->value = $user_phone_data;
-                        $user_phone->save();
+                        UserPhones::create([
+                            'user_id' => $user->id,
+                            'value' => (isset($user_phone_data['value']) ? $user_phone_data['value'] : '')
+                        ]);
 
                     }
 
@@ -99,11 +101,11 @@ class ApiRegisterController extends Controller
                         $social_network = SocialNetworks::find($social_network_id);
 
                         if ($social_network) {
-                            $user_social = new UserSocialNetworks();
-                            $user_social->user_id = $user->id;
-                            $user_social->value = $user_social_data;
-                            $user_social->social_network_id = $social_network_id;
-                            $user_social->save();
+                            UserSocialNetworks::create([
+                                'user_id' => $user->id,
+                                'social_network_id' => $social_network_id,
+                                'value' => (isset($user_social_data['value']) ? $user_social_data['value'] : '')
+                            ]);
                         }
 
                     }
@@ -113,10 +115,10 @@ class ApiRegisterController extends Controller
 
         }
 
-        $user_result = (array)$user;
-        $user_result['user_details'] = $user->UserDetails();
-        $user_result['user_phones'] = $user->UserPhones();
-        $user_result['user_socials'] = $user->UserSocials();
+//        $user_result = (array)$user;
+//        $user_result['user_details'] = $user->UserDetails();
+//        $user_result['user_phones'] = $user->UserPhones();
+//        $user_result['user_socials'] = $user->UserSocials();
 
         return response()->json($user, 201);
     }
