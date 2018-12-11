@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\SocialNetworks;
+use App\Models\UserDetails;
+use App\Models\UserPhones;
+use App\Models\UserSocialNetworks;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +52,72 @@ class ApiRegisterController extends Controller
             'email' => $request->get('email'),
             'role_id' => $request->get('role_id'),
             'password' => bcrypt($request->get('password')),
+            'middle_name' => bcrypt($request->get('middle_name')),
+            'surname' => bcrypt($request->get('surname')),
         ]);
+
+        if ($user) {
+
+            if (!empty($request->get('user_details')) && is_array($request->get('user_details'))) {
+
+                $user_details_data = $request->get('users_details');
+                $user_details = new UserDetails();
+                $user_details->user_id = $user->id;
+                $user_details->city = $user_details_data['city'];
+                $user_details->postal_code = $user_details_data['postal_code'];
+                $user_details->profile_image_id = $user_details_data['profile_image_id'];
+
+                $user_details->save();
+            }
+
+            if (!empty($request->get('user_phones')) && is_array($request->get('user_phones'))) {
+
+                $user_phones_data = $request->get('user_phones');
+
+                if (is_array($user_phones_data) and !empty($user_phones_data)) {
+
+                    foreach ($user_phones_data as $user_phone_data) {
+
+                        $user_phone = new UserPhones();
+                        $user_phone->user_id = $user->id;
+                        $user_phone->value = $user_phone_data;
+                        $user_phone->save();
+
+                    }
+
+                }
+            }
+
+            if (!empty($request->get('user_socials')) && is_array($request->get('user_socials'))) {
+
+                $user_socials_data = $request->get('user_socials');
+
+                if (is_array($user_socials_data) and !empty($user_socials_data)) {
+
+                    foreach ($user_socials_data as $social_network_id => $user_social_data) {
+
+                        $social_network = SocialNetworks::find($social_network_id);
+
+                        if ($social_network) {
+                            $user_social = new UserSocialNetworks();
+                            $user_social->user_id = $user->id;
+                            $user_social->value = $user_social_data;
+                            $user_social->social_network_id = $social_network_id;
+                            $user_social->save();
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+
+        $user_result = (array)$user;
+        $user_result['user_details'] = $user->UserDetails();
+        $user_result['user_phones'] = $user->UserPhones();
+        $user_result['user_socials'] = $user->UserSocials();
+
         return response()->json($user, 201);
     }
 }
