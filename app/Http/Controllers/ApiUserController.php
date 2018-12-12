@@ -8,6 +8,7 @@ use App\Models\UserPhones;
 use App\Models\UserSocialNetworks;
 use App\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiUserController extends Controller
 {
@@ -18,7 +19,11 @@ class ApiUserController extends Controller
 
     public function show($id)
     {
-        return response()->json(User::find($id), 201);
+        $user = User::find($id);
+        $user->UserDetails;
+        $user->UserPhones;
+        $user->UserSocials;
+        return response()->json($user, 201);
     }
 
     public function update(Request $request, User $user)
@@ -34,15 +39,15 @@ class ApiUserController extends Controller
                 $user_details = UserDetails::where('user_id', '=', $user->id)->first();
                 if ($user_details) {
 
-                    if ($user_details_data['city']) {
+                    if (isset($user_details_data['city']) && $user_details_data['city']) {
                         $user_details->city = $user_details_data['city'];
                     }
 
-                    if ($user_details_data['postal_code']) {
+                    if (isset($user_details_data['postal_code']) && $user_details_data['postal_code']) {
                         $user_details->postal_code = $user_details_data['postal_code'];
                     }
 
-                    if ($user_details_data['profile_image_id']) {
+                    if (isset($user_details_data['postal_code']) && $user_details_data['profile_image_id']) {
                         $user_details->profile_image_id = $user_details_data['profile_image_id'];
                     }
 
@@ -62,9 +67,8 @@ class ApiUserController extends Controller
                         $user_phone = UserPhones::find($user_phone_id);
                         if ($user_phone) {
                             $user_phone->value = $user_phone_data;
+                            $user_phone->save();
                         }
-
-                        $user_phone->save();
 
                     }
 
@@ -97,10 +101,10 @@ class ApiUserController extends Controller
 
         }
 
-        $user_result = (array)$user;
-        $user_result['user_details'] = $user->UserDetails();
-        $user_result['user_phones'] = $user->UserPhones();
-        $user_result['user_socials'] = $user->UserSocials();
+//        $user_result = (array)$user;
+//        $user_result['user_details'] = $user->UserDetails();
+//        $user_result['user_phones'] = $user->UserPhones();
+//        $user_result['user_socials'] = $user->UserSocials();
 
         return response()->json($user, 200);
     }

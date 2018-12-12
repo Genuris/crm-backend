@@ -29,7 +29,7 @@ class User extends Authenticatable
     ];
 
     public function UserDetails(){
-        return $this->hasOne('App\Models\UserDetails', 'user_id', 'id');
+        return $this->hasMany('App\Models\UserDetails', 'user_id', 'id');
     }
 
     public function UserSocials(){

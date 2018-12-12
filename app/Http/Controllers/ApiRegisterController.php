@@ -115,10 +115,9 @@ class ApiRegisterController extends Controller
 
         }
 
-//        $user_result = (array)$user;
-//        $user_result['user_details'] = $user->UserDetails();
-//        $user_result['user_phones'] = $user->UserPhones();
-//        $user_result['user_socials'] = $user->UserSocials();
+        $user->UserDetails;
+        $user->UserPhones;
+        $user->UserSocials;
 
         return response()->json($user, 201);
     }
