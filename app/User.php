@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'surname', 'middle_name', 'time_zone', 'role_id'
+        'name', 'email', 'password', 'surname', 'middle_name', 'time_zone', 'role_id', 'agency_id', 'office_id', 'offices_partition_id'
     ];
 
     /**
@@ -29,7 +29,7 @@ class User extends Authenticatable
     ];
 
     public function UserDetails(){
-        return $this->hasMany('App\Models\UserDetails', 'user_id', 'id');
+        return $this->hasOne('App\Models\UserDetails', 'user_id', 'id');
     }
 
     public function UserSocials(){
@@ -38,5 +38,17 @@ class User extends Authenticatable
 
     public function UserPhones(){
         return $this->hasMany('App\Models\UserPhones', 'user_id', 'id');
+    }
+
+    public function UserAgency(){
+        return $this->hasOne('App\Models\Agency', 'id', 'agency_id');
+    }
+
+    public function UserOffice(){
+        return $this->hasOne('App\Models\Office', 'id', 'office_id');
+    }
+
+    public function UserOfficesPartition(){
+        return $this->hasOne('App\Models\OfficesPartition', 'id', 'offices_partition_id');
     }
 }
