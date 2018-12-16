@@ -56,4 +56,33 @@ Route::put('user/{id}', 'ApiUserController@update');
 //сreate user
 Route::post('create_user', 'ApiRegisterController@store');
 
+//offices
+Route::get('agencies', 'ApiAgenciesController@index');
+Route::get('agencies/{id}', 'ApiAgenciesController@show');
+Route::post('agencies', 'ApiAgenciesController@store');
+Route::put('agencies', 'ApiAgenciesController@update');
+Route::delete('agencies/{id}', 'ApiAgenciesController@delete');
+
+//offices
+Route::get('offices', 'ApiOfficesController@index');
+Route::get('offices/{id}', 'ApiOfficesController@show');
+Route::post('offices', 'ApiOfficesController@store');
+Route::put('offices', 'ApiOfficesController@update');
+Route::delete('offices/{id}', 'ApiOfficesController@delete');
+
+
+//cards
+Route::get('cards', 'ApiCardsController@index');
+Route::get('cards/{id}', 'ApiCardsController@show');
+Route::post('cards', 'ApiCardsController@store');
+Route::put('cards', 'ApiCardsController@update');
+Route::delete('cards/{id}', 'ApiCardsController@delete');
+
+//offices-partition
+Route::get('offices-partitions', 'ApiOfficesPartitionsController@index');
+Route::get('offices-partitions/{id}', 'ApiOfficesPartitionsController@show');
+Route::post('offices-partitions', 'ApiOfficesPartitionsController@store');
+Route::put('offices-partitions', 'ApiOfficesPartitionsController@update');
+Route::delete('offices-partitions/{id}', 'ApiOfficesPartitionsController@delete');
+
 
