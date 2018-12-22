@@ -55,6 +55,9 @@ class ApiRegisterController extends Controller
             'middle_name' => $request->get('middle_name'),
             'time_zone' => $request->get('time_zone'),
             'surname' => $request->get('surname'),
+            'agency_id' => $request->get('agency_id'),
+            'office_id' => $request->get('office_id'),
+            'offices_partition_id' => $request->get('offices_partition_id'),
         ]);
 
         if ($user) {

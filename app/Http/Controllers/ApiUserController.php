@@ -8,7 +8,6 @@ use App\Models\UserPhones;
 use App\Models\UserSocialNetworks;
 use App\User;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiUserController extends Controller
 {
@@ -101,10 +100,9 @@ class ApiUserController extends Controller
 
         }
 
-//        $user_result = (array)$user;
-//        $user_result['user_details'] = $user->UserDetails();
-//        $user_result['user_phones'] = $user->UserPhones();
-//        $user_result['user_socials'] = $user->UserSocials();
+        $user->UserDetails;
+        $user->UserPhones;
+        $user->UserSocials;
 
         return response()->json($user, 200);
     }
