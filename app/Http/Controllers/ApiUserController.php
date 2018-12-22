@@ -25,11 +25,12 @@ class ApiUserController extends Controller
         return response()->json($user, 201);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $user->update($request->all());
-
+        $user = User::findOrFail($id);
         if ($user) {
+
+            $user->update($request->all());
 
             if (!empty($request->get('user_details')) && is_array($request->get('user_details'))) {
 
@@ -98,8 +99,13 @@ class ApiUserController extends Controller
                 }
             }
 
+        } else {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
         }
-
         $user->UserDetails;
         $user->UserPhones;
         $user->UserSocials;
