@@ -11,6 +11,7 @@ class Card extends Model
         'agency_id',
         'user_id',
         'office_id',
+        'cards_contacts_id',
         'type',
         'sale_type',
         'city',
@@ -69,5 +70,8 @@ class Card extends Model
         return $this->hasMany('App\Models\CardsFile', 'card_id', 'id');
     }
 
+    public function CardContact(){
+        return $this->hasOne('App\Models\CardContacts', 'id', 'cards_contacts_id');
+    }
 
 }
