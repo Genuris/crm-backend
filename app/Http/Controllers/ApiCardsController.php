@@ -32,24 +32,12 @@ class ApiCardsController extends Controller
 
                 foreach ($card_contact_data['cards_contacts_phones'] as $key => $value) {
 
-                    $card_contacts_phone = CardContactsPhones::where('phone', '=', $value['phone'])->first();
+                    $card_contacts_phone = CardContactsPhones::where('phone', 'like', $value['phone'])->first();
 
                     if ($card_contacts_phone) {
 
-                        $cards_contacts_id = $card_contacts_phone->id;
-
-                    } else {
-
-                        $card_contact = CardContacts::create([
-                            'name' => (isset($card_contact_data['name']) ? $card_contact_data['name'] : ''),
-                            'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : '')
-                        ]);
-
-                        if (!$card_contact) {
-                            return response()->json(array(), 402);
-                        }
-
-                        $cards_contacts_id = $card_contact->id;
+                        $cards_contacts_id = $card_contacts_phone->cards_contacts_id;
+                        break;
 
                     }
 
@@ -61,6 +49,30 @@ class ApiCardsController extends Controller
 
             }
 
+            if (!$cards_contacts_id) {
+
+                $card_contact = CardContacts::create([
+                    'name' => (isset($card_contact_data['name']) ? $card_contact_data['name'] : ''),
+                    'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : '')
+                ]);
+
+                if (!$card_contact) {
+                    return response()->json(array(), 402);
+                }
+
+                $cards_contacts_id = $card_contact->id;
+
+                foreach ($card_contact_data['cards_contacts_phones'] as $key => $value) {
+
+                    CardContactsPhones::create([
+                        'cards_contacts_id' => $cards_contacts_id,
+                        'phone' => (isset($value['phone']) ? $value['phone'] : '')
+                    ]);
+
+                }
+
+            }
+
         }
 
         if (!$cards_contacts_id) {
@@ -69,6 +81,19 @@ class ApiCardsController extends Controller
 
         $card_data = $request->all();
         $card_data['cards_contacts_id'] = $cards_contacts_id;
+
+        unset($card_data['card_contact']);
+        unset($card_data['cards_file']);
+
+        //dd($card_data);
+
+        $card_data['user_id'] = (int)$card_data['user_id'];
+        $card_data['agency_id'] = (int)$card_data['agency_id'];
+        $card_data['office_id'] = (int)$card_data['office_id'];
+        $card_data['year_built'] = (int)$card_data['year_built'];
+        $card_data['number_rooms'] = (int)$card_data['number_rooms'];
+
+        $card_data['garbage_chute'] = ((isset($card_data['garbage_chute']) && $card_data['garbage_chute'] == 'true') ? true : false);
 
         $card = Card::create($card_data);
 
@@ -83,7 +108,7 @@ class ApiCardsController extends Controller
                     CardsFile::create([
                         'card_id' => $card->id,
                         'type' => (isset($value['type']) ? $value['type'] : ''),
-                        'email' => (isset($value['email']) ? $value['email'] : '')
+                        'file_id' => (isset($value['file_id']) ? $value['file_id'] : '')
                     ]);
 
                 }
