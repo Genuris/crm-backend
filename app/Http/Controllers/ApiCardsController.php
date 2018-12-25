@@ -85,8 +85,6 @@ class ApiCardsController extends Controller
         unset($card_data['card_contact']);
         unset($card_data['cards_file']);
 
-        //dd($card_data);
-
         $card_data['user_id'] = (int)$card_data['user_id'];
         $card_data['agency_id'] = (int)$card_data['agency_id'];
         $card_data['office_id'] = (int)$card_data['office_id'];
