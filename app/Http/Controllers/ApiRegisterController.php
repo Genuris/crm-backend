@@ -70,6 +70,7 @@ class ApiRegisterController extends Controller
                     'city' => (isset($user_details_data['city']) ? $user_details_data['city'] : ''),
                     'postal_code' => (isset($user_details_data['postal_code']) ? $user_details_data['postal_code'] : ''),
                     'profile_image_id' => (isset($user_details_data['profile_image_id']) ? $user_details_data['profile_image_id'] : ''),
+                    'birthday' => (isset($user_details_data['birthday']) ? $user_details_data['birthday'] : ''),
                     'currency' => (isset($user_details_data['currency']) ? $user_details_data['currency'] : '')
                 ]);
 

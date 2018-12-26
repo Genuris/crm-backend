@@ -78,6 +78,14 @@ Route::post('cards', 'ApiCardsController@store');
 Route::put('cards', 'ApiCardsController@update');
 Route::delete('cards/{id}', 'ApiCardsController@delete');
 
+
+//roles
+Route::get('roles', 'ApiRolesController@index');
+Route::get('roles/{id}', 'ApiRolesController@show');
+Route::post('roles', 'ApiRolesController@store');
+Route::put('roles', 'ApiRolesController@update');
+Route::delete('roles/{id}', 'ApiRolesController@delete');
+
 //offices-partition
 Route::get('offices-partitions', 'ApiOfficesPartitionsController@index');
 Route::get('offices-partitions/{id}', 'ApiOfficesPartitionsController@show');

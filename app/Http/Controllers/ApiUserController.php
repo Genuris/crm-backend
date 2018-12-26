@@ -51,6 +51,10 @@ class ApiUserController extends Controller
                         $user_details->profile_image_id = $user_details_data['profile_image_id'];
                     }
 
+                    if (isset($user_details_data['birthday']) && $user_details_data['birthday']) {
+                        $user_details->birthday = $user_details_data['birthday'];
+                    }
+
                     $user_details->save();
                 }
 
