@@ -51,7 +51,12 @@ class Card extends Model
         'layout',
         'subtypes',
         'description',
-        'comment'
+        'comment',
+        'stage_transaction',
+        'commission',
+        'number_contract',
+        'contract_expiration_date',
+        'is_archived'
     ];
 
     public function CardUser(){

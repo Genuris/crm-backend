@@ -90,8 +90,12 @@ class ApiCardsController extends Controller
         $card_data['office_id'] = (int)$card_data['office_id'];
         $card_data['year_built'] = (int)$card_data['year_built'];
         $card_data['number_rooms'] = (int)$card_data['number_rooms'];
+        $card_data['commission'] = (int)$card_data['commission'];
+        $card_data['number_contract'] = (int)$card_data['number_contract'];
+        $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
 
         $card_data['garbage_chute'] = ((isset($card_data['garbage_chute']) && $card_data['garbage_chute'] == 'true') ? true : false);
+        $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
 
         $card = Card::create($card_data);
 
@@ -124,10 +128,71 @@ class ApiCardsController extends Controller
         return response()->json($card, 201);
     }
 
-    public function update(Request $request, Card $card)
+    public function update(Request $request, $id)
     {
-        $card->update($request->all());
-        return response()->json($card, 200);
+        $card = Card::findOrFail($id);
+        if ($card) {
+
+            $card_data = $request->all();
+
+            unset($card_data['card_contact']);
+            unset($card_data['cards_file']);
+
+            $card_data['user_id'] = (int)$card_data['user_id'];
+            $card_data['agency_id'] = (int)$card_data['agency_id'];
+            $card_data['office_id'] = (int)$card_data['office_id'];
+            $card_data['year_built'] = (int)$card_data['year_built'];
+            $card_data['number_rooms'] = (int)$card_data['number_rooms'];
+            $card_data['commission'] = (int)$card_data['commission'];
+            $card_data['number_contract'] = (int)$card_data['number_contract'];
+            $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
+
+            $card_data['garbage_chute'] = ((isset($card_data['garbage_chute']) && $card_data['garbage_chute'] == 'true') ? true : false);
+            $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
+
+            $card->update($card_data);
+
+            if ($card) {
+
+                if (!empty($request->get('cards_file')) && is_array($request->get('cards_file'))) {
+
+                    $cards_file_data = $request->get('cards_file');
+
+                    foreach($cards_file_data as $key => $value) {
+
+                        $cards_file = CardsFile::find($key);
+                        if ($user_phone) {
+                            $user_phone->value = $user_phone_data;
+                            $user_phone->save();
+                        }
+
+                        CardsFile::create([
+                            'card_id' => $card->id,
+                            'type' => (isset($value['type']) ? $value['type'] : ''),
+                            'file_id' => (isset($value['file_id']) ? $value['file_id'] : '')
+                        ]);
+
+                    }
+
+                }
+
+            }
+
+        } else {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
+
+        $card->CardContact;
+        $card->CardFiles;
+        $card->CardAgency;
+        $card->CardOffice;
+        $card->CardUser;
+
+        return response()->json($card, 201);
     }
 
     public function delete(Card $card)
