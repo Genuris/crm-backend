@@ -161,16 +161,21 @@ class ApiCardsController extends Controller
                     foreach($cards_file_data as $key => $value) {
 
                         $cards_file = CardsFile::find($key);
-                        if ($user_phone) {
-                            $user_phone->value = $user_phone_data;
-                            $user_phone->save();
-                        }
+                        if ($cards_file) {
 
-                        CardsFile::create([
-                            'card_id' => $card->id,
-                            'type' => (isset($value['type']) ? $value['type'] : ''),
-                            'file_id' => (isset($value['file_id']) ? $value['file_id'] : '')
-                        ]);
+                            $cards_file->type = (isset($value['type']) ? $value['type'] : '');
+                            $cards_file->file_id = (isset($value['file_id']) ? $value['file_id'] : '');
+                            $cards_file->save();
+
+                        } else {
+
+                            CardsFile::create([
+                                'card_id' => $card->id,
+                                'type' => (isset($value['type']) ? $value['type'] : ''),
+                                'file_id' => (isset($value['file_id']) ? $value['file_id'] : '')
+                            ]);
+
+                        }
 
                     }
 

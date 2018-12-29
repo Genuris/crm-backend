@@ -72,6 +72,11 @@ class ApiUserController extends Controller
                         if ($user_phone) {
                             $user_phone->value = $user_phone_data;
                             $user_phone->save();
+                        } else {
+                            UserPhones::create([
+                                'user_id' => $user->id,
+                                'value' => (isset($user_phone_data['value']) ? $user_phone_data['value'] : '')
+                            ]);
                         }
 
                     }
@@ -96,6 +101,12 @@ class ApiUserController extends Controller
                                 $user_social->save();
                             }
 
+                        } else {
+                            UserSocialNetworks::create([
+                                'user_id' => $user->id,
+                                'social_network_id' => $social_network_id,
+                                'value' => (isset($user_social_data['value']) ? $user_social_data['value'] : '')
+                            ]);
                         }
 
                     }
