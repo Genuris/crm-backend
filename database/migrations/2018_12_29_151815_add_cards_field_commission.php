@@ -14,7 +14,7 @@ class AddCardsFieldCommission extends Migration
     public function up()
     {
         Schema::table('cards', function (Blueprint $table) {
-            $table->integer('commission')->after('comment')->nullable();
+            $table->string('commission')->after('comment')->nullable();
         });
     }
 
