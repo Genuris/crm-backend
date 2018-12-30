@@ -90,7 +90,6 @@ class ApiCardsController extends Controller
         $card_data['office_id'] = (int)$card_data['office_id'];
         $card_data['year_built'] = (int)$card_data['year_built'];
         $card_data['number_rooms'] = (int)$card_data['number_rooms'];
-        $card_data['commission'] = (int)$card_data['commission'];
         $card_data['number_contract'] = (int)$card_data['number_contract'];
         $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
 
@@ -143,7 +142,6 @@ class ApiCardsController extends Controller
             $card_data['office_id'] = (int)$card_data['office_id'];
             $card_data['year_built'] = (int)$card_data['year_built'];
             $card_data['number_rooms'] = (int)$card_data['number_rooms'];
-            $card_data['commission'] = (int)$card_data['commission'];
             $card_data['number_contract'] = (int)$card_data['number_contract'];
             $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
 
