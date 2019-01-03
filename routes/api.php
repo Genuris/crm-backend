@@ -77,6 +77,7 @@ Route::get('cards/{id}', 'ApiCardsController@show');
 Route::post('cards', 'ApiCardsController@store');
 Route::put('cards', 'ApiCardsController@update');
 Route::delete('cards/{id}', 'ApiCardsController@delete');
+Route::post('cards_contact_phone', 'ApiCardsController@findContactByPhone');
 
 
 //roles

@@ -10,7 +10,7 @@ class CardContacts extends Model
     protected $fillable = ['name', 'email', 'created_at', 'updated_at'];
 
     public function CardsContacts(){
-        return $this->hasMany('App\Models\Card', 'cards_contacts_id', 'id');
+        return $this->hasMany('App\Models\Card', 'cards_contacts_id', 'agency_id', 'id');
     }
 
     public function CardsContactsPhones(){

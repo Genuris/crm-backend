@@ -24,6 +24,10 @@ class ApiCardsController extends Controller
     {
         $cards_contacts_id = null;
 
+        if (!$request->get('agency_id')) {
+            return response()->json(array(), 402);
+        }
+
         if (!empty($request->get('card_contact')) && is_array($request->get('card_contact'))) {
 
             $card_contact_data = $request->get('card_contact');
@@ -32,7 +36,7 @@ class ApiCardsController extends Controller
 
                 foreach ($card_contact_data['cards_contacts_phones'] as $key => $value) {
 
-                    $card_contacts_phone = CardContactsPhones::where('phone', 'like', $value['phone'])->first();
+                    $card_contacts_phone = CardContactsPhones::where('phone', 'like', $value['phone'])->where('agency_id', '=', $request->get('agency_id'))->first();
 
                     if ($card_contacts_phone) {
 
@@ -53,7 +57,8 @@ class ApiCardsController extends Controller
 
                 $card_contact = CardContacts::create([
                     'name' => (isset($card_contact_data['name']) ? $card_contact_data['name'] : ''),
-                    'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : '')
+                    'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : ''),
+                    'agency_id' => $request->get('agency_id')
                 ]);
 
                 if (!$card_contact) {
@@ -66,7 +71,8 @@ class ApiCardsController extends Controller
 
                     CardContactsPhones::create([
                         'cards_contacts_id' => $cards_contacts_id,
-                        'phone' => (isset($value['phone']) ? $value['phone'] : '')
+                        'phone' => (isset($value['phone']) ? $value['phone'] : ''),
+                        'agency_id' => $request->get('agency_id')
                     ]);
 
                 }
@@ -203,4 +209,30 @@ class ApiCardsController extends Controller
         $card->delete();
         return response()->json(null, 204);
     }
+
+    public function findContactByPhone(Request $request) {
+        $phone = $request->get('phone');
+        $agency_id = $request->get('agency_id');
+
+        if (!$phone) {
+            return response()->json(array(), 402);
+        }
+
+        $contact_phone = CardContactsPhones::where('phone', 'like', $phone)->where('agency_id', '=', $agency_id)->first();
+
+        if (!$contact_phone) {
+            return response()->json(array(), 402);
+        }
+
+        $contact = CardContacts::findOrFail($contact_phone->cards_contacts_id);
+
+        if (!$contact) {
+            return response()->json(array(), 402);
+        }
+
+        $contact->CardsContactsPhones;
+
+        return response()->json($contact, 200);
+    }
+
 }
