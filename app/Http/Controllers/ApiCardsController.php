@@ -58,6 +58,18 @@ class ApiCardsController extends Controller
                 $card_contact = CardContacts::create([
                     'name' => (isset($card_contact_data['name']) ? $card_contact_data['name'] : ''),
                     'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : ''),
+                    'children' => (isset($card_contact_data['children']) ? $card_contact_data['children'] : 0),
+                    'car' => (isset($card_contact_data['car']) ? $card_contact_data['car'] : ''),
+                    'work_place' => (isset($card_contact_data['work_place']) ? $card_contact_data['work_place'] : ''),
+                    'is_married' => (isset($card_contact_data['is_married']) ? $card_contact_data['is_married'] : ''),
+                    'is_client' => (isset($card_contact_data['is_client']) ? $card_contact_data['is_client'] : ''),
+                    'is_partner' => (isset($card_contact_data['is_partner']) ? $card_contact_data['is_partner'] : ''),
+                    'is_realtor' => (isset($card_contact_data['is_realtor']) ? $card_contact_data['is_realtor'] : ''),
+                    'years' => (isset($card_contact_data['years']) ? $card_contact_data['years'] : ''),
+                    'leisure' => (isset($card_contact_data['leisure']) ? $card_contact_data['leisure'] : ''),
+                    'kind_of_activity' => (isset($card_contact_data['kind_of_activity']) ? $card_contact_data['kind_of_activity'] : ''),
+                    'animals' => (isset($card_contact_data['animals']) ? $card_contact_data['animals'] : ''),
+                    'decision_makers' => (isset($card_contact_data['decision_makers']) ? $card_contact_data['decision_makers'] : ''),
                     'agency_id' => $request->get('agency_id')
                 ]);
 
