@@ -70,6 +70,7 @@ class ApiCardsController extends Controller
                     'kind_of_activity' => (isset($card_contact_data['kind_of_activity']) ? $card_contact_data['kind_of_activity'] : ''),
                     'animals' => (isset($card_contact_data['animals']) ? $card_contact_data['animals'] : ''),
                     'decision_makers' => (isset($card_contact_data['decision_makers']) ? $card_contact_data['decision_makers'] : ''),
+                    'is_black_list' => (isset($card_contact_data['is_black_list']) ? $card_contact_data['is_black_list'] : ''),
                     'agency_id' => $request->get('agency_id')
                 ]);
 
