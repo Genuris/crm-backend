@@ -248,4 +248,27 @@ class ApiCardsController extends Controller
         return response()->json($contact, 200);
     }
 
+    public function deleteCardsContactById(Request $request, $id) {
+        $card = CardContacts::findOrFail($id);
+        if ($card) {
+            $card->delete();
+        }
+        return response()->json(array(), 201);
+    }
+
+    public function cardsContactIsBlackList(Request $request, $id) {
+        $is_black_list = $request->get('is_black_list');
+        if (!isset($is_black_list)) {
+            return response()->json(array(), 402);
+        }
+        $card = CardContacts::findOrFail($id);
+        if ($card) {
+            $card->is_black_list = (int) $is_black_list;
+            $card->save();
+        }
+        return response()->json(array(), 201);
+    }
+
+
+
 }
