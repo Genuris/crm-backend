@@ -257,7 +257,6 @@ class ApiCardsController extends Controller
     }
 
     public function cardsContactIsBlackList(Request $request, $id) {
-        dd($id, $request->get('is_black_list'));
         $is_black_list = $request->get('is_black_list');
         if (!isset($is_black_list)) {
             return response()->json(array(), 402);
