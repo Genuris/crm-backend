@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user_profile', function (Request $request) 
     return $request->user();
 });
 
+dd('hello');
+
 //card_categories
 Route::get('card_categories', 'ApiCardCategoriesController@index');
 Route::get('card_categories/{id}', 'ApiCardCategoriesController@show');
