@@ -7,3 +7,6 @@ RewriteRule ^(.*)$ /public/$1
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^.*$ - [NC,L]
 RewriteRule ^public/.*$ /public/index.php [NC,L]
+<Limit GET POST PUT DELETE>
+  Allow from all
+</Limit>
