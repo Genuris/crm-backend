@@ -82,12 +82,6 @@ Route::post('cards_contact_phone', 'ApiCardsController@findContactByPhone');
 Route::delete('cards_contact_delete/{id}', 'ApiCardsController@deleteCardsContactById');
 Route::put('cards_contact_black_list/{id}', 'ApiCardsController@cardsContactIsBlackList');
 
-Route::put('cards_contact_black_list_one/{id}', function (Request $request, $id) {
-    dd($id);
-    //return $request->user();
-});
-
-
 //roles
 Route::get('roles', 'ApiRolesController@index');
 Route::get('roles/{id}', 'ApiRolesController@show');
