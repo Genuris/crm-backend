@@ -70,7 +70,7 @@ Route::post('offices', 'ApiOfficesController@store');
 Route::put('offices', 'ApiOfficesController@update');
 Route::delete('offices/{id}', 'ApiOfficesController@delete');
 
-dd('hello');
+//dd('hello');
 
 //cards
 Route::get('cards', 'ApiCardsController@index');
@@ -81,6 +81,11 @@ Route::delete('cards/{id}', 'ApiCardsController@delete');
 Route::post('cards_contact_phone', 'ApiCardsController@findContactByPhone');
 Route::delete('cards_contact_delete/{id}', 'ApiCardsController@deleteCardsContactById');
 Route::put('cards_contact_black_list/{id}', 'ApiCardsController@cardsContactIsBlackList');
+
+Route::put('cards_contact_black_list_one/{id}', function (Request $request, $id) {
+    dd($id);
+    //return $request->user();
+});
 
 
 //roles
