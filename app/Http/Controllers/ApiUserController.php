@@ -29,12 +29,15 @@ class ApiUserController extends Controller
     {
         $user = User::findOrFail($id);
         if ($user) {
-
-            $user->update($request->all());
+            $data = $request->all();
+            if (isset($data['password'])) {
+                $data['password'] = bcrypt($data['password']);
+            }
+            $user->update($data);
 
             if (!empty($request->get('user_details')) && is_array($request->get('user_details'))) {
 
-                $user_details_data = $request->get('users_details');
+                $user_details_data = $request->get('user_details');
 
                 $user_details = UserDetails::where('user_id', '=', $user->id)->first();
                 if ($user_details) {
