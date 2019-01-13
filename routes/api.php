@@ -72,8 +72,6 @@ Route::post('offices', 'ApiOfficesController@store');
 Route::put('offices', 'ApiOfficesController@update');
 Route::delete('offices/{id}', 'ApiOfficesController@delete');
 
-//dd('hello');
-
 //cards
 Route::get('cards', 'ApiCardsController@index');
 Route::get('cards/{id}', 'ApiCardsController@show');
