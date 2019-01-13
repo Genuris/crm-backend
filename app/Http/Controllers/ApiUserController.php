@@ -18,7 +18,14 @@ class ApiUserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
+        if (!$user) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
         $user->UserDetails;
         if ($user->UserDetails) {
             $user->UserDetails->profileImage;

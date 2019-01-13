@@ -47,6 +47,7 @@ Route::delete('currencies/{id}', 'ApiCurrenciesController@delete');
 //files
 Route::post('files', 'ApiFilesController@store');
 Route::delete('files/{id}', 'ApiFilesController@delete');
+Route::get('files/{id}', 'ApiFilesController@show');
 
 //user
 Route::get('user', 'ApiUserController@index');

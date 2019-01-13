@@ -9,6 +9,19 @@ use Illuminate\Support\Facades\Input;
 class ApiFilesController extends Controller
 {
 
+    public function show($id)
+    {
+        $file = File::findOrFail($id);
+        if (!$file) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
+        return response()->json($file, 200);
+    }
+
     public function store(Request $request)
     {
         if ($request->hasFile('file')) {
