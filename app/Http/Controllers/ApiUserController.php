@@ -50,12 +50,16 @@ class ApiUserController extends Controller
                         $user_details->postal_code = $user_details_data['postal_code'];
                     }
 
-                    if (isset($user_details_data['postal_code']) && $user_details_data['profile_image_id']) {
+                    if (isset($user_details_data['profile_image_id']) && $user_details_data['profile_image_id']) {
                         $user_details->profile_image_id = $user_details_data['profile_image_id'];
                     }
 
                     if (isset($user_details_data['birthday']) && $user_details_data['birthday']) {
                         $user_details->birthday = $user_details_data['birthday'];
+                    }
+
+                    if (isset($user_details_data['currency']) && $user_details_data['currency']) {
+                        $user_details->currency = $user_details_data['currency'];
                     }
 
                     $user_details->save();
