@@ -20,6 +20,9 @@ class ApiUserController extends Controller
     {
         $user = User::find($id);
         $user->UserDetails;
+        if ($user->UserDetails) {
+            $user->UserDetails->profileImage;
+        }
         $user->UserPhones;
         $user->UserSocials;
         return response()->json($user, 200);
@@ -129,6 +132,9 @@ class ApiUserController extends Controller
             ), 400);
         }
         $user->UserDetails;
+        if ($user->UserDetails) {
+            $user->UserDetails->profileImage;
+        }
         $user->UserPhones;
         $user->UserSocials;
 
