@@ -14,7 +14,7 @@ class ApiCurrenciesController extends Controller
 
     public function show($id)
     {
-        return response()->json(Currency::find($id), 201);
+        return response()->json(Currency::find($id), 200);
     }
 
     public function store(Request $request)

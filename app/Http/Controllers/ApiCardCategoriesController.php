@@ -14,7 +14,7 @@ class ApiCardCategoriesController extends Controller
 
     public function show($id)
     {
-        return response()->json(CardCategories::find($id), 201);
+        return response()->json(CardCategories::find($id), 200);
     }
 
     public function store(Request $request)

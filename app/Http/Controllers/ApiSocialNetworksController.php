@@ -14,7 +14,7 @@ class ApiSocialNetworksController extends Controller
 
     public function show($id)
     {
-        return response()->json(SocialNetworks::find($id), 201);
+        return response()->json(SocialNetworks::find($id), 200);
     }
 
     public function store(Request $request)

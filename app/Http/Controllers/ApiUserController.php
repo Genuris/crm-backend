@@ -22,7 +22,7 @@ class ApiUserController extends Controller
         $user->UserDetails;
         $user->UserPhones;
         $user->UserSocials;
-        return response()->json($user, 201);
+        return response()->json($user, 200);
     }
 
     public function update(Request $request, $id)
@@ -134,4 +134,15 @@ class ApiUserController extends Controller
 
         return response()->json($user, 200);
     }
+
+    public function delete(Request $request, $id) {
+        $user = User::findOrFail($id);
+
+        if ($user) {
+            $user->delete();
+        }
+
+        return response()->json(null, 204);
+    }
+
 }

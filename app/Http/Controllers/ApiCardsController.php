@@ -17,7 +17,7 @@ class ApiCardsController extends Controller
 
     public function show($id)
     {
-        return response()->json(Card::find($id), 201);
+        return response()->json(Card::find($id), 200);
     }
 
     public function store(Request $request)
@@ -214,7 +214,7 @@ class ApiCardsController extends Controller
         $card->CardOffice;
         $card->CardUser;
 
-        return response()->json($card, 201);
+        return response()->json($card, 200);
     }
 
     public function delete(Card $card)
@@ -253,7 +253,7 @@ class ApiCardsController extends Controller
         if ($card) {
             $card->delete();
         }
-        return response()->json(array(), 201);
+        return response()->json(null, 204);
     }
 
     public function cardsContactIsBlackList(Request $request, $id) {
@@ -266,7 +266,7 @@ class ApiCardsController extends Controller
             $card->is_black_list = (int) $is_black_list;
             $card->save();
         }
-        return response()->json(array(), 201);
+        return response()->json(null, 204);
     }
 
 

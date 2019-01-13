@@ -14,12 +14,11 @@ class ApiRolesController extends Controller
 
     public function show($id)
     {
-        return response()->json(Role::find($id), 201);
+        return response()->json(Role::find($id), 200);
     }
 
     public function store(Request $request)
     {
-
         $role = Role::create($request->all());
         return response()->json($role, 201);
     }
