@@ -107,10 +107,30 @@ class ApiCardsController extends Controller
         $card_data['user_id'] = (int)$card_data['user_id'];
         $card_data['agency_id'] = (int)$card_data['agency_id'];
         $card_data['office_id'] = (int)$card_data['office_id'];
-        $card_data['year_built'] = (int)$card_data['year_built'];
-        $card_data['number_rooms'] = (int)$card_data['number_rooms'];
-        $card_data['number_contract'] = (int)$card_data['number_contract'];
-        $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
+
+        if (isset($card_data['year_built'])) {
+            $card_data['year_built'] = (int)$card_data['year_built'];
+        } else {
+            $card_data['year_built'] = null;
+        }
+
+        if (isset($card_data['number_rooms'])) {
+            $card_data['number_rooms'] = (int)$card_data['number_rooms'];
+        } else {
+            $card_data['number_rooms'] = null;
+        }
+
+        if (isset($card_data['number_contract'])) {
+            $card_data['number_contract'] = (int)$card_data['number_contract'];
+        } else {
+            $card_data['number_contract'] = null;
+        }
+
+        if (isset($card_data['contract_expiration_date'])) {
+            $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
+        } else {
+            $card_data['contract_expiration_date'] = null;
+        }
 
         $card_data['garbage_chute'] = ((isset($card_data['garbage_chute']) && $card_data['garbage_chute'] == 'true') ? true : false);
         $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
