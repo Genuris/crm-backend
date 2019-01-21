@@ -96,4 +96,10 @@ Route::post('offices-partitions', 'ApiOfficesPartitionsController@store');
 Route::put('offices-partitions', 'ApiOfficesPartitionsController@update');
 Route::delete('offices-partitions/{id}', 'ApiOfficesPartitionsController@delete');
 
+//tasks
+Route::get('tasks', 'ApiTasksController@index');
+Route::get('task/{id}', 'ApiTasksController@show');
+Route::put('task/{id}', 'ApiTasksController@update');
+Route::delete('task/{id}', 'ApiTasksController@delete');
+
 
