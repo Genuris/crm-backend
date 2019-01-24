@@ -76,7 +76,7 @@ Route::delete('offices/{id}', 'ApiOfficesController@delete');
 Route::get('cards', 'ApiCardsController@index');
 Route::get('cards/{id}', 'ApiCardsController@show');
 Route::post('cards', 'ApiCardsController@store');
-Route::put('cards', 'ApiCardsController@update');
+Route::put('cards/{id}', 'ApiCardsController@update');
 Route::delete('cards/{id}', 'ApiCardsController@delete');
 Route::post('cards_contact_phone', 'ApiCardsController@findContactByPhone');
 Route::delete('cards_contact_delete/{id}', 'ApiCardsController@deleteCardsContactById');
