@@ -18,7 +18,7 @@ class ApiUserController extends Controller
 
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         if (!$user) {
             return response()->json(array(
                 'error' => array(
@@ -37,7 +37,7 @@ class ApiUserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         if ($user) {
             $data = $request->all();
             if (isset($data['password'])) {
@@ -149,7 +149,7 @@ class ApiUserController extends Controller
     }
 
     public function delete(Request $request, $id) {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
 
         if ($user) {
             $user->delete();

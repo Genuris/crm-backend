@@ -26,7 +26,7 @@ class ApiTasksController extends Controller
 
     public function update(Request $request, $id)
     {
-        $task = Task::findOrFail($id);
+        $task = Task::find($id);
         if (!$task) {
             return response()->json(array(
                 'error' => array(
@@ -38,9 +38,13 @@ class ApiTasksController extends Controller
         return response()->json($task, 200);
     }
 
-    public function delete(Task $task)
-    {
-        $task->delete();
+    public function delete(Request $request, $id) {
+        $task = Task::find($id);
+
+        if ($task) {
+            $task->delete();
+        }
+
         return response()->json(null, 204);
     }
 }

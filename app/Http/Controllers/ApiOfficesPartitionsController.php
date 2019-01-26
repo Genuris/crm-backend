@@ -24,15 +24,27 @@ class ApiOfficesPartitionsController extends Controller
         return response()->json($offices_partition, 201);
     }
 
-    public function update(Request $request, OfficesPartition $offices_partition)
+    public function update(Request $request, $id)
     {
+        $offices_partition = OfficesPartition::find($id);
+        if (!$offices_partition) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
         $offices_partition->update($request->all());
         return response()->json($offices_partition, 200);
     }
 
-    public function delete(OfficesPartition $offices_partition)
-    {
-        $offices_partition->delete();
+    public function delete(Request $request, $id) {
+        $offices_partition = OfficesPartition::find($id);
+
+        if ($offices_partition) {
+            $offices_partition->delete();
+        }
+
         return response()->json(null, 204);
     }
 }

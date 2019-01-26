@@ -24,15 +24,27 @@ class ApiAgenciesController extends Controller
         return response()->json($agency, 201);
     }
 
-    public function update(Request $request, Agency $agency)
+    public function update(Request $request, $id)
     {
+        $agency = Agency::find($id);
+        if (!$agency) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
         $agency->update($request->all());
         return response()->json($agency, 200);
     }
 
-    public function delete(Agency $agency)
-    {
-        $agency->delete();
+    public function delete(Request $request, $id) {
+        $agency = Agency::find($id);
+
+        if ($agency) {
+            $agency->delete();
+        }
+
         return response()->json(null, 204);
     }
 }

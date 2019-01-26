@@ -24,15 +24,27 @@ class ApiSocialNetworksController extends Controller
         return response()->json($social_network, 201);
     }
 
-    public function update(Request $request, SocialNetworks $social_network)
+    public function update(Request $request, $id)
     {
+        $social_network = SocialNetworks::find($id);
+        if (!$social_network) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
         $social_network->update($request->all());
         return response()->json($social_network, 200);
     }
 
-    public function delete(SocialNetworks $social_network)
-    {
-        $social_network->delete();
+    public function delete(Request $request, $id) {
+        $social_network = SocialNetworks::find($id);
+
+        if ($social_network) {
+            $social_network->delete();
+        }
+
         return response()->json(null, 204);
     }
 }

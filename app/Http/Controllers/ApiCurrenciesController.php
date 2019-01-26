@@ -24,15 +24,28 @@ class ApiCurrenciesController extends Controller
         return response()->json($currency, 201);
     }
 
-    public function update(Request $request, Currency $currency)
+    public function update(Request $request, $id)
     {
+        $currency = Currency::find($id);
+        if (!$currency) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
         $currency->update($request->all());
         return response()->json($currency, 200);
     }
 
-    public function delete(Currency $currency)
-    {
-        $currency->delete();
+    public function delete(Request $request, $id) {
+        $currency = Currency::find($id);
+
+        if ($currency) {
+            $currency->delete();
+        }
+
         return response()->json(null, 204);
     }
+
 }

@@ -11,7 +11,7 @@ class ApiFilesController extends Controller
 
     public function show($id)
     {
-        $file = File::findOrFail($id);
+        $file = File::find($id);
         if (!$file) {
             return response()->json(array(
                 'error' => array(

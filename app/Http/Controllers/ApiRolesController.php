@@ -23,15 +23,27 @@ class ApiRolesController extends Controller
         return response()->json($role, 201);
     }
 
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
+        $role = Role::find($id);
+        if (!$role) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
         $role->update($request->all());
         return response()->json($role, 200);
     }
 
-    public function delete(Role $role)
-    {
-        $role->delete();
+    public function delete(Request $request, $id) {
+        $role = Role::find($id);
+
+        if ($role) {
+            $role->delete();
+        }
+
         return response()->json(null, 204);
     }
 }

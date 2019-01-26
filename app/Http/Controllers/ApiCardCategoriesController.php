@@ -24,15 +24,27 @@ class ApiCardCategoriesController extends Controller
         return response()->json($card_category, 201);
     }
 
-    public function update(Request $request, CardCategories $card_category)
+    public function update(Request $request, $id)
     {
+        $card_category = CardCategories::find($id);
+        if (!$card_category) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
         $card_category->update($request->all());
         return response()->json($card_category, 200);
     }
 
-    public function delete(CardCategories $card_category)
-    {
-        $card_category->delete();
+    public function delete(Request $request, $id) {
+        $card_category = CardCategories::find($id);
+
+        if ($card_category) {
+            $card_category->delete();
+        }
+
         return response()->json(null, 204);
     }
 }

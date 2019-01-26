@@ -168,7 +168,7 @@ class ApiCardsController extends Controller
 
     public function update(Request $request, $id)
     {
-        $card = Card::findOrFail($id);
+        $card = Card::find($id);
         if ($card) {
 
             $card_data = $request->all();
@@ -264,9 +264,13 @@ class ApiCardsController extends Controller
         return response()->json($card, 200);
     }
 
-    public function delete(Card $card)
-    {
-        $card->delete();
+    public function delete(Request $request, $id) {
+        $card = Card::find($id);
+
+        if ($card) {
+            $card->delete();
+        }
+
         return response()->json(null, 204);
     }
 
@@ -284,7 +288,7 @@ class ApiCardsController extends Controller
             return response()->json(array(), 402);
         }
 
-        $contact = CardContacts::findOrFail($contact_phone->cards_contacts_id);
+        $contact = CardContacts::find($contact_phone->cards_contacts_id);
 
         if (!$contact) {
             return response()->json(array(), 402);
@@ -296,7 +300,7 @@ class ApiCardsController extends Controller
     }
 
     public function deleteCardsContactById(Request $request, $id) {
-        $card = CardContacts::findOrFail($id);
+        $card = CardContacts::find($id);
         if ($card) {
             $card->delete();
         }
@@ -308,7 +312,7 @@ class ApiCardsController extends Controller
         if (!isset($is_black_list)) {
             return response()->json(array(), 402);
         }
-        $card = CardContacts::findOrFail($id);
+        $card = CardContacts::find($id);
         if ($card) {
             $card->is_black_list = (int) $is_black_list;
             $card->save();
