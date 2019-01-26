@@ -28,6 +28,13 @@ Route::post('card_categories', 'ApiCardCategoriesController@store');
 Route::put('card_categories', 'ApiCardCategoriesController@update');
 Route::delete('card_categories/{id}', 'ApiCardCategoriesController@delete');
 
+//card_subcategories
+Route::get('card_subcategories', 'ApiCardSubcategoriesController@index');
+Route::get('card_subcategories/{id}', 'ApiCardSubcategoriesController@show');
+Route::post('card_subcategories', 'ApiCardSubcategoriesController@store');
+Route::put('card_subcategories', 'ApiCardSubcategoriesController@update');
+Route::delete('card_subcategories/{id}', 'ApiCardSubcategoriesController@delete');
+
 
 //social_networks
 Route::get('social_networks', 'ApiSocialNetworksController@index');
@@ -43,6 +50,8 @@ Route::get('currencies/{id}', 'ApiCurrenciesController@show');
 Route::post('currencies', 'ApiCurrenciesController@store');
 Route::put('currencies', 'ApiCurrenciesController@update');
 Route::delete('currencies/{id}', 'ApiCurrenciesController@delete');
+
+
 
 //files
 Route::post('files', 'ApiFilesController@store');

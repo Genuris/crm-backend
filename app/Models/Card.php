@@ -48,6 +48,7 @@ class Card extends Model
         'window',
         'view_from_windows',
         'garbage_chute',
+        'number_of_floors',
         'layout',
         'subtypes',
         'description',
