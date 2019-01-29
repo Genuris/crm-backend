@@ -132,7 +132,6 @@ class ApiCardsController extends Controller
             $card_data['contract_expiration_date'] = null;
         }
 
-        $card_data['garbage_chute'] = ((isset($card_data['garbage_chute']) && $card_data['garbage_chute'] == 'true') ? true : false);
         $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
 
         $card = Card::create($card_data);
@@ -206,10 +205,6 @@ class ApiCardsController extends Controller
 
             if (isset($card_data['contract_expiration_date'])) {
                 $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
-            }
-
-            if (isset($card_data['garbage_chute'])) {
-                $card_data['garbage_chute'] = (($card_data['garbage_chute'] == 'true') ? true : false);
             }
 
             if (isset($card_data['is_archived'])) {
