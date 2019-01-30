@@ -17,7 +17,15 @@ class ApiCardsController extends Controller
 
     public function show($id)
     {
-        return response()->json(Card::find($id), 200);
+        $card = Card::find($id);
+        if ($card) {
+            $card->CardContact;
+            $card->CardFiles;
+            $card->CardAgency;
+            $card->CardOffice;
+            $card->CardUser;
+        }
+        return response()->json($card, 200);
     }
 
     public function store(Request $request)
