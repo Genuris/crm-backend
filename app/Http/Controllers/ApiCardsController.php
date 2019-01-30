@@ -277,6 +277,17 @@ class ApiCardsController extends Controller
         return response()->json(null, 204);
     }
 
+    public  function cardsDeleteFile(Request $request, $card_id, $file_id) {
+        $card = Card::find($card_id);
+        if ($card) {
+           $card_file = CardsFile::find($file_id);
+           if ($card_file) {
+               $card_file->delete();
+           }
+        }
+        return response()->json(null, 204);
+    }
+
     public function findContactByPhone(Request $request) {
         $phone = $request->get('phone');
         $agency_id = $request->get('agency_id');

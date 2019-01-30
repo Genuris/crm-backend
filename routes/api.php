@@ -90,6 +90,7 @@ Route::delete('cards/{id}', 'ApiCardsController@delete');
 Route::post('cards_contact_phone', 'ApiCardsController@findContactByPhone');
 Route::delete('cards_contact_delete/{id}', 'ApiCardsController@deleteCardsContactById');
 Route::put('cards_contact_black_list/{id}', 'ApiCardsController@cardsContactIsBlackList');
+Route::delete('cards_delete/{card_id}/file/{file_id}', 'ApiCardsController@cardsDeleteFile');
 
 //roles
 Route::get('roles', 'ApiRolesController@index');
