@@ -24,6 +24,13 @@ class ApiCardsController extends Controller
             $card->CardAgency;
             $card->CardOffice;
             $card->CardUser;
+
+            if (!empty($card->CardFiles)) {
+                foreach ($card->CardFiles as $cardFile) {
+                    $cardFile->file;
+                }
+//                dd($card->CardFiles);
+            }
         }
         return response()->json($card, 200);
     }
