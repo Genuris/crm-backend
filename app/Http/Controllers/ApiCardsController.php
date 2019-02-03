@@ -267,6 +267,12 @@ class ApiCardsController extends Controller
 
         $card->CardContact;
         $card->CardFiles;
+
+        if (!empty($card->CardFiles)) {
+            foreach ($card->CardFiles as $cardFile) {
+                $cardFile->file;
+            }
+        }
         $card->CardAgency;
         $card->CardOffice;
         $card->CardUser;
