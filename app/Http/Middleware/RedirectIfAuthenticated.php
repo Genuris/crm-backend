@@ -17,10 +17,12 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
+
         if (Auth::guard($guard)->check()) {
             return redirect('/home');
         }
 
-        return $next($request);
+        return response()->json(array('message' => 'Forbidden. The user is authenticated, but does not have the permissions to perform an action.'), 403);
+        //return $next($request);
     }
 }
