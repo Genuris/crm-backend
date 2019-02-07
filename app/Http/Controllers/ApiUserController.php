@@ -77,57 +77,96 @@ class ApiUserController extends Controller
 
             }
 
-            if (!empty($request->get('user_phones')) && is_array($request->get('user_phones'))) {
+            if (is_array($request->get('user_phones'))) {
 
                 $user_phones_data = $request->get('user_phones');
 
+                $old_data = $user->UserPhones;
+                $old_data_array = array();
+
+                if (!empty($old_data)) {
+                    foreach ($old_data as $obj) {
+                        $old_data_array[$obj->id] = $obj->id;
+                    }
+                }
+
                 if (is_array($user_phones_data) and !empty($user_phones_data)) {
-
-                    foreach ($user_phones_data as $user_phone_id => $user_phone_data) {
-
-                        $user_phone = UserPhones::find($user_phone_id);
-                        if ($user_phone) {
-                            $user_phone->value = $user_phone_data;
-                            $user_phone->save();
+                    foreach ($user_phones_data as $user_phone_data) {
+                        if (isset($user_phone_data['id'])) {
+                            $user_phone = UserPhones::find($user_phone_data['id']);
+                            if ($user_phone) {
+                                $user_phone->value = $user_phone_data['value'];
+                                $user_phone->save();
+                                unset($old_data_array[$user_phone_data['id']]);
+                            } else {
+                                UserPhones::create([
+                                    'user_id' => $user->id,
+                                    'value' => (isset($user_phone_data['value']) ? $user_phone_data['value'] : '')
+                                ]);
+                            }
                         } else {
                             UserPhones::create([
                                 'user_id' => $user->id,
                                 'value' => (isset($user_phone_data['value']) ? $user_phone_data['value'] : '')
                             ]);
                         }
-
                     }
-
+                }
+                if (!empty($old_data_array)) {
+                    foreach ($old_data_array as $old_data) {
+                        if ($old_data) {
+                            UserPhones::where('id', '=', $old_data)->delete();
+                        }
+                    }
                 }
             }
 
-            if (!empty($request->get('user_socials')) && is_array($request->get('user_socials'))) {
+            if (is_array($request->get('user_socials'))) {
 
                 $user_socials_data = $request->get('user_socials');
 
+                $old_data = $user->UserSocials;
+                $old_data_array = array();
+
+                if (!empty($old_data)) {
+                    foreach ($old_data as $obj) {
+                        $old_data_array[$obj->id] = $obj->id;
+                    }
+                }
+
                 if (is_array($user_socials_data) and !empty($user_socials_data)) {
+                    foreach ($user_socials_data as $user_social_data) {
 
-                    foreach ($user_socials_data as $social_network_id => $user_social_data) {
-
-                        $social_network = SocialNetworks::find($social_network_id);
-
-                        if ($social_network) {
-                            $user_social = UserSocialNetworks::where('user_id', '=', $user->id)->andWhere('social_network_id', '=', $social_network_id)->first();
+                        if (isset($user_social_data['id'])) {
+                            $user_social = UserSocialNetworks::find($user_social_data['id']);
                             if ($user_social) {
-                                $user_social->value = $user_social_data;
+                                $user_social->value = $user_social_data['value'];
                                 $user_social->save();
+                                unset($old_data_array[$user_social_data['id']]);
+                            } else {
+                                UserSocialNetworks::create([
+                                    'user_id' => $user->id,
+                                    'social_network_id' => $user_social_data['social_network_id'],
+                                    'value' => (isset($user_social_data['value']) ? $user_social_data['value'] : '')
+                                ]);
                             }
-
                         } else {
                             UserSocialNetworks::create([
                                 'user_id' => $user->id,
-                                'social_network_id' => $social_network_id,
+                                'social_network_id' => $user_social_data['social_network_id'],
                                 'value' => (isset($user_social_data['value']) ? $user_social_data['value'] : '')
                             ]);
                         }
 
                     }
 
+                }
+                if (!empty($old_data_array)) {
+                    foreach ($old_data_array as $old_data) {
+                        if ($old_data) {
+                            UserSocialNetworks::where('id', '=', $old_data)->delete();
+                        }
+                    }
                 }
             }
 
@@ -138,6 +177,8 @@ class ApiUserController extends Controller
                 )
             ), 400);
         }
+
+        $user = User::find($id);
         $user->UserDetails;
         if ($user->UserDetails) {
             $user->UserDetails->profileImage;
