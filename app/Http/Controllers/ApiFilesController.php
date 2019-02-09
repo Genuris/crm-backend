@@ -25,9 +25,11 @@ class ApiFilesController extends Controller
     public function store(Request $request)
     {
         if ($request->hasFile('file')) {
+            if (empty(Input::file('file')->getClientOriginalExtension())) {
+                return response()->json(array('error' => array('status' => 400, 'message' => 'your file has no format')), 400);
+            }
             $destinationPath = 'uploads/files';
             $fileName = str_replace('.' . Input::file('file')->extension(), '', Input::file('file')->hashName()).'.'.Input::file('file')->getClientOriginalExtension();
-
             $file = new File();
             $file->name = Input::file('file')->getClientOriginalName();
             $file->extension = Input::file('file')->getClientOriginalExtension();
