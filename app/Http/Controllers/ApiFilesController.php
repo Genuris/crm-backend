@@ -26,11 +26,12 @@ class ApiFilesController extends Controller
     {
         if ($request->hasFile('file')) {
             $destinationPath = 'uploads/files';
-            $fileName = Input::file('file')->hashName();
+            $fileName = str_replace('.' . Input::file('file')->extension(), '', Input::file('file')->hashName()).'.'.Input::file('file')->getClientOriginalExtension();
+
             $file = new File();
             $file->name = Input::file('file')->getClientOriginalName();
             $file->extension = Input::file('file')->getClientOriginalExtension();
-            $file->hash = Input::file('file')->hashName();
+            $file->hash = $fileName;
             $file->type = Input::file('file')->getMimeType();
             $upload_success = Input::file('file')->move($destinationPath, $fileName);
             if ($upload_success) {
