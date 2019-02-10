@@ -19,7 +19,14 @@ class ApiCardsController extends Controller
     {
         $card = Card::find($id);
         if ($card) {
+
             $card->CardContact;
+            if (!empty($card->CardContact)) {
+                foreach ($card->CardContact as $CardContact) {
+                    $CardContact->CardsContactsPhones;
+                }
+            }
+
             $card->CardFiles;
             $card->CardAgency;
             $card->CardOffice;
@@ -29,7 +36,6 @@ class ApiCardsController extends Controller
                 foreach ($card->CardFiles as $cardFile) {
                     $cardFile->file;
                 }
-//                dd($card->CardFiles);
             }
         }
         return response()->json($card, 200);
@@ -172,7 +178,18 @@ class ApiCardsController extends Controller
         }
 
         $card->CardContact;
+        if (!empty($card->CardContact)) {
+            foreach ($card->CardContact as $CardContact) {
+                $CardContact->CardsContactsPhones;
+            }
+        }
+
         $card->CardFiles;
+        if (!empty($card->CardFiles)) {
+            foreach ($card->CardFiles as $cardFile) {
+                $cardFile->file;
+            }
+        }
         $card->CardAgency;
         $card->CardOffice;
         $card->CardUser;
@@ -266,8 +283,13 @@ class ApiCardsController extends Controller
         }
 
         $card->CardContact;
-        $card->CardFiles;
+        if (!empty($card->CardContact)) {
+            foreach ($card->CardContact as $CardContact) {
+                $CardContact->CardsContactsPhones;
+            }
+        }
 
+        $card->CardFiles;
         if (!empty($card->CardFiles)) {
             foreach ($card->CardFiles as $cardFile) {
                 $cardFile->file;
