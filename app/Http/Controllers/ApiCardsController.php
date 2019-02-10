@@ -22,9 +22,7 @@ class ApiCardsController extends Controller
 
             $card->CardContact;
             if (!empty($card->CardContact)) {
-                foreach ($card->CardContact as $CardContact) {
-                    $CardContact->CardsContactsPhones;
-                }
+                $card->CardContact->CardsContactsPhones;
             }
 
             $card->CardFiles;
@@ -179,9 +177,7 @@ class ApiCardsController extends Controller
 
         $card->CardContact;
         if (!empty($card->CardContact)) {
-            foreach ($card->CardContact as $CardContact) {
-                $CardContact->CardsContactsPhones;
-            }
+            $card->CardContact->CardsContactsPhones;
         }
 
         $card->CardFiles;
@@ -284,9 +280,7 @@ class ApiCardsController extends Controller
 
         $card->CardContact;
         if (!empty($card->CardContact)) {
-            foreach ($card->CardContact as $CardContact) {
-                $CardContact->CardsContactsPhones;
-            }
+            $card->CardContact->CardsContactsPhones;
         }
 
         $card->CardFiles;
