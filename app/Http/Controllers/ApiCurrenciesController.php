@@ -2,11 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\Currency;
 
 class ApiCurrenciesController extends Controller
 {
+    public $permissions = array(
+        'GET' => ['see' => ['api/currencies']],
+        'PUT' => ['update' => ['api/currencies']],
+        'POST' => ['add' => ['api/currencies']],
+        'DELETE' => ['delete' => ['api/currencies']],
+    );
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+
+            $user = $request->user();
+
+            if (!$user) {
+                return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+            }
+
+            $role = Role::find($user->role_id);
+
+            if (!$role) {
+                return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+            }
+
+            if (!$role->checkAction($request->path(), $request->method(), $this->permissions, new Currency())) {
+                return response()->json(array('error' => array('status' => 403, 'message' => 'Forbidden. The user is authenticated, but does not have the permissions to perform an action.')), 403);
+            }
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         return Currency::all();

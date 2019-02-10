@@ -7,6 +7,37 @@ use App\Models\Role;
 
 class ApiRolesController extends Controller
 {
+    public $permissions = array(
+        'GET' => ['see' => ['api/roles']],
+        'PUT' => ['update' => ['api/roles']],
+        'POST' => ['add' => ['api/roles']],
+        'DELETE' => ['delete' => ['api/roles']],
+    );
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+
+            $user = $request->user();
+
+            if (!$user) {
+                return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+            }
+
+            $role = Role::find($user->role_id);
+
+            if (!$role) {
+                return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+            }
+
+            if (!$role->checkAction($request->path(), $request->method(), $this->permissions, new Role())) {
+                return response()->json(array('error' => array('status' => 403, 'message' => 'Forbidden. The user is authenticated, but does not have the permissions to perform an action.')), 403);
+            }
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         return Role::all();

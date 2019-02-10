@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Office extends Model
 {
-    protected $table = "offices";
+    public $table = "offices";
     protected $fillable = ['agency_id', 'user_id', 'title', 'city', 'area', 'street', 'building', 'apartment'];
 
     public function OfficeUsers(){
