@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $table = "tasks";
+    public $table = "tasks";
     protected $fillable = ['cards_contacts_id', 'creator_id', 'card_id', 'date_time', 'remind', 'type', 'description', 'responsibles'];
 
     public function Creator()

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agency extends Model
 {
-    protected $table = "agencies";
+    public $table = "agencies";
     protected $fillable = ['title', 'user_id'];
 
     public function AgencyUsers(){
