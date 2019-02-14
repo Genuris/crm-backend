@@ -101,6 +101,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('roles', 'ApiRolesController@update');
     Route::delete('roles/{id}', 'ApiRolesController@delete');
 
+//card_contacts
+    Route::get('card_contacts', 'ApiCardContactsController@index');
+    Route::get('card_contacts/{id}', 'ApiCardContactsController@show');
+    Route::put('card_contacts', 'ApiCardContactsController@update');
+    //    Route::post('card_contacts', 'ApiCardContactsController@store');
+//    Route::delete('card_contacts/{id}', 'ApiCardContactsController@delete');
+
 //offices-partition
     Route::get('offices-partitions', 'ApiOfficesPartitionsController@index');
     Route::get('offices-partitions/{id}', 'ApiOfficesPartitionsController@show');
