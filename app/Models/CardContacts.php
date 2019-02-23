@@ -8,7 +8,7 @@ class CardContacts extends Model
 {
     protected $table = "cards_contacts";
     protected $fillable = ['name', 'email', 'agency_id', 'created_at', 'updated_at',
-        'children', 'car', 'work_place', 'is_married',
+        'children', 'car', 'work_place', 'is_married', 'comment',
         'is_client', 'is_partner', 'is_realtor', 'years', 'leisure',
         'kind_of_activity', 'animals', 'decision_makers', 'is_black_list'];
 
