@@ -98,13 +98,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('roles', 'ApiRolesController@index');
     Route::get('roles/{id}', 'ApiRolesController@show');
     Route::post('roles', 'ApiRolesController@store');
-    Route::put('roles', 'ApiRolesController@update');
+    Route::put('roles/{id}', 'ApiRolesController@update');
     Route::delete('roles/{id}', 'ApiRolesController@delete');
 
 //card_contacts
     Route::get('card_contacts', 'ApiCardContactsController@index');
     Route::get('card_contacts/{id}', 'ApiCardContactsController@show');
-    Route::put('card_contacts', 'ApiCardContactsController@update');
+    Route::put('card_contacts/{id}', 'ApiCardContactsController@update');
     //    Route::post('card_contacts', 'ApiCardContactsController@store');
 //    Route::delete('card_contacts/{id}', 'ApiCardContactsController@delete');
 

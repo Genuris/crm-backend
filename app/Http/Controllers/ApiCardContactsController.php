@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CardContactsPhones;
 use Illuminate\Http\Request;
 use App\Models\CardContacts;
 
@@ -71,6 +72,59 @@ class ApiCardContactsController extends Controller
             ), 400);
         }
         $card_contacts->update($request->all());
+
+        if (is_array($request->get('cards_contacts_phones'))) {
+
+            $card_contact_phones_data = $request->get('cards_contacts_phones');
+
+            $old_data = $card_contacts->CardsContactsPhones;
+
+            $old_data_array = array();
+
+            if (!empty($old_data)) {
+                foreach ($old_data as $obj) {
+                    $old_data_array[$obj->id] = $obj->id;
+                }
+            }
+
+            if (is_array($card_contact_phones_data) and !empty($card_contact_phones_data)) {
+                foreach ($card_contact_phones_data as $card_contact_phone_data) {
+
+                    if (isset($card_contact_phone_data['id'])) {
+                        $user_phone = CardContactsPhones::find($card_contact_phone_data['id']);
+
+                        if ($user_phone) {
+                            if (isset($card_contact_phone_data['phone'])) {
+                                $user_phone->phone = $card_contact_phone_data['phone'];
+                                $user_phone->save();
+                            }
+                            unset($old_data_array[$card_contact_phone_data['id']]);
+                        } else {
+                            CardContactsPhones::create([
+                                'cards_contacts_id' => $card_contacts->id,
+                                'agency_id' => $card_contacts->agency_id,
+                                'phone' => (isset($card_contact_phone_data['phone']) ? $card_contact_phone_data['phone'] : '')
+                            ]);
+                        }
+                    } else {
+                        if (isset($card_contact_phone_data['phone'])) {
+                            CardContactsPhones::create([
+                                'cards_contacts_id' => $card_contacts->id,
+                                'agency_id' => $card_contacts->agency_id,
+                                'phone' => $card_contact_phone_data['phone']
+                            ]);
+                        }
+                    }
+                }
+            }
+            if (!empty($old_data_array)) {
+                foreach ($old_data_array as $old_data) {
+                    if ($old_data) {
+                        CardContactsPhones::where('id', '=', $old_data)->delete();
+                    }
+                }
+            }
+        }
 
         $card_contacts = CardContacts::find($id);
         if($card_contacts) {
