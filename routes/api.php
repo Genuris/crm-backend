@@ -23,7 +23,16 @@ Route::post('create_user', 'ApiRegisterController@store');
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/user_profile', function (Request $request) {
-        return $request->user();
+        $user = $request->user();
+        if ($user) {
+            $user->UserDetails;
+            if ($user->UserDetails) {
+                $user->UserDetails->profileImage;
+            }
+            $user->UserPhones;
+            $user->UserSocials;
+        }
+        return $user;
     });
 
     //card_categories
@@ -109,11 +118,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 //    Route::delete('card_contacts/{id}', 'ApiCardContactsController@delete');
 
 //offices-partition
-    Route::get('offices-partitions', 'ApiOfficesPartitionsController@index');
-    Route::get('offices-partitions/{id}', 'ApiOfficesPartitionsController@show');
-    Route::post('offices-partitions', 'ApiOfficesPartitionsController@store');
-    Route::put('offices-partitions', 'ApiOfficesPartitionsController@update');
-    Route::delete('offices-partitions/{id}', 'ApiOfficesPartitionsController@delete');
+    Route::get('offices_partitions', 'ApiOfficesPartitionsController@index');
+    Route::get('offices_partitions/{id}', 'ApiOfficesPartitionsController@show');
+    Route::post('offices_partitions', 'ApiOfficesPartitionsController@store');
+    Route::put('offices_partitions', 'ApiOfficesPartitionsController@update');
+    Route::delete('offices_partitions/{id}', 'ApiOfficesPartitionsController@delete');
 
 //tasks
     Route::get('tasks', 'ApiTasksController@index');

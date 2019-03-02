@@ -9,10 +9,10 @@ use App\Models\OfficesPartition;
 class ApiOfficesPartitionsController extends Controller
 {
     public $permissions = array(
-        'GET' => ['see' => ['api/offices-partitions']],
-        'PUT' => ['update' => ['api/offices-partitions']],
-        'POST' => ['add' => ['api/offices-partitions']],
-        'DELETE' => ['delete' => ['api/offices-partitions']],
+        'GET' => ['see' => ['api/offices_partitions']],
+        'PUT' => ['update' => ['api/offices_partitions']],
+        'POST' => ['add' => ['api/offices_partitions']],
+        'DELETE' => ['delete' => ['api/offices_partitions']],
     );
 
     public function __construct()
