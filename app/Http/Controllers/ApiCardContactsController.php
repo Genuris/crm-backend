@@ -18,7 +18,7 @@ class ApiCardContactsController extends Controller
     {
         $this->middleware(function ($request, $next) {
 
-            /*$user = $request->user();
+            $user = $request->user();
 
             if (!$user) {
                 return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
@@ -32,7 +32,7 @@ class ApiCardContactsController extends Controller
 
             if (!$card_contacts->checkAction($request->path(), $request->method(), $this->permissions, new Role())) {
                 return response()->json(array('error' => array('status' => 403, 'message' => 'Forbidden. The user is authenticated, but does not have the permissions to perform an action.')), 403);
-            }*/
+            }
 
             return $next($request);
         });
