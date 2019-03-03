@@ -9,14 +9,11 @@ use App\Models\UserPhones;
 use App\Models\UserSocialNetworks;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ApiRegisterController extends Controller
 {
     public function store(Request $request)
     {
-//        dd(Auth::check());
-        //dd(Auth::guard('api')->user()->role_id);
         if (empty($request->get('name')) || is_null($request->get('name'))) {
             return response()->json(array('error' => array('status' => 400, 'message' => 'name is empty')), 400);
         }

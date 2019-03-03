@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SocialNetworks;
 use App\Models\UserDetails;
 use App\Models\UserPhones;
 use App\Models\UserSocialNetworks;
