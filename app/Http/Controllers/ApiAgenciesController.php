@@ -11,7 +11,7 @@ class ApiAgenciesController extends Controller
 
     public $permissions = array(
         'GET' => ['see' => ['api/agencies']],
-        'PUT' => ['update' => ['api/agencies']],
+        'PUT' => ['edit' => ['api/agencies']],
         'POST' => ['add' => ['api/agencies']],
         'DELETE' => ['delete' => ['api/agencies']],
     );

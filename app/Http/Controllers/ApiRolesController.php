@@ -9,7 +9,7 @@ class ApiRolesController extends Controller
 {
     public $permissions = array(
         'GET' => ['see' => ['api/roles']],
-        'PUT' => ['update' => ['api/roles']],
+        'PUT' => ['edit' => ['api/roles']],
         'POST' => ['add' => ['api/roles']],
         'DELETE' => ['delete' => ['api/roles']],
     );

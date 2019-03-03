@@ -10,7 +10,7 @@ class ApiCurrenciesController extends Controller
 {
     public $permissions = array(
         'GET' => ['see' => ['api/currencies']],
-        'PUT' => ['update' => ['api/currencies']],
+        'PUT' => ['edit' => ['api/currencies']],
         'POST' => ['add' => ['api/currencies']],
         'DELETE' => ['delete' => ['api/currencies']],
     );

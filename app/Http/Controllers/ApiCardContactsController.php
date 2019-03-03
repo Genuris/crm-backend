@@ -11,7 +11,7 @@ class ApiCardContactsController extends Controller
 {
     public $permissions = array(
         'GET' => ['see' => ['api/card_contacts']],
-        'PUT' => ['update' => ['api/card_contacts']],
+        'PUT' => ['edit' => ['api/card_contacts']],
         'DELETE' => ['delete' => ['api/card_contacts']],
     );
 

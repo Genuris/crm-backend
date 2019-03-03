@@ -11,7 +11,7 @@ class ApiCardCategoriesController extends Controller
 
     public $permissions = array(
         'GET' => ['see' => ['api/card_categories']],
-        'PUT' => ['update' => ['api/card_categories']],
+        'PUT' => ['edit' => ['api/card_categories']],
         'POST' => ['add' => ['api/card_categories']],
         'DELETE' => ['delete' => ['api/card_categories']],
     );

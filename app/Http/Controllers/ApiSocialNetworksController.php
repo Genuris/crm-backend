@@ -10,7 +10,7 @@ class ApiSocialNetworksController extends Controller
 {
     public $permissions = array(
         'GET' => ['see' => ['api/social_networks']],
-        'PUT' => ['update' => ['api/social_networks']],
+        'PUT' => ['edit' => ['api/social_networks']],
         'POST' => ['add' => ['api/social_networks']],
         'DELETE' => ['delete' => ['api/social_networks']],
     );

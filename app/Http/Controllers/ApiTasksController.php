@@ -10,7 +10,7 @@ class ApiTasksController extends Controller
 {
     public $permissions = array(
         'GET' => ['see' => ['api/tasks']],
-        'PUT' => ['update' => ['api/tasks']],
+        'PUT' => ['edit' => ['api/tasks']],
         'POST' => ['add' => ['api/tasks']],
         'DELETE' => ['delete' => ['api/tasks']],
     );

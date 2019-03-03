@@ -10,7 +10,7 @@ class ApiOfficesPartitionsController extends Controller
 {
     public $permissions = array(
         'GET' => ['see' => ['api/offices_partitions']],
-        'PUT' => ['update' => ['api/offices_partitions']],
+        'PUT' => ['edit' => ['api/offices_partitions']],
         'POST' => ['add' => ['api/offices_partitions']],
         'DELETE' => ['delete' => ['api/offices_partitions']],
     );

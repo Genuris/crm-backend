@@ -11,7 +11,7 @@ class ApiOfficesController extends Controller
 
     public $permissions = array(
         'GET' => ['see' => ['api/offices']],
-        'PUT' => ['update' => ['api/offices']],
+        'PUT' => ['edit' => ['api/offices']],
         'POST' => ['add' => ['api/offices']],
         'DELETE' => ['delete' => ['api/offices']],
     );

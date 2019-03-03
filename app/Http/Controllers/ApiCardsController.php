@@ -14,7 +14,7 @@ class ApiCardsController extends Controller
 
     public $permissions = array(
         'GET' => ['see' => ['api/cards']],
-        'PUT' => ['update' => ['api/cards', 'api/cards_contact_black_list']],
+        'PUT' => ['edit' => ['api/cards', 'api/cards_contact_black_list']],
         'POST' => ['add' => ['api/cards', 'api/cards_contact_phone']],
         'DELETE' => ['delete' => ['api/cards', 'api/cards_delete', 'api/cards_contact_delete']],
     );
