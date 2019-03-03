@@ -16,7 +16,7 @@ class ApiCardsController extends Controller
         'GET' => ['see' => ['api/cards']],
         'PUT' => ['update' => ['api/cards', 'api/cards_contact_black_list']],
         'POST' => ['add' => ['api/cards', 'api/cards_contact_phone']],
-        'DELETE' => ['delete' => ['api/cards_delete', 'api/cards_contact_delete']],
+        'DELETE' => ['delete' => ['api/cards', 'api/cards_delete', 'api/cards_contact_delete']],
     );
 
     public function __construct()
