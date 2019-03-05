@@ -130,6 +130,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('task/{id}', 'ApiTasksController@update');
     Route::delete('task/{id}', 'ApiTasksController@delete');
 
+//contact_user
+    Route::post('contact_user_by_phones', 'ApiUserCardController@getContactUserByPhones');
+
 });
 
 

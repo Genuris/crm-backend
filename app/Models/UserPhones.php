@@ -8,4 +8,8 @@ class UserPhones extends Model
 {
     protected $table = "users_phones";
     protected $fillable = ['value', 'user_id'];
+
+    public function user(){
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
 }
