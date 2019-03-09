@@ -50,6 +50,7 @@ class Card extends Model
         'garbage_chute',
         'number_of_floors',
         'layout',
+        'reason_for_sale',
         'category',
         'subcategory',
         'description',
