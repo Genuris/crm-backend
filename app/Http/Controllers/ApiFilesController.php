@@ -9,6 +9,22 @@ use Illuminate\Support\Facades\Input;
 class ApiFilesController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+
+            if ($request->method() === 'POST') {
+                $user = $request->user();
+
+                if (!$user) {
+                    return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+                }
+            }
+
+            return $next($request);
+        });
+    }
+
     public function show($id)
     {
         $file = File::find($id);
@@ -25,6 +41,9 @@ class ApiFilesController extends Controller
     public function store(Request $request)
     {
         if ($request->hasFile('file')) {
+
+            $user = $request->user();
+
             if (empty(Input::file('file')->getClientOriginalExtension())) {
                 return response()->json(array('error' => array('status' => 400, 'message' => 'your file has no format')), 400);
             }
@@ -32,8 +51,10 @@ class ApiFilesController extends Controller
             $fileName = str_replace('.' . Input::file('file')->extension(), '', Input::file('file')->hashName()).'.'.Input::file('file')->getClientOriginalExtension();
             $file = new File();
             $file->name = Input::file('file')->getClientOriginalName();
+            $file->size = Input::file('file')->getSize();
             $file->extension = Input::file('file')->getClientOriginalExtension();
             $file->hash = $fileName;
+            $file->user_id = $user->id;
             $file->type = Input::file('file')->getMimeType();
             $upload_success = Input::file('file')->move($destinationPath, $fileName);
             if ($upload_success) {
