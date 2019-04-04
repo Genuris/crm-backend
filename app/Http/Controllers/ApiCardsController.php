@@ -182,17 +182,17 @@ class ApiCardsController extends Controller
         $card_data['agency_id'] = (int)$card_data['agency_id'];
         $card_data['office_id'] = (int)$card_data['office_id'];
 
-        if (isset($card_data['year_built'])) {
+        /*if (isset($card_data['year_built'])) {
             $card_data['year_built'] = (int)$card_data['year_built'];
         } else {
             $card_data['year_built'] = null;
-        }
+        }*/
 
-        if (isset($card_data['number_rooms'])) {
+        /*if (isset($card_data['number_rooms'])) {
             $card_data['number_rooms'] = (int)$card_data['number_rooms'];
         } else {
             $card_data['number_rooms'] = null;
-        }
+        }*/
 
         if (isset($card_data['number_contract'])) {
             $card_data['number_contract'] = (int)$card_data['number_contract'];
@@ -270,13 +270,13 @@ class ApiCardsController extends Controller
                 $card_data['office_id'] = (int)$card_data['office_id'];
             }
 
-            if (isset($card_data['year_built'])) {
+            /*if (isset($card_data['year_built'])) {
                 $card_data['year_built'] = (int)$card_data['year_built'];
-            }
+            }*/
 
-            if (isset($card_data['number_rooms'])) {
+            /*if (isset($card_data['number_rooms'])) {
                 $card_data['number_rooms'] = (int)$card_data['number_rooms'];
-            }
+            }*/
 
             if (isset($card_data['number_contract'])) {
                 $card_data['number_contract'] = (int)$card_data['number_contract'];
