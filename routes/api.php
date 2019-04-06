@@ -96,6 +96,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('cards', 'ApiCardsController@index');
     Route::get('cards/{id}', 'ApiCardsController@show');
     Route::post('cards', 'ApiCardsController@store');
+    Route::post('cards_filtered', 'ApiCardsController@filtered');
     Route::put('cards/{id}', 'ApiCardsController@update');
     Route::delete('cards/{id}', 'ApiCardsController@delete');
     Route::post('cards_contact_phone', 'ApiCardsController@findContactByPhone');

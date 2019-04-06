@@ -15,7 +15,7 @@ class ApiCardsController extends Controller
     public $permissions = array(
         'GET' => ['see' => ['api/cards']],
         'PUT' => ['edit' => ['api/cards', 'api/cards_contact_black_list']],
-        'POST' => ['add' => ['api/cards', 'api/cards_contact_phone']],
+        'POST' => ['add' => ['api/cards', 'api/cards_contact_phone', 'api/cards_filtered']],
         'DELETE' => ['delete' => ['api/cards', 'api/cards_delete', 'api/cards_contact_delete']],
     );
 
@@ -67,6 +67,59 @@ class ApiCardsController extends Controller
             }
         }
 
+        return $cards;
+    }
+
+    public function filtered(Request $request)
+    {
+        $page = $request->get('page');
+        $size = $request->get('size');
+        $type = $request->get('type');
+        $sale_type = $request->get('sale_type');
+        $category = $request->get('category');
+
+        $query = Card::query();
+        if ($type) {
+            $query->where('type', 'like', $type)->get();
+        }
+
+        if ($sale_type) {
+            $query->where('sale_type', 'like', $sale_type);
+        }
+
+        if ($category) {
+            $query->where('category', 'like', $category);
+        }
+
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+
+        $cards = $query->offset($page * $size)->paginate($size);
+
+        if (!empty($cards)) {
+            foreach ($cards as $card) {
+                $card->CardContact;
+                if (!empty($card->CardContact)) {
+                    $card->CardContact->CardsContactsPhones;
+                }
+
+                $card->CardFiles;
+                $card->CardAgency;
+                $card->CardOffice;
+                $card->CardUser;
+
+                if (!empty($card->CardFiles)) {
+                    foreach ($card->CardFiles as $cardFile) {
+                        $cardFile->file;
+                    }
+                }
+            }
+        }
         return $cards;
     }
 
