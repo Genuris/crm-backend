@@ -39,9 +39,19 @@ class ApiCurrenciesController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Currency::all();
+        $page = $request->get('page');
+        $size = $request->get('size');
+
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+        return Currency::offset($page * $size)->paginate($size);
     }
 
     public function show($id)

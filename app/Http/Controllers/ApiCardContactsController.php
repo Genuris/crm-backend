@@ -39,9 +39,20 @@ class ApiCardContactsController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = CardContacts::all();
+        $page = $request->get('page');
+        $size = $request->get('size');
+
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+
+        $contacts = CardContacts::offset($page * $size)->paginate($size);
 
         if (!empty($contacts)) {
             foreach ($contacts as $contact) {

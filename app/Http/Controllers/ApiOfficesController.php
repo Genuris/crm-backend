@@ -40,9 +40,19 @@ class ApiOfficesController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Office::all();
+        $page = $request->get('page');
+        $size = $request->get('size');
+
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+        return Office::offset($page * $size)->paginate($size);
     }
 
     public function show($id)

@@ -10,9 +10,19 @@ use Illuminate\Http\Request;
 
 class ApiUserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return User::all();
+        $page = $request->get('page');
+        $size = $request->get('size');
+
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+        return User::offset($page * $size)->paginate($size);
     }
 
     public function show($id)

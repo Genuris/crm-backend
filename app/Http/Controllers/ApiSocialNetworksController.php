@@ -39,9 +39,19 @@ class ApiSocialNetworksController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return SocialNetworks::all();
+        $page = $request->get('page');
+        $size = $request->get('size');
+
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+        return SocialNetworks::offset($page * $size)->paginate($size);
     }
 
     public function show($id)
