@@ -99,7 +99,7 @@ class ApiCardsController extends Controller
         }
 
         if ($category) {
-            $query->where('category', 'like', $category);
+            $query->where('category', 'in', $category);
         }
 
         if (!$page) {
