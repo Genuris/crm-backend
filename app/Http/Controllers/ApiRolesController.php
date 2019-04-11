@@ -50,7 +50,7 @@ class ApiRolesController extends Controller
         if (!$size) {
             $size = 10;
         }
-        return Role::offset($page * $size)->paginate($size);
+        return Role::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }
 
     public function show($id)

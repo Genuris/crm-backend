@@ -52,7 +52,7 @@ class ApiCardContactsController extends Controller
             $size = 10;
         }
 
-        $contacts = CardContacts::offset($page * $size)->paginate($size);
+        $contacts = CardContacts::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
 
         if (!empty($contacts)) {
             foreach ($contacts as $contact) {

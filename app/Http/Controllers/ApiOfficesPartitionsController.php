@@ -51,7 +51,7 @@ class ApiOfficesPartitionsController extends Controller
         if (!$size) {
             $size = 10;
         }
-        return OfficesPartition::offset($page * $size)->paginate($size);
+        return OfficesPartition::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }
 
     public function show($id)

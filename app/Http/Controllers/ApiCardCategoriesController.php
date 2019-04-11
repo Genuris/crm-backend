@@ -52,7 +52,7 @@ class ApiCardCategoriesController extends Controller
         if (!$size) {
             $size = 10;
         }
-        return CardCategories::offset($page * $size)->paginate($size);
+        return CardCategories::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }
 
     public function show($id)

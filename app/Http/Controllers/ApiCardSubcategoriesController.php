@@ -51,7 +51,7 @@ class ApiCardSubcategoriesController extends Controller
         if (!$size) {
             $size = 10;
         }
-        return CardSubcategories::offset($page * $size)->paginate($size);
+        return CardSubcategories::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }
 
     public function show($id)

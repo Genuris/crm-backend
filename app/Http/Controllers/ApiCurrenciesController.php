@@ -51,7 +51,7 @@ class ApiCurrenciesController extends Controller
         if (!$size) {
             $size = 10;
         }
-        return Currency::offset($page * $size)->paginate($size);
+        return Currency::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }
 
     public function show($id)

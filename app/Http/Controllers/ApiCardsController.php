@@ -56,7 +56,7 @@ class ApiCardsController extends Controller
             $size = 10;
         }
 
-        $cards = Card::offset($page * $size)->paginate($size);
+        $cards = Card::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
 
         if (!empty($cards)) {
             foreach ($cards as $card) {
@@ -110,7 +110,7 @@ class ApiCardsController extends Controller
             $size = 10;
         }
 
-        $cards = $query->offset($page * $size)->paginate($size);
+        $cards = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
 
         if (!empty($cards)) {
             foreach ($cards as $card) {

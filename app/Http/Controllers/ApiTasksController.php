@@ -51,7 +51,7 @@ class ApiTasksController extends Controller
         if (!$size) {
             $size = 10;
         }
-        return Task::offset($page * $size)->paginate($size);
+        return Task::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }
 
     public function show($id)

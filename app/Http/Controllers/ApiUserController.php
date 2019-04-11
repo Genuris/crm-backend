@@ -22,7 +22,7 @@ class ApiUserController extends Controller
         if (!$size) {
             $size = 10;
         }
-        return User::offset($page * $size)->paginate($size);
+        return User::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }
 
     public function show($id)
