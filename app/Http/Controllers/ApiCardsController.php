@@ -88,6 +88,7 @@ class ApiCardsController extends Controller
         $type = $request->get('type');
         $sale_type = $request->get('sale_type');
         $category = $request->get('category');
+        $subcategory = $request->get('subcategory');
 
         $query = Card::query();
         if ($type) {
@@ -100,6 +101,10 @@ class ApiCardsController extends Controller
 
         if ($category) {
             $query->where('category', 'like', $category);
+        }
+
+        if ($subcategory) {
+            $query->where('subcategory', 'like', $subcategory);
         }
 
         if (!$page) {
