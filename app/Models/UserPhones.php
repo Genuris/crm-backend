@@ -12,4 +12,8 @@ class UserPhones extends Model
     public function user(){
         return $this->hasOne('App\User', 'id', 'user_id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }

@@ -12,4 +12,8 @@ class CardContactsPhones extends Model
     public function contact(){
         return $this->hasOne('App\Models\CardContacts', 'id', 'cards_contacts_id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }

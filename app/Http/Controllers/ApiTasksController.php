@@ -43,6 +43,7 @@ class ApiTasksController extends Controller
     {
         $page = $request->get('page');
         $size = $request->get('size');
+        $sort = explode(',', $request->get('sort'));
 
         if (!$page) {
             $page = 1;
@@ -50,6 +51,17 @@ class ApiTasksController extends Controller
 
         if (!$size) {
             $size = 10;
+        }
+        $flag = false;
+        if (is_array($sort) and count($sort) > 1) {
+            $object = new Task();
+            if (in_array($sort[0], $object->getFields()) && in_array($sort[1], array('desc', 'asc'))) {
+                $flag = true;
+            }
+        }
+
+        if ($flag) {
+            return Task::offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
         }
         return Task::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
     }

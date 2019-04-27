@@ -12,4 +12,8 @@ class CardSubcategories extends Model
     public function CardCategory(){
         return $this->hasOne('App\Models\CardCategories', 'id', 'card_categories_id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }

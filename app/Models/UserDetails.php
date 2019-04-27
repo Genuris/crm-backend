@@ -12,4 +12,8 @@ class UserDetails extends Model
     public function profileImage(){
         return $this->hasOne('App\Models\File', 'id', 'profile_image_id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }

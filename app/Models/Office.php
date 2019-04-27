@@ -20,4 +20,8 @@ class Office extends Model
     public function OfficeCards(){
         return $this->hasMany('App\Models\Card', 'office_id', 'id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }

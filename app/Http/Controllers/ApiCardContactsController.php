@@ -44,6 +44,8 @@ class ApiCardContactsController extends Controller
         $page = $request->get('page');
         $size = $request->get('size');
 
+        $sort = explode(',', $request->get('sort'));
+
         if (!$page) {
             $page = 1;
         }
@@ -52,7 +54,19 @@ class ApiCardContactsController extends Controller
             $size = 10;
         }
 
-        $contacts = CardContacts::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+        $flag = false;
+        if (is_array($sort) and count($sort) > 1) {
+            $object = new CardContacts();
+            if (in_array($sort[0], $object->getFields()) && in_array($sort[1], array('desc', 'asc'))) {
+                $flag = true;
+            }
+        }
+
+        if ($flag) {
+            $contacts = CardContacts::offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
+        } else {
+            $contacts = CardContacts::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+        }
 
         if (!empty($contacts)) {
             foreach ($contacts as $contact) {

@@ -12,4 +12,8 @@ class CardsFile extends Model
     public function file(){
         return $this->hasOne('App\Models\File', 'id', 'file_id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }

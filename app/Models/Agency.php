@@ -20,4 +20,8 @@ class Agency extends Model
     public function AgencyCards(){
         return $this->hasMany('App\Models\Card', 'agency_id', 'id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }

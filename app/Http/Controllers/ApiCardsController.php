@@ -91,6 +91,7 @@ class ApiCardsController extends Controller
         $subcategory = $request->get('subcategory');
         $stage_transaction = $request->get('stage_transaction');
         $user_id = $request->get('user_id');
+        $sort = explode(',', $request->get('sort'));
 
         $query = Card::query();
         if ($type) {
@@ -124,8 +125,19 @@ class ApiCardsController extends Controller
         if (!$size) {
             $size = 10;
         }
+        $flag = false;
+        if (is_array($sort) and count($sort) > 1) {
+            $object = new Card();
+            if (in_array($sort[0], $object->getFields()) && in_array($sort[1], array('desc', 'asc'))) {
+                $flag = true;
+            }
+        }
 
-        $cards = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+        if ($flag) {
+            $cards = $query->offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
+        } else {
+            $cards = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+        }
 
         if (!empty($cards)) {
             foreach ($cards as $card) {

@@ -12,5 +12,9 @@ class OfficesPartition extends Model
     public function OfficesPartitionUsers(){
         return $this->hasMany('App\User', 'offices_partition_id', 'id');
     }
+
+    public function getFields() {
+        return $this->fillable;
+    }
 }
 

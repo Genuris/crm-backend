@@ -82,4 +82,7 @@ class Card extends Model
         return $this->hasOne('App\Models\CardContacts', 'id', 'cards_contacts_id');
     }
 
+    public function getFields() {
+        return $this->fillable;
+    }
 }
