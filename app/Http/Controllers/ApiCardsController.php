@@ -89,6 +89,8 @@ class ApiCardsController extends Controller
         $sale_type = $request->get('sale_type');
         $category = $request->get('category');
         $subcategory = $request->get('subcategory');
+        $stage_transaction = $request->get('stage_transaction');
+        $user_id = $request->get('user_id');
 
         $query = Card::query();
         if ($type) {
@@ -105,6 +107,14 @@ class ApiCardsController extends Controller
 
         if ($subcategory) {
             $query->where('subcategory', 'like', $subcategory);
+        }
+
+        if ($stage_transaction) {
+            $query->where('stage_transaction', 'like', $stage_transaction);
+        }
+
+        if ($user_id) {
+            $query->where('user_id', 'like', $user_id);
         }
 
         if (!$page) {
