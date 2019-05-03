@@ -524,6 +524,7 @@ class ApiCardsController extends Controller
 
         $cards = Card::where('category', 'like', $card->category)
             ->where('is_archived', '=', 0)
+            ->where('id', '!=', $id)
             ->where('city', 'like', $card->city)
             ->where('sale_type', 'like', $card->sale_type)
             ->where('subcategory', 'like', $card->subcategory)
