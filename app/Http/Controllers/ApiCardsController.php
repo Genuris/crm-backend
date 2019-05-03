@@ -509,6 +509,50 @@ class ApiCardsController extends Controller
         return response()->json(null, 204);
     }
 
+    public function nearCards($id) {
+        $card = Card::where('is_archived', '=', 0)
+            ->where('id', '=', $id)->first();
+        if (!$card) {
+            return response()->json([], 402);
+        }
 
+        $second_near_array = array(
+            'area', 'bathroom', 'ceiling_height', 'condition', 'electricity', 'entrance_door', 'furniture', 'garbage_chute',
+            'gas', 'heating', 'how_plot_fenced', 'internet', 'kitchen_area', 'land_area', 'layout', 'living_area', 'number_rooms', 'price', 'roof', 'security',
+            'sewage', 'total_area', 'type_building', 'view_from_windows', 'water_pipes', 'window'
+        );
+
+        $cards = Card::where('category', 'like', $card->category)
+            ->where('is_archived', '=', 0)
+            ->where('city', 'like', $card->city)
+            ->where('is_archived', 'like', $card->city)
+            ->where('subcategory', 'like', $card->subcategory)
+            ->where('type', 'like', $card->type)->get();
+
+        if (empty($cards)) {
+            return response()->json([], 204);
+        }
+
+        if (!empty($cards)) {
+            foreach ($cards as $card) {
+                $card->CardContact;
+                if (!empty($card->CardContact)) {
+                    $card->CardContact->CardsContactsPhones;
+                }
+
+                $card->CardFiles;
+                $card->CardAgency;
+                $card->CardOffice;
+                $card->CardUser;
+
+                if (!empty($card->CardFiles)) {
+                    foreach ($card->CardFiles as $cardFile) {
+                        $cardFile->file;
+                    }
+                }
+            }
+        }
+        return response()->json($cards, 200);
+    }
 
 }
