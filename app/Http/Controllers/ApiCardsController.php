@@ -95,7 +95,7 @@ class ApiCardsController extends Controller
 
         $query = Card::query();
         if ($type) {
-            $query->where('type', 'like', $type)->get();
+            $query->where('type', 'like', $type);
         }
 
         if ($sale_type) {
@@ -509,9 +509,20 @@ class ApiCardsController extends Controller
         return response()->json(null, 204);
     }
 
-    public function nearCards($id) {
-        $card = Card::where('is_archived', '=', 0)
-            ->where('id', '=', $id)->first();
+    public function nearCards(Request $request, $id) {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+        }
+
+        $query = Card::query();
+        $query->where('is_archived', '=', 0)->where('id', '=', $id);
+        if ($user->agency_id) {
+            $query->where('agency_id', '=', $user->agency_id);
+        }
+
+        $card = $query->first();
         if (!$card) {
             return response()->json([], 402);
         }
@@ -524,6 +535,7 @@ class ApiCardsController extends Controller
 
         $cards = Card::where('category', 'like', $card->category)
             ->where('is_archived', '=', 0)
+            ->where('agency_id', '=', $card->agency_id)
             ->where('id', '!=', $id)
             ->where('city', 'like', $card->city)
             ->where('sale_type', 'like', $card->sale_type)
