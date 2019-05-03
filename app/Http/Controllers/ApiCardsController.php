@@ -553,8 +553,7 @@ class ApiCardsController extends Controller
                 }
             }
         }
-        return $cards;
-        //return response()->json($cards, 200);
+        return response()->json($cards, 200);
     }
 
 }
