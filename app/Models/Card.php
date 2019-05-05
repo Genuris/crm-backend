@@ -62,6 +62,8 @@ class Card extends Model
         'is_archived'
     ];
 
+    public $percent = 0;
+
     public function CardUser(){
         return $this->hasOne('App\User', 'id', 'user_id');
     }

@@ -538,14 +538,33 @@ class ApiCardsController extends Controller
             'sewage', 'total_area', 'type_building', 'view_from_windows', 'water_pipes', 'window'
         );
 
-        $cards = Card::where('category', 'like', $card->category)
-            ->where('is_archived', '=', 0)
-            ->where('agency_id', '=', $card->agency_id)
-            ->where('id', '!=', $id)
-            ->where('city', 'like', $card->city)
-            ->where('sale_type', 'like', $card->sale_type)
-            ->where('subcategory', 'like', $card->subcategory)
-            ->where('type', 'like', $card->type)->get();
+        $query = Card::query();
+
+        $query->where('is_archived', '=', 0);
+        $query->where('id', '!=', $id);
+        $query->where('agency_id', '=', $card->agency_id);
+
+        if (!is_null($card->category)) {
+            $query->where('category', 'like', $card->category);
+        }
+
+        if (!is_null($card->city)) {
+            $query->where('city', 'like', $card->city);
+        }
+
+        if (!is_null($card->sale_type)) {
+            $query->where('sale_type', 'like', $card->sale_type);
+        }
+
+        if (!is_null($card->subcategory)) {
+            $query->where('subcategory', 'like', $card->subcategory);
+        }
+
+        if (!is_null($card->type)) {
+            $query->where('type', 'like', $card->type);
+        }
+
+        $cards = $query->get();
 
         if (empty($cards)) {
             return response()->json([], 204);
