@@ -121,11 +121,11 @@ class ApiCardsController extends Controller
         }
         
         if ($price_from) {
-            $query->where('price', '>=', $price_from);
+            $query->where('price', '>=', (float)$price_from);
         }
 
         if ($price_to) {
-            $query->where('price', '<=', $price_to);
+            $query->where('price', '<=', (float)$price_to);
         }
 
         if (!$page) {
