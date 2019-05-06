@@ -91,7 +91,8 @@ class ApiCardsController extends Controller
         $subcategory = $request->get('subcategory');
         $stage_transaction = $request->get('stage_transaction');
         $user_id = $request->get('user_id');
-        $price  = $request->get('price');
+        $price_from = $request->get('price_from');
+        $price_to = $request->get('price_to');
         $sort = explode(',', $request->get('sort'));
 
         $query = Card::query();
@@ -118,9 +119,13 @@ class ApiCardsController extends Controller
         if ($user_id) {
             $query->where('user_id', 'like', $user_id);
         }
+        
+        if ($price_from) {
+            $query->where('price', '>=', $price_from);
+        }
 
-        if ($price) {
-            $query->where('price', '<=', $price);
+        if ($price_to) {
+            $query->where('price', '<=', $price_to);
         }
 
         if (!$page) {
