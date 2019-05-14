@@ -88,12 +88,14 @@ class Card extends Model
         return $this->fillable;
     }
 
-    public function setPercent($value = null) {
+    /*public function setPercent($value = null) {
         $this->percent = $value;
-    }
+    }*/
 
     public function getPercentAttribute() {
-        return $this->percent;
+        if (isset($this->attributes['percent']))
+            return $this->attributes['percent'];
+        return 0;
     }
 
 }

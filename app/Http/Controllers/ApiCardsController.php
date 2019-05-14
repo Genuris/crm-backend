@@ -668,7 +668,8 @@ class ApiCardsController extends Controller
                     $percent+=2;
                 }
 
-                $card_near->setPercent($percent);
+                $card_near->percent = $percent;
+
                 $card_near->CardContact;
                 if (!empty($card_near->CardContact)) {
                     $card_near->CardContact->CardsContactsPhones;
