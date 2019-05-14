@@ -62,7 +62,7 @@ class Card extends Model
         'is_archived'
     ];
 
-    public $percent = 0;
+    protected $appends = ['percent'];
 
     public function CardUser(){
         return $this->hasOne('App\User', 'id', 'user_id');
@@ -87,4 +87,13 @@ class Card extends Model
     public function getFields() {
         return $this->fillable;
     }
+
+    public function setPercent($value = null) {
+        $this->percent = $value;
+    }
+
+    public function getPercentAttribute() {
+        return $this->percent;
+    }
+
 }

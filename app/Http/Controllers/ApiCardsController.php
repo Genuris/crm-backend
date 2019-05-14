@@ -537,6 +537,11 @@ class ApiCardsController extends Controller
             return response()->json([], 402);
         }
 
+        //kitchen_area
+        //land_area
+        //living_area
+        //price
+        //total_area
         $second_near_array = array(
             'area', 'bathroom', 'ceiling_height', 'condition', 'electricity', 'entrance_door', 'furniture', 'garbage_chute',
             'gas', 'heating', 'how_plot_fenced', 'internet', 'kitchen_area', 'land_area', 'layout', 'living_area', 'number_rooms', 'price', 'roof', 'security',
@@ -576,19 +581,106 @@ class ApiCardsController extends Controller
         }
 
         if (!empty($cards)) {
-            foreach ($cards as $card) {
-                $card->CardContact;
-                if (!empty($card->CardContact)) {
-                    $card->CardContact->CardsContactsPhones;
+            foreach ($cards as $card_neear) {
+                $percent = 50;
+
+                if (!is_null($card->area) && !is_null($card_neear->area) && $card_neear->area == $card->area) {
+                    $percent+=2;
                 }
 
-                $card->CardFiles;
-                $card->CardAgency;
-                $card->CardOffice;
-                $card->CardUser;
+                if (!is_null($card->bathroom) && !is_null($card_neear->bathroom) && $card_neear->bathroom == $card->bathroom) {
+                    $percent+=2;
+                }
 
-                if (!empty($card->CardFiles)) {
-                    foreach ($card->CardFiles as $cardFile) {
+                if (!is_null($card->ceiling_height) && !is_null($card_neear->ceiling_height) && $card_neear->ceiling_height == $card->ceiling_height) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->condition) && !is_null($card_neear->condition) && $card_neear->condition == $card->condition) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->electricity) && !is_null($card_neear->electricity) && $card_neear->electricity == $card->electricity) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->entrance_door) && !is_null($card_neear->entrance_door) && $card_neear->entrance_door == $card->entrance_door) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->furniture) && !is_null($card_neear->furniture) && $card_neear->furniture == $card->furniture) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->garbage_chute) && !is_null($card_neear->garbage_chute) && $card_neear->garbage_chute == $card->garbage_chute) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->gas) && !is_null($card_neear->gas) && $card_neear->gas == $card->gas) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->heating) && !is_null($card_neear->heating) && $card_neear->heating == $card->heating) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->how_plot_fenced) && !is_null($card_neear->how_plot_fenced) && $card_neear->how_plot_fenced == $card->how_plot_fenced) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->internet) && !is_null($card_neear->internet) && $card_neear->internet == $card->internet) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->layout) && !is_null($card_neear->layout) && $card_neear->layout == $card->layout) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->number_rooms) && !is_null($card_neear->number_rooms) && $card_neear->number_rooms == $card->number_rooms) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->roof) && !is_null($card_neear->roof) && $card_neear->roof == $card->roof) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->security) && !is_null($card_neear->security) && $card_neear->security == $card->security) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->sewage) && !is_null($card_neear->sewage) && $card_neear->sewage == $card->sewage) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->type_building) && !is_null($card_neear->type_building) && $card_neear->type_building == $card->type_building) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->view_from_windows) && !is_null($card_neear->view_from_windows) && $card_neear->view_from_windows == $card->view_from_windows) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->water_pipes) && !is_null($card_neear->water_pipes) && $card_neear->water_pipes == $card->water_pipes) {
+                    $percent+=2;
+                }
+
+                if (!is_null($card->window) && !is_null($card_neear->window) && $card_neear->window == $card->window) {
+                    $percent+=2;
+                }
+
+                $card_neear->setPercent($percent);
+                $card_neear->CardContact;
+                if (!empty($card_neear->CardContact)) {
+                    $card_neear->CardContact->CardsContactsPhones;
+                }
+
+                $card_neear->CardFiles;
+                $card_neear->CardAgency;
+                $card_neear->CardOffice;
+                $card_neear->CardUser;
+
+                if (!empty($card_neear->CardFiles)) {
+                    foreach ($card_neear->CardFiles as $cardFile) {
                         $cardFile->file;
                     }
                 }
