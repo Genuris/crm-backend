@@ -568,11 +568,11 @@ class ApiCardsController extends Controller
 
         if (isset($sale_type) && $sale_type === 1) {
             if (!is_null($card->sale_type)) {
-                $query->where('sale_type', 'not like', $card->sale_type);
+                $query->where('sale_type', 'like', $card->sale_type);
             }
         } else {
             if (!is_null($card->sale_type)) {
-                $query->where('sale_type', '!=', $card->sale_type);
+                $query->where('sale_type', 'not like', $card->sale_type);
             }
         }
 
