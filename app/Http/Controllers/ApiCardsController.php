@@ -564,6 +564,8 @@ class ApiCardsController extends Controller
 
         $sale_type = (int)$request->get('sale_type');
 
+        dd($sale_type);
+
         if (isset($sale_type) && $sale_type === 1) {
             if (!is_null($card->sale_type)) {
                 $query->where('sale_type', 'not like', $card->sale_type);
