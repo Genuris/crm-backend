@@ -536,17 +536,16 @@ class ApiCardsController extends Controller
         if (!$card) {
             return response()->json([], 402);
         }
-
         //kitchen_area
         //land_area
         //living_area
-        //price
         //total_area
-        $second_near_array = array(
+        //price
+        /*$second_near_array = array(
             'area', 'bathroom', 'ceiling_height', 'condition', 'electricity', 'entrance_door', 'furniture', 'garbage_chute',
             'gas', 'heating', 'how_plot_fenced', 'internet', 'kitchen_area', 'land_area', 'layout', 'living_area', 'number_rooms', 'price', 'roof', 'security',
             'sewage', 'total_area', 'type_building', 'view_from_windows', 'water_pipes', 'window'
-        );
+        );*/
 
         $query = Card::query();
 
@@ -563,7 +562,7 @@ class ApiCardsController extends Controller
         }
 
         $sale_type = (int)$request->get('sale_type');
-        
+
         if (isset($sale_type) && $sale_type === 1) {
             if (!is_null($card->sale_type)) {
                 $query->where('sale_type', 'like', $card->sale_type);
