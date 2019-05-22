@@ -562,8 +562,16 @@ class ApiCardsController extends Controller
             $query->where('city', 'like', $card->city);
         }
 
-        if (!is_null($card->sale_type)) {
-            $query->where('sale_type', 'like', $card->sale_type);
+        $sale_type = (int)$request->get('sale_type');
+
+        if (isset($sale_type) && $sale_type === 1) {
+            if (!is_null($card->sale_type)) {
+                $query->where('sale_type', 'not like', $card->sale_type);
+            }
+        } else {
+            if (!is_null($card->sale_type)) {
+                $query->where('sale_type', '!=', $card->sale_type);
+            }
         }
 
         if (!is_null($card->subcategory)) {
@@ -584,7 +592,7 @@ class ApiCardsController extends Controller
             foreach ($cards as $card_near) {
                 $percent = 50;
 
-                if (!is_null($card->area) && !is_null($card_near->area) && $card_near->area == $card->area) {
+                /*if (!is_null($card->area) && !is_null($card_near->area) && $card_near->area == $card->area) {
                     $percent+=2;
                 }
 
@@ -666,7 +674,7 @@ class ApiCardsController extends Controller
 
                 if (!is_null($card->window) && !is_null($card_near->window) && $card_near->window == $card->window) {
                     $percent+=2;
-                }
+                }*/
 
                 $card_near->percent = $percent;
 

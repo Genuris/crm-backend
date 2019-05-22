@@ -95,7 +95,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 //cards
     Route::get('cards', 'ApiCardsController@index');
     Route::get('cards/{id}', 'ApiCardsController@show');
-    Route::get('near_cards/{id}', 'ApiCardsController@nearCards');
+    Route::post('near_cards/{id}', 'ApiCardsController@nearCards');
     Route::post('cards', 'ApiCardsController@store');
     Route::post('cards_filtered', 'ApiCardsController@filtered');
     Route::put('cards/{id}', 'ApiCardsController@update');
