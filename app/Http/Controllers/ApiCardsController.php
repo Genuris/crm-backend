@@ -86,6 +86,7 @@ class ApiCardsController extends Controller
         $page = $request->get('page');
         $size = $request->get('size');
         $type = $request->get('type');
+        $contacts_id = $request->get('contacts_id');
         $sale_type = $request->get('sale_type');
         $category = $request->get('category');
         $subcategory = $request->get('subcategory');
@@ -98,6 +99,10 @@ class ApiCardsController extends Controller
         $query = Card::query();
         if ($type) {
             $query->where('type', 'like', $type);
+        }
+
+        if ($contacts_id) {
+            $query->where('cards_contacts_id', '=', $contacts_id);
         }
 
         if ($sale_type) {
