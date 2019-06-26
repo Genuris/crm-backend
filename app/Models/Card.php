@@ -54,6 +54,8 @@ class Card extends Model
         'basement',
         'balcony',
         'corner',
+        'gate_height',
+        'gate_width',
         'view_from_windows',
         'garbage_chute',
         'number_of_floors',
