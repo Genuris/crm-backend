@@ -680,6 +680,116 @@ class ApiCardsController extends Controller
                     $percent+=1;
                 }
 
+
+
+                if (isset($sale_type) && $sale_type === 1) {
+                    if (!is_null($card->sale_type)) {
+                        //kitchen_area
+                        if ($card->sale_type === 'object') {
+                            if (!is_null($card_near->price)) {
+                                if ((int)$card->price <= (int)$card_near->price) {
+                                    $percent+=1;
+                                }
+                            }
+                            if (!is_null($card_near->kitchen_area)) {
+                                if (((float)$card->kitchen_area/(float)$card_near->kitchen_area) >= 0.8 && ((float)$card->kitchen_area/(float)$card_near->kitchen_area) <= 1.25) {
+                                    $percent+=1;
+                                }
+                            }
+                            if (!is_null($card_near->total_area)) {
+                                if (((float)$card->total_area/(float)$card_near->total_area) >= 0.8 && ((float)$card->total_area/(float)$card_near->total_area) <= 1.25) {
+                                    $percent+=1;
+                                }
+                            }
+
+                            if (!is_null($card_near->land_area)) {
+                                if (((float)$card->land_area/(float)$card_near->land_area) >= 0.8 && ((float)$card->land_area/(float)$card_near->land_area) <= 1.25) {
+                                    $percent+=1;
+                                }
+                            }
+
+                            if (!is_null($card_near->living_area)) {
+                                if (((float)$card->living_area/(float)$card_near->living_area) >= 0.8 && ((float)$card->living_area/(float)$card_near->living_area) <= 1.25) {
+                                    $percent+=1;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (!is_null($card->sale_type)) {
+                        //total_area
+                        if (!is_null($card_near->total_area)) {
+                            if ($card->sale_type === 'object') {
+                                $total_area = explode(",", $card_near->total_area);
+                                if ((int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]) {
+                                    $percent+=1;
+                                }
+                            } else {
+                                $total_area = explode(",", $card->total_area);
+                                if ((int)$total_area[0] <= $card_near->total_area && (int)$total_area[1] >= (int)$card_near->total_area) {
+                                    $percent+=1;
+                                }
+                            }
+                        }
+                        //land_area
+                        if (!is_null($card_near->land_area)) {
+                            if ($card->sale_type === 'object') {
+                                $land_area = explode(",", $card_near->land_area);
+                                if ((int)$card->land_area >= (int)$land_area[0] && (int)$card->land_area <= (int)$land_area[1]) {
+                                    $percent+=1;
+                                }
+                            } else {
+                                $land_area = explode(",", $card->land_area);
+                                if ((int)$land_area[0] <= $card_near->land_area && (int)$land_area[1] >= (int)$card_near->land_area) {
+                                    $percent+=1;
+                                }
+                            }
+                        }
+                        //living_area
+                        if (!is_null($card_near->living_area)) {
+                            if ($card->sale_type === 'object') {
+                                $living_area = explode(",", $card_near->living_area);
+                                if ((int)$card->living_area >= (int)$living_area[0] && (int)$card->living_area <= (int)$living_area[1]) {
+                                    $percent+=1;
+                                }
+                            } else {
+                                $living_area = explode(",", $card->living_area);
+                                if ((int)$living_area[0] <= $card_near->living_area && (int)$living_area[1] >= (int)$card_near->living_area) {
+                                    $percent+=1;
+                                }
+                            }
+                        }
+
+                        //kitchen_area
+                        if (!is_null($card_near->kitchen_area)) {
+                            if ($card->sale_type === 'object') {
+                                $kitchen_area = explode(",", $card_near->kitchen_area);
+                                if ((int)$card->kitchen_area >= (int)$kitchen_area[0] && (int)$card->kitchen_area <= (int)$kitchen_area[1]) {
+                                    $percent+=1;
+                                }
+                            } else {
+                                $kitchen_area = explode(",", $card->kitchen_area);
+                                if ((int)$kitchen_area[0] <= $card_near->kitchen_area && (int)$kitchen_area[1] >= (int)$card_near->kitchen_area) {
+                                    $percent+=1;
+                                }
+                            }
+                        }
+                        //price
+                        if (!is_null($card_near->price)) {
+                            if ($card->sale_type === 'object') {
+                                if ((int)$card->price <= (int)$card_near->price) {
+                                    $percent+=1;
+                                }
+                            } else {
+                                if ((int)$card->price >= (int)$card_near->price) {
+                                    $percent+=1;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
                 $card_near->percent = $percent;
 
                 $card_near->CardContact;
