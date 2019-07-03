@@ -579,7 +579,7 @@ class ApiCardsController extends Controller
         }
 
         if (!is_null($card->subcategory)) {
-            $query->where('subcategory', 'like', $card->subcategory);
+            $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
         }
 
         if (!is_null($card->type)) {
