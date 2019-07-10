@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class OfficesPartition extends Model
 {
     public $table = "offices_partitions";
-    protected $fillable = ['id', 'office_id', 'user_id', 'type'];
+    protected $fillable = ['id', 'office_id', 'user_id', 'type', 'title'];
 
     public function OfficesPartitionUsers(){
         return $this->hasMany('App\User', 'offices_partition_id', 'id');

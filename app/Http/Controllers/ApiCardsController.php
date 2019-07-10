@@ -718,7 +718,7 @@ class ApiCardsController extends Controller
                 } else {
                     if (!is_null($card->sale_type)) {
                         //total_area
-                        if (!is_null($card_near->total_area)) {
+                        if (!is_null($card_near->total_area) && !is_null($card->total_area)) {
                             if ($card->sale_type === 'object') {
                                 $total_area = explode(",", $card_near->total_area);
                                 if ((int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]) {
@@ -732,7 +732,7 @@ class ApiCardsController extends Controller
                             }
                         }
                         //land_area
-                        if (!is_null($card_near->land_area)) {
+                        if (!is_null($card_near->land_area) && !is_null($card->land_area)) {
                             if ($card->sale_type === 'object') {
                                 $land_area = explode(",", $card_near->land_area);
                                 if ((int)$card->land_area >= (int)$land_area[0] && (int)$card->land_area <= (int)$land_area[1]) {
@@ -746,7 +746,7 @@ class ApiCardsController extends Controller
                             }
                         }
                         //living_area
-                        if (!is_null($card_near->living_area)) {
+                        if (!is_null($card_near->living_area) && !is_null($card->living_area)) {
                             if ($card->sale_type === 'object') {
                                 $living_area = explode(",", $card_near->living_area);
                                 if ((int)$card->living_area >= (int)$living_area[0] && (int)$card->living_area <= (int)$living_area[1]) {
@@ -761,7 +761,7 @@ class ApiCardsController extends Controller
                         }
 
                         //kitchen_area
-                        if (!is_null($card_near->kitchen_area)) {
+                        if (!is_null($card_near->kitchen_area) && !is_null($card->kitchen_area)) {
                             if ($card->sale_type === 'object') {
                                 $kitchen_area = explode(",", $card_near->kitchen_area);
                                 if ((int)$card->kitchen_area >= (int)$kitchen_area[0] && (int)$card->kitchen_area <= (int)$kitchen_area[1]) {
@@ -775,7 +775,7 @@ class ApiCardsController extends Controller
                             }
                         }
                         //price
-                        if (!is_null($card_near->price)) {
+                        if (!is_null($card_near->price) && !is_null($card->price)) {
                             if ($card->sale_type === 'object') {
                                 if ((int)$card->price <= (int)$card_near->price) {
                                     $percent+=1;
