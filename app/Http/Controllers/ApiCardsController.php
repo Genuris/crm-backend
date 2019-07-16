@@ -459,8 +459,16 @@ class ApiCardsController extends Controller
 
     public function delete(Request $request, $id) {
         $card = Card::find($id);
-
         if ($card) {
+            $card_files = CardsFile::where('card_id', '=', $id)->get();
+
+            if (!empty($card_files) && is_array($card_files)) {
+                foreach($card_files as $card_file) {
+                    if (ApiFilesController::deleteFile($card_file->id)) {
+                        $card_file->delete();
+                    }
+                }
+            }
             $card->delete();
         }
 
@@ -472,7 +480,9 @@ class ApiCardsController extends Controller
         if ($card) {
            $card_file = CardsFile::find($file_id);
            if ($card_file) {
-               $card_file->delete();
+               if (ApiFilesController::deleteFile($file_id)) {
+                   $card_file->delete();
+               }
            }
         }
         return response()->json(null, 204);

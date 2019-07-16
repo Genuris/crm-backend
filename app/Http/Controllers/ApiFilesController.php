@@ -69,9 +69,24 @@ class ApiFilesController extends Controller
     {
         $file = File::find($id);
         if ($file) {
-            $file->delete();
-            return response()->json(null, 204);
+            if (ApiFilesController::deleteFile($id)) {
+                return response()->json(null, 204);
+            }
         }
         return response()->json(array('error' => array('status' => 400, 'message' => 'body error')), 400);
     }
+
+    public static function deleteFile($id) {
+        $file = File::find($id);
+        if (!$file) {
+            return false;
+        }
+        $destinationPath = 'uploads/files';
+        if (file_exists($destinationPath) && file_exists($destinationPath.'/'.$file->hash)) {
+            unlink($destinationPath.'/'.$file->hash);
+            $file->delete();
+        }
+        return true;
+    }
+
 }
