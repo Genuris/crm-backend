@@ -465,7 +465,7 @@ class ApiCardsController extends Controller
 
             if (!empty($card_files) && is_array($card_files)) {
                 foreach($card_files as $card_file) {
-                    if (ApiFilesController::deleteFile($card_file->id)) {
+                    if (ApiFilesController::deleteFile($card_file->file_id)) {
                         $card_file->delete();
                     }
                 }
@@ -481,7 +481,7 @@ class ApiCardsController extends Controller
         if ($card) {
            $card_file = CardsFile::find($file_id);
            if ($card_file) {
-               if (ApiFilesController::deleteFile($file_id)) {
+               if (ApiFilesController::deleteFile($card_file->file_id)) {
                    $card_file->delete();
                }
            }
