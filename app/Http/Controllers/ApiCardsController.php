@@ -114,6 +114,7 @@ class ApiCardsController extends Controller
         }
 
         if ($subcategory) {
+
             $query->where('subcategory', 'like', '%'.$subcategory.'%');
         }
 
@@ -589,7 +590,12 @@ class ApiCardsController extends Controller
         }
 
         if (!is_null($card->subcategory)) {
-            $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
+            $subcategories = explode(",", $card->subcategory);
+            if (is_array($subcategories) && !empty($subcategories)) {
+                $query->whereIn('subcategory', $subcategories);
+            } else {
+                $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
+            }
         }
 
         if (!is_null($card->type)) {
