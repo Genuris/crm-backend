@@ -69,7 +69,10 @@ class Card extends Model
         'commission',
         'number_contract',
         'contract_expiration_date',
-        'is_archived'
+        'is_archived',
+        'elevator',
+        'household_appliances',
+        'will_live',
     ];
 
     protected $appends = ['percent'];

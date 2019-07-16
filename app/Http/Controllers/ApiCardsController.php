@@ -696,6 +696,10 @@ class ApiCardsController extends Controller
                     $percent+=1;
                 }
 
+                if (!is_null($card->elevator) && !is_null($card_near->elevator) && $card_near->elevator == $card->elevator) {
+                    $percent+=1;
+                }
+
 
 
                 if (isset($sale_type) && $sale_type === 1) {
