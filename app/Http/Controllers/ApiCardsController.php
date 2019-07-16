@@ -591,7 +591,7 @@ class ApiCardsController extends Controller
 
         if (!is_null($card->subcategory)) {
             $subcategories = explode(",", $card->subcategory);
-            if (is_array($subcategories) && !empty($subcategories)) {
+            if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
                 $query->whereIn('subcategory', $subcategories);
             } else {
                 $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
