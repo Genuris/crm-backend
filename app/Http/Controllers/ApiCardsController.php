@@ -462,8 +462,7 @@ class ApiCardsController extends Controller
         $card = Card::find($id);
         if ($card) {
             $card_files = CardsFile::where('card_id', '=', $id)->get();
-
-            if (!empty($card_files) && is_array($card_files)) {
+            if (!empty($card_files)) {
                 foreach($card_files as $card_file) {
                     if (ApiFilesController::deleteFile($card_file->file_id)) {
                         $card_file->delete();
@@ -472,7 +471,6 @@ class ApiCardsController extends Controller
             }
             $card->delete();
         }
-
         return response()->json(null, 204);
     }
 
