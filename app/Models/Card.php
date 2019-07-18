@@ -71,6 +71,7 @@ class Card extends Model
         'contract_expiration_date',
         'is_archived',
         'elevator',
+        'apartment_type',
         'household_appliances',
         'will_live',
     ];
