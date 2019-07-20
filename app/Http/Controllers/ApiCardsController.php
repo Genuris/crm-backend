@@ -118,8 +118,22 @@ class ApiCardsController extends Controller
             $query->where('subcategory', 'like', '%'.$subcategory.'%');
         }
 
-        if ($stage_transaction) {
-            $query->where('stage_transaction', 'like', $stage_transaction);
+        if (!is_null($subcategory)) {
+            $subcategories = explode(",", $subcategory);
+            if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
+                $query->whereIn('subcategory', $subcategories);
+            } else {
+                $query->where('subcategory', 'like', '%'.$subcategory.'%');
+            }
+        }
+
+        if (!is_null($stage_transaction)) {
+            $stage_transactions = explode(",", $stage_transaction);
+            if (is_array($stage_transactions) && !empty($stage_transactions) && count($stage_transactions) > 1) {
+                $query->whereIn('stage_transaction', $stage_transactions);
+            } else {
+                $query->where('stage_transaction', 'like', '%'.$stage_transaction.'%');
+            }
         }
 
         if ($user_id) {
