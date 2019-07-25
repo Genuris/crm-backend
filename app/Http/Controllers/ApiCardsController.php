@@ -633,9 +633,9 @@ class ApiCardsController extends Controller
             $query->where('type', 'like', $card->type);
         }
 
-        $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+       /* $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
         $query_ = vsprintf($query_, $query->getBindings());
-        dd($query_);
+        dd($query_);*/
         $cards = $query->get();
 
         if (empty($cards)) {
