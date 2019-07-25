@@ -615,6 +615,7 @@ class ApiCardsController extends Controller
 
         if (!is_null($card->area)) {
             $areas = explode(",", $card->area);
+            $query->whereNull('area');
             if (is_array($areas) && !empty($areas) && count($areas) > 1) {
                 $query->whereIn('area', $areas);
             } else {
@@ -641,7 +642,7 @@ class ApiCardsController extends Controller
 
         $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
         $query_ = vsprintf($query_, $query->getBindings());
-        dump($query_);
+        dd($query_);
 
 
         $cards = $query->get();
