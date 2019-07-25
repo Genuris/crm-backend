@@ -639,6 +639,8 @@ class ApiCardsController extends Controller
             $query->where('type', 'like', $card->type);
         }
 
+        dd($query);
+
         $cards = $query->get();
 
         if (empty($cards)) {
