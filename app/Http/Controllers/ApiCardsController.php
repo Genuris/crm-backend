@@ -609,8 +609,6 @@ class ApiCardsController extends Controller
             } else {
                 $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
             }
-        } else {
-            $query->whereNull('subcategory');
         }
 
         if (!is_null($card->area)) {
@@ -632,8 +630,6 @@ class ApiCardsController extends Controller
             } else {
                 $query->where('city', 'like', '%'.$card->city.'%');
             }
-        } else {
-            $query->whereNull('city');
         }
 
         if (!is_null($card->type)) {
