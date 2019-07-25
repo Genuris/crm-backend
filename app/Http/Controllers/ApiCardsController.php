@@ -589,6 +589,18 @@ class ApiCardsController extends Controller
             $query->where('city', 'like', $card->city);
         }*/
 
+        if (!is_null($card->area)) {
+            $areas = explode(",", $card->area);
+            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                $query->whereIn('area', $areas);
+            } else {
+                $query->where('area', 'like', '%'.$card->area.'%');
+            }
+            $query->orWhereNull('area');
+        } else {
+            $query->whereNull('area');
+        }
+
         $sale_type = (int)$request->get('sale_type');
 
         if (isset($sale_type) && $sale_type === 1) {
@@ -601,17 +613,6 @@ class ApiCardsController extends Controller
             }
         }
 
-        if (!is_null($card->area)) {
-            $areas = explode(",", $card->area);
-            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
-                $query->whereIn('area', $areas);
-            } else {
-                $query->where('area', 'like', '%'.$card->area.'%');
-            }
-            $query->orWhereNull('area');
-        } else {
-            $query->whereNull('area');
-        }
 
         if (!is_null($card->subcategory)) {
             $subcategories = explode(",", $card->subcategory);
