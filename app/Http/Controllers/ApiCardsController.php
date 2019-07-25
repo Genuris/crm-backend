@@ -585,9 +585,9 @@ class ApiCardsController extends Controller
             $query->where('category', 'like', $card->category);
         }
 
-        if (!is_null($card->city)) {
+        /*if (!is_null($card->city)) {
             $query->where('city', 'like', $card->city);
-        }
+        }*/
 
         $sale_type = (int)$request->get('sale_type');
 
@@ -616,6 +616,15 @@ class ApiCardsController extends Controller
                 $query->whereIn('area', $areas);
             } else {
                 $query->where('area', 'like', '%'.$card->area.'%');
+            }
+        }
+
+        if (!is_null($card->city)) {
+            $cities = explode(",", $card->city);
+            if (is_array($cities) && !empty($cities) && count($cities) > 1) {
+                $query->whereIn('city', $cities);
+            } else {
+                $query->where('city', 'like', '%'.$card->city.'%');
             }
         }
 
