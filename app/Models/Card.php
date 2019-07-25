@@ -72,6 +72,7 @@ class Card extends Model
         'is_archived',
         'elevator',
         'apartment_type',
+        'payments',
         'household_appliances',
         'will_live',
     ];
