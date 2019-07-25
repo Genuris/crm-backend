@@ -639,7 +639,7 @@ class ApiCardsController extends Controller
             $query->where('type', 'like', $card->type);
         }
 
-        dd($query);
+        dd($query->toSql());
 
         $cards = $query->get();
 
