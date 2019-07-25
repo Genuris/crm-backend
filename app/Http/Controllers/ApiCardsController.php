@@ -610,6 +610,15 @@ class ApiCardsController extends Controller
             }
         }
 
+        if (!is_null($card->area)) {
+            $areas = explode(",", $card->area);
+            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                $query->whereIn('area', $areas);
+            } else {
+                $query->where('area', 'like', '%'.$card->area.'%');
+            }
+        }
+
         if (!is_null($card->type)) {
             $query->where('type', 'like', $card->type);
         }
@@ -624,9 +633,9 @@ class ApiCardsController extends Controller
             foreach ($cards as $card_near) {
                 $percent = 0;
 
-                if (!is_null($card->area) && !is_null($card_near->area) && $card_near->area == $card->area) {
+                /*if (!is_null($card->area) && !is_null($card_near->area) && $card_near->area == $card->area) {
                     $percent+=1;
-                }
+                }*/
 
                 if (!is_null($card->bathroom) && !is_null($card_near->bathroom) && $card_near->bathroom == $card->bathroom) {
                     $percent+=1;
