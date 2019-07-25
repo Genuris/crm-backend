@@ -604,20 +604,17 @@ class ApiCardsController extends Controller
 
         if (!is_null($card->subcategory)) {
             $subcategories = explode(",", $card->subcategory);
-
             if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
                 $query->whereIn('subcategory', $subcategories);
             } else {
                 $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
             }
-            $query->orWhereNull('subcategory');
         } else {
             $query->whereNull('subcategory');
         }
 
         if (!is_null($card->area)) {
             $areas = explode(",", $card->area);
-
             if (is_array($areas) && !empty($areas) && count($areas) > 1) {
                 $query->whereIn('area', $areas);
             } else {
@@ -630,13 +627,11 @@ class ApiCardsController extends Controller
 
         if (!is_null($card->city)) {
             $cities = explode(",", $card->city);
-
             if (is_array($cities) && !empty($cities) && count($cities) > 1) {
                 $query->whereIn('city', $cities);
             } else {
                 $query->where('city', 'like', '%'.$card->city.'%');
             }
-            $query->orWhereNull('city');
         } else {
             $query->whereNull('city');
         }
@@ -645,11 +640,9 @@ class ApiCardsController extends Controller
             $query->where('type', 'like', $card->type);
         }
 
-        $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+        /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
         $query_ = vsprintf($query_, $query->getBindings());
-        dd($query_);
-
-
+        dd($query_);*/
         $cards = $query->get();
 
         if (empty($cards)) {
