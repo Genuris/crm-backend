@@ -608,7 +608,9 @@ class ApiCardsController extends Controller
             } else {
                 $query->where('area', 'like', '%'.$card->area.'%');
             }
-            $query->orWhereNull('area');
+            $query->where(function($q){
+                $q->orWhereNull('area');
+            });
         }
 
         if (!is_null($card->subcategory)) {
