@@ -604,13 +604,19 @@ class ApiCardsController extends Controller
         if (!is_null($card->area)) {
             $areas = explode(",", $card->area);
             if (is_array($areas) && !empty($areas) && count($areas) > 1) {
-                $query->whereIn('area', $areas);
+                $query->where(function ($q) use ($areas){
+                    $q->whereIn('area', $areas);
+                    $q->orWhereNull('area');
+                });
+
+
             } else {
-                $query->where('area', 'like', '%'.$card->area.'%');
+                $query->where(function ($q) use ($card){
+                    $q->where('area', 'like', '%'.$card->area.'%');
+                    $q->orWhereNull('area');
+                });
             }
-            $query->where(function($q){
-                $q->orWhereNull('area');
-            });
+
         }
 
         if (!is_null($card->subcategory)) {
