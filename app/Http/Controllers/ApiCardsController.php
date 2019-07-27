@@ -775,7 +775,7 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->total_area) && !is_null($card->total_area)) {
                             if ($card->sale_type === 'object') {
                                 $total_area = explode(",", $card_near->total_area);
-                                //dd((int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]);
+                                dd($total_area);
                                 if ((int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]) {
                                     $percent+=1;
                                 }
