@@ -115,7 +115,7 @@ class ApiCardsController extends Controller
 
         if ($subcategory) {
 
-            $query->where('subcategory', 'like', '%'.$subcategory.'%');
+            $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
         }
 
         if (!is_null($subcategory)) {
@@ -123,7 +123,7 @@ class ApiCardsController extends Controller
             if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
                 $query->whereIn('subcategory', $subcategories);
             } else {
-                $query->where('subcategory', 'like', '%'.$subcategory.'%');
+                $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
             }
         }
 
@@ -132,7 +132,7 @@ class ApiCardsController extends Controller
             if (is_array($stage_transactions) && !empty($stage_transactions) && count($stage_transactions) > 1) {
                 $query->whereIn('stage_transaction', $stage_transactions);
             } else {
-                $query->where('stage_transaction', 'like', '%'.$stage_transaction.'%');
+                $query->where('stage_transaction', 'REGEXP', '\b'.$stage_transaction.'\b');
             }
         }
 
@@ -585,9 +585,9 @@ class ApiCardsController extends Controller
             $query->where('category', 'like', $card->category);
         }
 
-        if (!is_null($card->city)) {
+        /*if (!is_null($card->city)) {
             $query->where('city', 'like', $card->city);
-        }
+        }*/
 
         $sale_type = (int)$request->get('sale_type');
 
@@ -601,12 +601,37 @@ class ApiCardsController extends Controller
             }
         }
 
+        if (!is_null($card->area)) {
+            $areas = explode(",", $card->area);
+            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                $query->where(function ($q) use ($areas){
+                    $q->whereIn('area', $areas);
+                    $q->orWhereNull('area');
+                });
+            } else {
+                $query->where(function ($q) use ($card){
+                    $q->where('area', 'REGEXP', '\b'.$card->area.'\b');
+                    $q->orWhereNull('area');
+                });
+            }
+
+        }
+
         if (!is_null($card->subcategory)) {
             $subcategories = explode(",", $card->subcategory);
             if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
                 $query->whereIn('subcategory', $subcategories);
             } else {
-                $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
+                $query->where('subcategory', 'REGEXP', '\b'.$card->subcategory.'\b');
+            }
+        }
+
+        if (!is_null($card->city)) {
+            $cities = explode(",", $card->city);
+            if (is_array($cities) && !empty($cities) && count($cities) > 1) {
+                $query->whereIn('city', $cities);
+            } else {
+                $query->where('city', 'REGEXP', '\b'.$card->city.'\b');
             }
         }
 
@@ -614,6 +639,9 @@ class ApiCardsController extends Controller
             $query->where('type', 'like', $card->type);
         }
 
+        /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+        $query_ = vsprintf($query_, $query->getBindings());
+        dd($query_);*/
         $cards = $query->get();
 
         if (empty($cards)) {
@@ -624,9 +652,9 @@ class ApiCardsController extends Controller
             foreach ($cards as $card_near) {
                 $percent = 0;
 
-                if (!is_null($card->area) && !is_null($card_near->area) && $card_near->area == $card->area) {
+                /*if (!is_null($card->area) && !is_null($card_near->area) && $card_near->area == $card->area) {
                     $percent+=1;
-                }
+                }*/
 
                 if (!is_null($card->bathroom) && !is_null($card_near->bathroom) && $card_near->bathroom == $card->bathroom) {
                     $percent+=1;
@@ -712,8 +740,6 @@ class ApiCardsController extends Controller
                     $percent+=1;
                 }
 
-
-
                 if (isset($sale_type) && $sale_type === 1) {
                     if (!is_null($card->sale_type)) {
                         //kitchen_area
@@ -753,12 +779,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->total_area) && !is_null($card->total_area)) {
                             if ($card->sale_type === 'object') {
                                 $total_area = explode(",", $card_near->total_area);
-                                if ((int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]) {
+                                if (isset($total_area[0]) && isset($total_area[1]) && (int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $total_area = explode(",", $card->total_area);
-                                if ((int)$total_area[0] <= $card_near->total_area && (int)$total_area[1] >= (int)$card_near->total_area) {
+                                if (isset($total_area[0]) && isset($total_area[1]) && (int)$total_area[0] <= $card_near->total_area && (int)$total_area[1] >= (int)$card_near->total_area) {
                                     $percent+=1;
                                 }
                             }
@@ -767,12 +793,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->land_area) && !is_null($card->land_area)) {
                             if ($card->sale_type === 'object') {
                                 $land_area = explode(",", $card_near->land_area);
-                                if ((int)$card->land_area >= (int)$land_area[0] && (int)$card->land_area <= (int)$land_area[1]) {
+                                if (isset($land_area[0]) && isset($land_area[1]) && (int)$card->land_area >= (int)$land_area[0] && (int)$card->land_area <= (int)$land_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $land_area = explode(",", $card->land_area);
-                                if ((int)$land_area[0] <= $card_near->land_area && (int)$land_area[1] >= (int)$card_near->land_area) {
+                                if (isset($land_area[0]) && isset($land_area[1]) && (int)$land_area[0] <= $card_near->land_area && (int)$land_area[1] >= (int)$card_near->land_area) {
                                     $percent+=1;
                                 }
                             }
@@ -781,12 +807,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->living_area) && !is_null($card->living_area)) {
                             if ($card->sale_type === 'object') {
                                 $living_area = explode(",", $card_near->living_area);
-                                if ((int)$card->living_area >= (int)$living_area[0] && (int)$card->living_area <= (int)$living_area[1]) {
+                                if (isset($living_area[0]) && isset($living_area[1]) && (int)$card->living_area >= (int)$living_area[0] && (int)$card->living_area <= (int)$living_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $living_area = explode(",", $card->living_area);
-                                if ((int)$living_area[0] <= $card_near->living_area && (int)$living_area[1] >= (int)$card_near->living_area) {
+                                if (isset($living_area[0]) && isset($living_area[1]) && (int)$living_area[0] <= $card_near->living_area && (int)$living_area[1] >= (int)$card_near->living_area) {
                                     $percent+=1;
                                 }
                             }
@@ -796,12 +822,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->kitchen_area) && !is_null($card->kitchen_area)) {
                             if ($card->sale_type === 'object') {
                                 $kitchen_area = explode(",", $card_near->kitchen_area);
-                                if ((int)$card->kitchen_area >= (int)$kitchen_area[0] && (int)$card->kitchen_area <= (int)$kitchen_area[1]) {
+                                if (isset($kitchen_area[0]) && isset($kitchen_area[1]) && (int)$card->kitchen_area >= (int)$kitchen_area[0] && (int)$card->kitchen_area <= (int)$kitchen_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $kitchen_area = explode(",", $card->kitchen_area);
-                                if ((int)$kitchen_area[0] <= $card_near->kitchen_area && (int)$kitchen_area[1] >= (int)$card_near->kitchen_area) {
+                                if (isset($kitchen_area[0]) && isset($kitchen_area[1]) && (int)$kitchen_area[0] <= $card_near->kitchen_area && (int)$kitchen_area[1] >= (int)$card_near->kitchen_area) {
                                     $percent+=1;
                                 }
                             }
