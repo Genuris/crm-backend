@@ -115,7 +115,7 @@ class ApiCardsController extends Controller
 
         if ($subcategory) {
 
-            $query->where('subcategory', 'like', '%'.$subcategory.'%');
+            $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
         }
 
         if (!is_null($subcategory)) {
@@ -123,7 +123,7 @@ class ApiCardsController extends Controller
             if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
                 $query->whereIn('subcategory', $subcategories);
             } else {
-                $query->where('subcategory', 'like', '%'.$subcategory.'%');
+                $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
             }
         }
 
@@ -132,7 +132,7 @@ class ApiCardsController extends Controller
             if (is_array($stage_transactions) && !empty($stage_transactions) && count($stage_transactions) > 1) {
                 $query->whereIn('stage_transaction', $stage_transactions);
             } else {
-                $query->where('stage_transaction', 'like', '%'.$stage_transaction.'%');
+                $query->where('stage_transaction', 'REGEXP', '\b'.$stage_transaction.'\b');
             }
         }
 
@@ -610,7 +610,7 @@ class ApiCardsController extends Controller
                 });
             } else {
                 $query->where(function ($q) use ($card){
-                    $q->where('area', 'like', '%'.$card->area.'%');
+                    $q->where('area', 'REGEXP', '\b'.$card->area.'\b');
                     $q->orWhereNull('area');
                 });
             }
@@ -622,7 +622,7 @@ class ApiCardsController extends Controller
             if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
                 $query->whereIn('subcategory', $subcategories);
             } else {
-                $query->where('subcategory', 'like', '%'.$card->subcategory.'%');
+                $query->where('subcategory', 'REGEXP', '\b'.$card->subcategory.'\b');
             }
         }
 
@@ -631,7 +631,7 @@ class ApiCardsController extends Controller
             if (is_array($cities) && !empty($cities) && count($cities) > 1) {
                 $query->whereIn('city', $cities);
             } else {
-                $query->where('city', 'like', '%'.$card->city.'%');
+                $query->where('city', 'REGEXP', '\b'.$card->city.'\b');
             }
         }
 
@@ -739,8 +739,6 @@ class ApiCardsController extends Controller
                 if (!is_null($card->elevator) && !is_null($card_near->elevator) && $card_near->elevator == $card->elevator) {
                     $percent+=1;
                 }
-
-
 
                 if (isset($sale_type) && $sale_type === 1) {
                     if (!is_null($card->sale_type)) {
