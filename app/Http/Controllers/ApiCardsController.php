@@ -775,13 +775,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->total_area) && !is_null($card->total_area)) {
                             if ($card->sale_type === 'object') {
                                 $total_area = explode(",", $card_near->total_area);
-                                var_dump($card->id, $card->total_area, $total_area);
-                                if ((int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]) {
+                                if (isset($total_area[0]) && isset($total_area[1]) && (int)$card->total_area >= (int)$total_area[0] && (int)$card->total_area <= (int)$total_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $total_area = explode(",", $card->total_area);
-                                if ((int)$total_area[0] <= $card_near->total_area && (int)$total_area[1] >= (int)$card_near->total_area) {
+                                if (isset($total_area[0]) && isset($total_area[1]) && (int)$total_area[0] <= $card_near->total_area && (int)$total_area[1] >= (int)$card_near->total_area) {
                                     $percent+=1;
                                 }
                             }
@@ -790,12 +789,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->land_area) && !is_null($card->land_area)) {
                             if ($card->sale_type === 'object') {
                                 $land_area = explode(",", $card_near->land_area);
-                                if ((int)$card->land_area >= (int)$land_area[0] && (int)$card->land_area <= (int)$land_area[1]) {
+                                if (isset($land_area[0]) && isset($land_area[1]) && (int)$card->land_area >= (int)$land_area[0] && (int)$card->land_area <= (int)$land_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $land_area = explode(",", $card->land_area);
-                                if ((int)$land_area[0] <= $card_near->land_area && (int)$land_area[1] >= (int)$card_near->land_area) {
+                                if (isset($land_area[0]) && isset($land_area[1]) && (int)$land_area[0] <= $card_near->land_area && (int)$land_area[1] >= (int)$card_near->land_area) {
                                     $percent+=1;
                                 }
                             }
@@ -804,12 +803,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->living_area) && !is_null($card->living_area)) {
                             if ($card->sale_type === 'object') {
                                 $living_area = explode(",", $card_near->living_area);
-                                if ((int)$card->living_area >= (int)$living_area[0] && (int)$card->living_area <= (int)$living_area[1]) {
+                                if (isset($living_area[0]) && isset($living_area[1]) && (int)$card->living_area >= (int)$living_area[0] && (int)$card->living_area <= (int)$living_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $living_area = explode(",", $card->living_area);
-                                if ((int)$living_area[0] <= $card_near->living_area && (int)$living_area[1] >= (int)$card_near->living_area) {
+                                if (isset($living_area[0]) && isset($living_area[1]) && (int)$living_area[0] <= $card_near->living_area && (int)$living_area[1] >= (int)$card_near->living_area) {
                                     $percent+=1;
                                 }
                             }
@@ -819,12 +818,12 @@ class ApiCardsController extends Controller
                         if (!is_null($card_near->kitchen_area) && !is_null($card->kitchen_area)) {
                             if ($card->sale_type === 'object') {
                                 $kitchen_area = explode(",", $card_near->kitchen_area);
-                                if ((int)$card->kitchen_area >= (int)$kitchen_area[0] && (int)$card->kitchen_area <= (int)$kitchen_area[1]) {
+                                if (isset($kitchen_area[0]) && isset($kitchen_area[1]) && (int)$card->kitchen_area >= (int)$kitchen_area[0] && (int)$card->kitchen_area <= (int)$kitchen_area[1]) {
                                     $percent+=1;
                                 }
                             } else {
                                 $kitchen_area = explode(",", $card->kitchen_area);
-                                if ((int)$kitchen_area[0] <= $card_near->kitchen_area && (int)$kitchen_area[1] >= (int)$card_near->kitchen_area) {
+                                if (isset($kitchen_area[0]) && isset($kitchen_area[1]) && (int)$kitchen_area[0] <= $card_near->kitchen_area && (int)$kitchen_area[1] >= (int)$card_near->kitchen_area) {
                                     $percent+=1;
                                 }
                             }
