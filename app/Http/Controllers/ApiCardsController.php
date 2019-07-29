@@ -255,7 +255,6 @@ class ApiCardsController extends Controller
 
                 $card_contact = CardContacts::create([
                     'name' => (isset($card_contact_data['name']) ? $card_contact_data['name'] : ''),
-                    'creator_id' => $this->current_user_id,
                     'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : ''),
                     'children' => (isset($card_contact_data['children']) ? $card_contact_data['children'] : 0),
                     'car' => (isset($card_contact_data['car']) ? $card_contact_data['car'] : ''),
@@ -332,6 +331,7 @@ class ApiCardsController extends Controller
         }
 
         $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
+        $card_data['creator_id'] = $this->current_user_id;
 
         $card = Card::create($card_data);
 
