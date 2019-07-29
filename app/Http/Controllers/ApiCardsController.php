@@ -18,6 +18,7 @@ class ApiCardsController extends Controller
         'POST' => ['add' => ['api/cards', 'api/cards_contact_phone', 'api/cards_filtered', 'api/near_cards']],
         'DELETE' => ['delete' => ['api/cards', 'api/cards_delete', 'api/cards_contact_delete']],
     );
+    public $current_user_id = null;
 
     public function __construct()
     {
@@ -28,6 +29,8 @@ class ApiCardsController extends Controller
             if (!$user) {
                 return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
             }
+
+            $this->current_user_id = $user->id;
 
             $role = Role::find($user->role_id);
 
@@ -252,6 +255,7 @@ class ApiCardsController extends Controller
 
                 $card_contact = CardContacts::create([
                     'name' => (isset($card_contact_data['name']) ? $card_contact_data['name'] : ''),
+                    'creator_id' => $this->current_user_id,
                     'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : ''),
                     'children' => (isset($card_contact_data['children']) ? $card_contact_data['children'] : 0),
                     'car' => (isset($card_contact_data['car']) ? $card_contact_data['car'] : ''),
@@ -378,6 +382,7 @@ class ApiCardsController extends Controller
 
             unset($card_data['card_contact']);
             unset($card_data['cards_file']);
+            unset($card_data['creator_id']);
 
             if (isset($card_data['user_id'])) {
                 $card_data['user_id'] = (int)$card_data['user_id'];

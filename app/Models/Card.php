@@ -74,6 +74,8 @@ class Card extends Model
         'apartment_type',
         'payments',
         'household_appliances',
+        'archive_date',
+        'creator_id',
         'will_live',
     ];
 
