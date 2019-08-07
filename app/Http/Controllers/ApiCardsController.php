@@ -97,6 +97,9 @@ class ApiCardsController extends Controller
         $user_id = $request->get('user_id');
         $price_from = $request->get('price_from');
         $price_to = $request->get('price_to');
+        $city = $request->get('city');
+        $area = $request->get('area');
+        $street = $request->get('street');
         $sort = explode(',', $request->get('sort'));
 
         $query = Card::query();
@@ -116,10 +119,9 @@ class ApiCardsController extends Controller
             $query->where('category', 'like', $category);
         }
 
-        if ($subcategory) {
-
-            $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
-        }
+//        if ($subcategory) {
+//            $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+//        }
 
         if (!is_null($subcategory)) {
             $subcategories = explode(",", $subcategory);
@@ -127,6 +129,33 @@ class ApiCardsController extends Controller
                 $query->whereIn('subcategory', $subcategories);
             } else {
                 $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+            }
+        }
+
+        if (!is_null($street)) {
+            $streets = explode(",", $street);
+            if (is_array($streets) && !empty($streets) && count($streets) > 1) {
+                $query->whereIn('street', $streets);
+            } else {
+                $query->where('street', 'REGEXP', '\b'.$street.'\b');
+            }
+        }
+
+        if (!is_null($area)) {
+            $areas = explode(",", $area);
+            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                $query->whereIn('area', $areas);
+            } else {
+                $query->where('area', 'REGEXP', '\b'.$area.'\b');
+            }
+        }
+
+        if (!is_null($city)) {
+            $cities = explode(",", $city);
+            if (is_array($cities) && !empty($cities) && count($cities) > 1) {
+                $query->whereIn('city', $cities);
+            } else {
+                $query->where('city', 'REGEXP', '\b'.$city.'\b');
             }
         }
 
