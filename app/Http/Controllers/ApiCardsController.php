@@ -663,35 +663,35 @@ class ApiCardsController extends Controller
         if (!is_null($card->city)) {
             $cities = explode(",", $card->city);
             if (is_array($cities) && !empty($cities) && count($cities) > 1) {
-                $query->where(function ($q) use ($cities){
-                    $q->whereIn('city', $cities);
-                    $q->orWhereNull('city');
-                });
-            } else {
-                $query->where(function ($q) use ($card){
-                    $q->where('city', 'REGEXP', '\b'.$card->city.'\b');
-                    $q->orWhereNull('city');
-                });
-            }
-        }
-
-        /*if (!is_null($card->city)) {
-            $cities = explode(",", $card->city);
-            if (is_array($cities) && !empty($cities) && count($cities) > 1) {
                 $query->whereIn('city', $cities);
             } else {
                 $query->where('city', 'REGEXP', '\b'.$card->city.'\b');
             }
-        }*/
+        }
 
         if (!is_null($card->street)) {
+            $streets = explode(",", $card->street);
+            if (is_array($streets) && !empty($streets) && count($streets) > 1) {
+                $query->where(function ($q) use ($streets){
+                    $q->whereIn('street', $streets);
+                    $q->orWhereNull('street');
+                });
+            } else {
+                $query->where(function ($q) use ($card){
+                    $q->where('street', 'REGEXP', '\b'.$card->street.'\b');
+                    $q->orWhereNull('street');
+                });
+            }
+        }
+
+        /*if (!is_null($card->street)) {
             $streets = explode(",", $card->street);
             if (is_array($streets) && !empty($streets) && count($streets) > 1) {
                 $query->whereIn('street', $streets);
             } else {
                 $query->where('street', 'REGEXP', '\b'.$card->street.'\b');
             }
-        }
+        }*/
 
         if (!is_null($card->type)) {
             $query->where('type', 'like', $card->type);
