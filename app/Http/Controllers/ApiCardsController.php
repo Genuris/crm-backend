@@ -669,6 +669,15 @@ class ApiCardsController extends Controller
             }
         }
 
+        if (!is_null($card->street)) {
+            $streets = explode(",", $card->street);
+            if (is_array($streets) && !empty($streets) && count($streets) > 1) {
+                $query->whereIn('street', $streets);
+            } else {
+                $query->where('street', 'REGEXP', '\b'.$card->street.'\b');
+            }
+        }
+
         if (!is_null($card->type)) {
             $query->where('type', 'like', $card->type);
         }
