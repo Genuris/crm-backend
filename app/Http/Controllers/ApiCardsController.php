@@ -635,31 +635,6 @@ class ApiCardsController extends Controller
             }
         }
 
-        if (!is_null($card->area)) {
-            $areas = explode(",", $card->area);
-            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
-                $query->where(function ($q) use ($areas){
-                    $q->whereIn('area', $areas);
-                    $q->orWhereNull('area');
-                });
-            } else {
-                $query->where(function ($q) use ($card){
-                    $q->where('area', 'REGEXP', '\b'.$card->area.'\b');
-                    $q->orWhereNull('area');
-                });
-            }
-
-        }
-
-        if (!is_null($card->subcategory)) {
-            $subcategories = explode(",", $card->subcategory);
-            if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
-                $query->whereIn('subcategory', $subcategories);
-            } else {
-                $query->where('subcategory', 'REGEXP', '\b'.$card->subcategory.'\b');
-            }
-        }
-
         if (!is_null($card->city)) {
             $cities = explode(",", $card->city);
             if (is_array($cities) && !empty($cities) && count($cities) > 1) {
@@ -669,29 +644,62 @@ class ApiCardsController extends Controller
             }
         }
 
-        if (isset($sale_type) && $sale_type === 1 && !is_null($card->street)) {
-            $streets = explode(",", $card->street);
-            if (is_array($streets) && !empty($streets) && count($streets) > 1) {
-                $query->where(function ($q) use ($streets){
-                    $q->whereIn('street', $streets);
-                    $q->orWhereNull('street');
-                });
+        if (isset($sale_type) && $sale_type === 0) {
+            if (!is_null($card->street)) {
+                $streets = explode(",", $card->street);
+                if (is_array($streets) && !empty($streets) && count($streets) > 1) {
+                    $query->where(function ($q) use ($streets){
+                        $q->whereIn('street', $streets);
+                        $q->orWhereNull('street');
+                    });
+                } else {
+                    $query->where(function ($q) use ($card){
+                        $q->where('street', 'REGEXP', '\b'.$card->street.'\b');
+                        $q->orWhereNull('street');
+                    });
+                }
             } else {
-                $query->where(function ($q) use ($card){
-                    $q->where('street', 'REGEXP', '\b'.$card->street.'\b');
-                    $q->orWhereNull('street');
-                });
+                if (!is_null($card->area)) {
+                    $areas = explode(",", $card->area);
+                    if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                        $query->where(function ($q) use ($areas){
+                            $q->whereIn('area', $areas);
+                            $q->orWhereNull('area');
+                        });
+                    } else {
+                        $query->where(function ($q) use ($card){
+                            $q->where('area', 'REGEXP', '\b'.$card->area.'\b');
+                            $q->orWhereNull('area');
+                        });
+                    }
+                }
+            }
+        } else {
+            if (!is_null($card->area)) {
+                $areas = explode(",", $card->area);
+                if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                    $query->where(function ($q) use ($areas){
+                        $q->whereIn('area', $areas);
+                        $q->orWhereNull('area');
+                    });
+                } else {
+                    $query->where(function ($q) use ($card){
+                        $q->where('area', 'REGEXP', '\b'.$card->area.'\b');
+                        $q->orWhereNull('area');
+                    });
+                }
             }
         }
 
-        /*if (!is_null($card->street)) {
-            $streets = explode(",", $card->street);
-            if (is_array($streets) && !empty($streets) && count($streets) > 1) {
-                $query->whereIn('street', $streets);
+
+        if (!is_null($card->subcategory)) {
+            $subcategories = explode(",", $card->subcategory);
+            if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
+                $query->whereIn('subcategory', $subcategories);
             } else {
-                $query->where('street', 'REGEXP', '\b'.$card->street.'\b');
+                $query->where('subcategory', 'REGEXP', '\b'.$card->subcategory.'\b');
             }
-        }*/
+        }
 
         if (!is_null($card->type)) {
             $query->where('type', 'like', $card->type);
