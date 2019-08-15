@@ -644,7 +644,7 @@ class ApiCardsController extends Controller
             }
         }
 
-        if (isset($sale_type) && $sale_type === 0) {
+        if (isset($sale_type) && $sale_type !== 1) {
             if (!is_null($card->street)) {
                 $streets = explode(",", $card->street);
                 if (is_array($streets) && !empty($streets) && count($streets) > 1) {
