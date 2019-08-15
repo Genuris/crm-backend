@@ -648,6 +648,12 @@ class ApiCardsController extends Controller
             if (!is_null($card->street)) {
                 $streets = explode(",", $card->street);
                 if (is_array($streets) && !empty($streets) && count($streets) > 1) {
+                    $query->whereIn('street', $streets);
+                } else {
+                    $query->where('street', 'REGEXP', '\b'.$card->street.'\b');
+                }
+                /*$streets = explode(",", $card->street);
+                if (is_array($streets) && !empty($streets) && count($streets) > 1) {
                     $query->where(function ($q) use ($streets){
                         $q->whereIn('street', $streets);
                         $q->orWhereNull('street');
@@ -657,7 +663,7 @@ class ApiCardsController extends Controller
                         $q->where('street', 'REGEXP', '\b'.$card->street.'\b');
                         $q->orWhereNull('street');
                     });
-                }
+                }*/
             } else {
                 if (!is_null($card->area)) {
                     $areas = explode(",", $card->area);
