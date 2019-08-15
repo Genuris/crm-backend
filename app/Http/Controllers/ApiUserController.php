@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Card;
 use App\Models\UserDetails;
 use App\Models\UserPhones;
 use App\Models\UserSocialNetworks;
@@ -33,9 +34,18 @@ class ApiUserController extends Controller
         }
 
         if ($flag) {
-            return User::offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
+            $users = User::offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
+        } else {
+            $users = User::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
         }
-        return User::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+
+        if (!empty($users)) {
+            foreach ($users as $user) {
+                $user->count_cards_not_archived = Card::where('is_archived', '=', '0')->where('user_id', '=', $user->id)->count();
+            }
+        }
+
+        return $users;
     }
 
     public function show($id)

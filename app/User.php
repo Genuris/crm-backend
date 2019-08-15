@@ -28,6 +28,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = ['count_cards_not_archived'];
+
     public function UserDetails(){
         return $this->hasOne('App\Models\UserDetails', 'user_id', 'id');
     }
@@ -58,5 +60,11 @@ class User extends Authenticatable
 
     public function getFields() {
         return $this->fillable;
+    }
+
+    public function getCountCardsNotArchivedAttribute() {
+        if (isset($this->attributes['count_cards_not_archived']))
+            return $this->attributes['count_cards_not_archived'];
+        return 0;
     }
 }
