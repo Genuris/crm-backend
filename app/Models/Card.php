@@ -77,6 +77,7 @@ class Card extends Model
         'archive_date',
         'creator_id',
         'will_live',
+        'data_change_prices',
     ];
 
     protected $appends = ['percent'];

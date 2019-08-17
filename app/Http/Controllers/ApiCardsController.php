@@ -362,6 +362,14 @@ class ApiCardsController extends Controller
         $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
         $card_data['creator_id'] = $this->current_user_id;
 
+        if (isset($card_data['currency'])  && !is_null($card_data['currency']) && isset($card_data['price']) && !is_null($card_data['price'])) {
+            $card_data['data_change_prices'] = json_encode(array(
+                'time' => time(),
+                'currency' => $card_data['currency'],
+                'price' => $card_data['price']
+            ));
+        }
+
         $card = Card::create($card_data);
 
         if ($card) {
@@ -447,6 +455,26 @@ class ApiCardsController extends Controller
 
             if (isset($card_data['is_archived'])) {
                 $card_data['is_archived'] = (($card_data['is_archived'] == 'true') ? true : false);
+            }
+
+            if (
+                isset($card_data['price']) && $card->price != $card_data['price'] ||
+                isset($card_data['currency']) && $card->currency != $card_data['currency']
+            ) {
+                $card_data['data_change_prices'] = json_decode($card->data_change_prices, true);
+                if (is_array($card_data['data_change_prices']) && !empty($card_data['data_change_prices'])) {
+                    $card_data['data_change_prices'][] = json_encode(array(
+                        'time' => time(),
+                        'currency' => $card_data['currency'],
+                        'price' => $card_data['price']
+                    ));
+                } else {
+                    $card_data['data_change_prices'] = json_encode(array(
+                        'time' => time(),
+                        'currency' => $card_data['currency'],
+                        'price' => $card_data['price']
+                    ));
+                }
             }
 
             $card->update($card_data);
