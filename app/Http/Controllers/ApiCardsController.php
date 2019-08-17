@@ -366,7 +366,8 @@ class ApiCardsController extends Controller
             $card_data['data_change_prices'][] = array(
                 'time' => time(),
                 'currency' => $card_data['currency'],
-                'price' => $card_data['price']
+                'price' => $card_data['price'],
+                'user_id' => $this->current_user_id,
             );
             $card_data['data_change_prices'] = json_encode($card_data['data_change_prices']);
         }
@@ -467,18 +468,21 @@ class ApiCardsController extends Controller
                     $card_data['data_change_prices'][] = array(
                         'time' => time(),
                         'currency' => $card_data['currency'],
-                        'price' => $card_data['price']
+                        'price' => $card_data['price'],
+                        'user_id' => $this->current_user_id,
                     );
                 } else {
                     $card_data['data_change_prices'][] = array(
                         'time' => time(),
                         'currency' => $card->currency,
-                        'price' => $card->price
+                        'price' => $card->price,
+                        'user_id' => $this->current_user_id,
                     );
                     $card_data['data_change_prices'][] = array(
                         'time' => time(),
                         'currency' => $card_data['currency'],
-                        'price' => $card_data['price']
+                        'price' => $card_data['price'],
+                        'user_id' => $this->current_user_id,
                     );
                 }
                 $card_data['data_change_prices'] = json_encode($card_data['data_change_prices']);
