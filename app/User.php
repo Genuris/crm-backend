@@ -54,6 +54,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\OfficesPartition', 'id', 'offices_partition_id');
     }
 
+    public function DataChangeLogs(){
+        return $this->hasMany('App\Models\DataChangeLogs', 'user_id', 'id');
+    }
+
     public function UserRole(){
         return $this->hasOne('App\Models\Role', 'id', 'role_id');
     }
