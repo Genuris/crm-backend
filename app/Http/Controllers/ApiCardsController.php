@@ -495,7 +495,7 @@ class ApiCardsController extends Controller
 
             if ($card) {
                 if (isset($data_change_logs) && !empty($data_change_logs) && is_array($data_change_logs)) {
-                    DataChangeLog::setLogs($card->object_name, $id, $this->current_user_id, [array('filed' => 'street', 'old_value' => 'Dimitrova', 'new_value' => 'Petra Doroshenka')]);
+                    DataChangeLog::setLogs($card->object_name, $id, $this->current_user_id, $data_change_logs);
                 }
                 if (!empty($request->get('cards_file')) && is_array($request->get('cards_file'))) {
 
