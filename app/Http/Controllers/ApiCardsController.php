@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Modules\DataChangeLog\DataChangeLog;
 use Illuminate\Http\Request;
 use App\Models\Card;
 use App\Models\CardsFile;
@@ -416,12 +417,14 @@ class ApiCardsController extends Controller
     {
         $card = Card::find($id);
         if ($card) {
-
             $card_data = $request->all();
+
+            $data_change_logs = ((isset($card_data['data_change_logs']) && !empty($card_data['data_change_logs'])) ? $card_data['data_change_logs'] : []);
 
             unset($card_data['card_contact']);
             unset($card_data['cards_file']);
             unset($card_data['creator_id']);
+            unset($card_data['data_change_logs']);
 
             if (isset($card_data['user_id'])) {
                 $card_data['user_id'] = (int)$card_data['user_id'];
@@ -491,6 +494,9 @@ class ApiCardsController extends Controller
             $card->update($card_data);
 
             if ($card) {
+                if (isset($data_change_logs) && !empty($data_change_logs) && is_array($data_change_logs)) {
+                    DataChangeLog::setLogs($card->object_name, $id, $this->current_user_id, $data_change_logs);
+                }
                 if (!empty($request->get('cards_file')) && is_array($request->get('cards_file'))) {
 
                     $cards_file_data = $request->get('cards_file');
@@ -739,7 +745,7 @@ class ApiCardsController extends Controller
         /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
         $query_ = vsprintf($query_, $query->getBindings());
         dd($query_);*/
-        $cards = $query->get();
+        $cards = $query->orderBy("created_at", 'desc')->get();
 
         if (empty($cards)) {
             return response()->json([], 204);
