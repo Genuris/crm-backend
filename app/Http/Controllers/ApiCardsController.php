@@ -745,7 +745,7 @@ class ApiCardsController extends Controller
         /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
         $query_ = vsprintf($query_, $query->getBindings());
         dd($query_);*/
-        $cards = $query->get();
+        $cards = $query->orderBy("created_at", 'desc')->get();
 
         if (empty($cards)) {
             return response()->json([], 204);
