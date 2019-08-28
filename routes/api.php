@@ -135,6 +135,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 //contact_user
     Route::post('contact_user_by_phones', 'ApiUserCardController@getContactUserByPhones');
 
+//data_change_logs
+    Route::get('data_change_logs', 'ApiDataChangeLogsController@index');
+
 });
 
 
