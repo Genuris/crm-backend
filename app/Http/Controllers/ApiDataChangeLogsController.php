@@ -28,7 +28,7 @@ class ApiDataChangeLogsController extends Controller
                 return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
             }
 
-            if (!$role->checkAction($request->path(), $request->method(), $this->permissions, new Role())) {
+            if (!$role->checkAction($request->path(), $request->method(), $this->permissions, new DataChangeLogs())) {
                 return response()->json(array('error' => array('status' => 403, 'message' => 'Forbidden. The user is authenticated, but does not have the permissions to perform an action.')), 403);
             }
 
