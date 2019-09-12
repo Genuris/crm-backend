@@ -72,7 +72,13 @@ class ApiCardsController extends Controller
                 $card->CardFiles;
                 $card->CardAgency;
                 $card->CardOffice;
-                $card->CardUser;
+                if ($card->CardUser) {
+                    if ($card->CardUser->UserDetails) {
+                        $card->CardUser->UserDetails->profileImage;
+                    }
+                    $card->CardUser->UserPhones;
+                    $card->CardUser->UserSocials;
+                }
 
                 if (!empty($card->CardFiles)) {
                     foreach ($card->CardFiles as $cardFile) {
@@ -212,7 +218,13 @@ class ApiCardsController extends Controller
                 $card->CardFiles;
                 $card->CardAgency;
                 $card->CardOffice;
-                $card->CardUser;
+                if ($card->CardUser) {
+                    if ($card->CardUser->UserDetails) {
+                        $card->CardUser->UserDetails->profileImage;
+                    }
+                    $card->CardUser->UserPhones;
+                    $card->CardUser->UserSocials;
+                }
 
                 if (!empty($card->CardFiles)) {
                     foreach ($card->CardFiles as $cardFile) {
@@ -237,8 +249,13 @@ class ApiCardsController extends Controller
             $card->CardFiles;
             $card->CardAgency;
             $card->CardOffice;
-            $card->CardUser;
-
+            if ($card->CardUser) {
+                if ($card->CardUser->UserDetails) {
+                    $card->CardUser->UserDetails->profileImage;
+                }
+                $card->CardUser->UserPhones;
+                $card->CardUser->UserSocials;
+            }
             if (!empty($card->CardFiles)) {
                 foreach ($card->CardFiles as $cardFile) {
                     $cardFile->file;
@@ -961,7 +978,14 @@ class ApiCardsController extends Controller
                 $card_near->CardFiles;
                 $card_near->CardAgency;
                 $card_near->CardOffice;
-                $card_near->CardUser;
+                if ($card_near->CardUser) {
+                    if ($card_near->CardUser->UserDetails) {
+                        $card_near->CardUser->UserDetails->profileImage;
+                    }
+                    $card_near->CardUser->UserPhones;
+                    $card_near->CardUser->UserSocials;
+                }
+
 
                 if (!empty($card_near->CardFiles)) {
                     foreach ($card_near->CardFiles as $cardFile) {

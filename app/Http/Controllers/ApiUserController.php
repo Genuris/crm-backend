@@ -42,6 +42,11 @@ class ApiUserController extends Controller
         if (!empty($users)) {
             foreach ($users as $user) {
                 $user->count_cards_not_archived = Card::where('is_archived', '=', '0')->where('user_id', '=', $user->id)->count();
+                if ($user->UserDetails) {
+                    $user->UserDetails->profileImage;
+                }
+                $user->UserPhones;
+                $user->UserSocials;
             }
         }
 
@@ -58,7 +63,6 @@ class ApiUserController extends Controller
                 )
             ), 400);
         }
-        $user->UserDetails;
         if ($user->UserDetails) {
             $user->UserDetails->profileImage;
         }
@@ -220,7 +224,6 @@ class ApiUserController extends Controller
         }
 
         $user = User::find($id);
-        $user->UserDetails;
         if ($user->UserDetails) {
             $user->UserDetails->profileImage;
         }
