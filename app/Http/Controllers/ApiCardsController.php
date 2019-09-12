@@ -961,7 +961,15 @@ class ApiCardsController extends Controller
                 $card_near->CardFiles;
                 $card_near->CardAgency;
                 $card_near->CardOffice;
-                $card_near->CardUser;
+                if ($card_near->CardUser) {
+                    $card_near->CardUser->UserDetails;
+                    if ($card_near->CardUser->UserDetails) {
+                        $card_near->CardUser->UserDetails->profileImage;
+                    }
+                    $card_near->CardUser->UserPhones;
+                    $card_near->CardUser->UserSocials;
+                }
+
 
                 if (!empty($card_near->CardFiles)) {
                     foreach ($card_near->CardFiles as $cardFile) {
