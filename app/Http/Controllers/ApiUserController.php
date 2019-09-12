@@ -63,7 +63,6 @@ class ApiUserController extends Controller
                 )
             ), 400);
         }
-        $user->UserDetails;
         if ($user->UserDetails) {
             $user->UserDetails->profileImage;
         }
@@ -225,7 +224,6 @@ class ApiUserController extends Controller
         }
 
         $user = User::find($id);
-        $user->UserDetails;
         if ($user->UserDetails) {
             $user->UserDetails->profileImage;
         }
