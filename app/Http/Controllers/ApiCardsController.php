@@ -73,7 +73,6 @@ class ApiCardsController extends Controller
                 $card->CardAgency;
                 $card->CardOffice;
                 if ($card->CardUser) {
-                    $card->CardUser->UserDetails;
                     if ($card->CardUser->UserDetails) {
                         $card->CardUser->UserDetails->profileImage;
                     }
@@ -220,7 +219,6 @@ class ApiCardsController extends Controller
                 $card->CardAgency;
                 $card->CardOffice;
                 if ($card->CardUser) {
-                    $card->CardUser->UserDetails;
                     if ($card->CardUser->UserDetails) {
                         $card->CardUser->UserDetails->profileImage;
                     }
@@ -976,7 +974,6 @@ class ApiCardsController extends Controller
                 $card_near->CardAgency;
                 $card_near->CardOffice;
                 if ($card_near->CardUser) {
-                    $card_near->CardUser->UserDetails;
                     if ($card_near->CardUser->UserDetails) {
                         $card_near->CardUser->UserDetails->profileImage;
                     }

@@ -42,7 +42,6 @@ class ApiUserController extends Controller
         if (!empty($users)) {
             foreach ($users as $user) {
                 $user->count_cards_not_archived = Card::where('is_archived', '=', '0')->where('user_id', '=', $user->id)->count();
-                $user->UserDetails;
                 if ($user->UserDetails) {
                     $user->UserDetails->profileImage;
                 }
