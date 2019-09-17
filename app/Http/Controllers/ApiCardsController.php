@@ -371,6 +371,12 @@ class ApiCardsController extends Controller
             $card_data['number_contract'] = null;
         }
 
+        if (isset($card_data['price'])) {
+            $card_data['price'] = (float)$card_data['price'];
+        } else {
+            $card_data['price'] = null;
+        }
+
         if (isset($card_data['contract_expiration_date'])) {
             $card_data['contract_expiration_date'] = (int)$card_data['contract_expiration_date'];
         } else {
@@ -453,6 +459,10 @@ class ApiCardsController extends Controller
 
             if (isset($card_data['office_id'])) {
                 $card_data['office_id'] = (int)$card_data['office_id'];
+            }
+
+            if (isset($card_data['price'])) {
+                $card_data['price'] = (float)$card_data['price'];
             }
 
             /*if (isset($card_data['year_built'])) {
