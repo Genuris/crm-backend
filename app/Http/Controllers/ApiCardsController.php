@@ -490,8 +490,8 @@ class ApiCardsController extends Controller
             }
 
             if (
-                isset($card_data['price']) && $card->price != $card_data['price'] ||
-                isset($card_data['currency']) && $card->currency != $card_data['currency']
+                isset($card_data['price']) && $card->price != (float)$card_data['price'] ||
+                isset($card_data['currency']) && $card->currency != (float)$card_data['currency']
             ) {
                 $card_data['data_change_prices'] = json_decode($card->data_change_prices, true);
                 if (is_array($card_data['data_change_prices']) && !empty($card_data['data_change_prices'])) {
@@ -875,7 +875,7 @@ class ApiCardsController extends Controller
                         //kitchen_area
                         if ($card->sale_type === 'object') {
                             if (!is_null($card_near->price)) {
-                                if ((int)$card->price <= (int)$card_near->price) {
+                                if ((float)$card->price <= (float)$card_near->price) {
                                     $percent+=1;
                                 }
                             }
@@ -965,11 +965,11 @@ class ApiCardsController extends Controller
                         //price
                         if (!is_null($card_near->price) && !is_null($card->price)) {
                             if ($card->sale_type === 'object') {
-                                if ((int)$card->price <= (int)$card_near->price) {
+                                if ((float)$card->price <= (float)$card_near->price) {
                                     $percent+=1;
                                 }
                             } else {
-                                if ((int)$card->price >= (int)$card_near->price) {
+                                if ((float)$card->price >= (float)$card_near->price) {
                                     $percent+=1;
                                 }
                             }
