@@ -25,10 +25,17 @@ class ApiUserController extends Controller
 
         $page = $request->get('page');
         $size = $request->get('size');
+        $is_archived = $request->get('is_archived');
         $sort = explode(',', $request->get('sort'));
 
         if (!$page) {
             $page = 1;
+        }
+
+        $query = User::query();
+
+        if ($is_archived) {
+            $query->where('is_archived', '=', (int)$is_archived);
         }
 
         if (!$size) {
@@ -44,9 +51,9 @@ class ApiUserController extends Controller
         }
 
         if ($flag) {
-            $users = User::offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
+            $users = $query->offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
         } else {
-            $users = User::offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+            $users = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
         }
 
         if (!empty($users)) {
