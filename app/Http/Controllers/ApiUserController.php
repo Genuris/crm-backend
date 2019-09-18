@@ -13,6 +13,16 @@ class ApiUserController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+        }
+
+        if ($user->is_archived === 1) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'User is deleted')), 401);
+        }
+
         $page = $request->get('page');
         $size = $request->get('size');
         $sort = explode(',', $request->get('sort'));
