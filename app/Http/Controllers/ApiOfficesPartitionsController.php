@@ -25,6 +25,10 @@ class ApiOfficesPartitionsController extends Controller
                 return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
             }
 
+            if ($user->is_archived === 1) {
+                return response()->json(array('error' => array('status' => 401, 'message' => 'User is deleted')), 401);
+            }
+
             $role = Role::find($user->role_id);
 
             if (!$role) {

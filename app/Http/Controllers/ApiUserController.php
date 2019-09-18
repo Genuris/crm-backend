@@ -73,9 +73,22 @@ class ApiUserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+        }
+
+        if ($user->is_archived === 1) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'User is deleted')), 401);
+        }
+
         $user = User::find($id);
         if ($user) {
             $data = $request->all();
+            if (isset($data['is_archived'])) {
+                unset($data['is_archived']);
+            }
             if (isset($data['password'])) {
                 $data['password'] = bcrypt($data['password']);
             }
@@ -234,10 +247,22 @@ class ApiUserController extends Controller
     }
 
     public function delete(Request $request, $id) {
+
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+        }
+
+        if ($user->is_archived === 1) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'User is deleted')), 401);
+        }
+
         $user = User::find($id);
 
         if ($user) {
-            $user->delete();
+            $user->is_archived = 1;
+            $user->save();
         }
 
         return response()->json(null, 204);
