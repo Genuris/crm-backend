@@ -34,7 +34,7 @@ class ApiUserController extends Controller
 
         $query = User::query();
 
-        if ($is_archived) {
+        if (isset($is_archived)) {
             $query->where('is_archived', '=', (int)$is_archived);
         }
 
