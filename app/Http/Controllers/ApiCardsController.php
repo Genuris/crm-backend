@@ -577,7 +577,13 @@ class ApiCardsController extends Controller
         }
         $card->CardAgency;
         $card->CardOffice;
-        $card->CardUser;
+        if ($card->CardUser) {
+            if ($card->CardUser->UserDetails) {
+                $card->CardUser->UserDetails->profileImage;
+            }
+            $card->CardUser->UserPhones;
+            $card->CardUser->UserSocials;
+        }
 
         return response()->json($card, 200);
     }
