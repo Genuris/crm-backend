@@ -263,7 +263,7 @@ class ApiUserController extends Controller
         return response()->json($user, 200);
     }
 
-    public function delete(Request $request, $id) {
+    public function archived(Request $request, $id) {
 
         $user = $request->user();
 
@@ -279,6 +279,28 @@ class ApiUserController extends Controller
 
         if ($user) {
             $user->is_archived = 1;
+            $user->save();
+        }
+
+        return response()->json(null, 204);
+    }
+
+    public function unArchived(Request $request, $id) {
+
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
+        }
+
+        if ($user->is_archived === 1) {
+            return response()->json(array('error' => array('status' => 401, 'message' => 'User is deleted')), 401);
+        }
+
+        $user = User::find($id);
+
+        if ($user) {
+            $user->is_archived = 0;
             $user->save();
         }
 
