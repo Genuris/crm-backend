@@ -75,7 +75,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user', 'ApiUserController@index');
     Route::get('user/{id}', 'ApiUserController@show');
     Route::put('user/{id}', 'ApiUserController@update');
-    Route::delete('user/{id}', 'ApiUserController@delete');
+    Route::get('user_archived/{id}', 'ApiUserController@archived');
+    Route::get('user_unarchived/{id}', 'ApiUserController@unArchived');
 
 
 //offices
