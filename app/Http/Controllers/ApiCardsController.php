@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CardRequestStatus;
 use App\Models\Role;
 use App\Modules\DataChangeLog\DataChangeLog;
 use Illuminate\Http\Request;
@@ -1021,6 +1022,35 @@ class ApiCardsController extends Controller
             }
         }
         return response()->json($cards, 200);
+    }
+
+    public function setStatusCardRequest(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+        $status = $request->get('status');
+
+        if (!$card_request_id || !$card_object_id || !$status) {
+            return response()->json(array(), 402);
+        }
+
+        $card_request_status = CardRequestStatus::where('card_request_id', '=', $card_request_id)
+            ->where('card_object_id','=', $card_object_id)->first();
+        if ($card_request_status) {
+            $card_request_status->status = $status;
+            $card_request_status->user_id = $this->current_user_id;
+            $card_request_status->save();
+        } else {
+            $data = [
+                'status' => $status,
+                'card_request_id' => $card_request_id,
+                'card_object_id' => $card_object_id,
+                'user_id' => $this->current_user_id,
+
+            ];
+            $card_request_status = CardRequestStatus::create($data);
+
+        }
+        return response()->json($card_request_status, 201);
     }
 
 }
