@@ -97,6 +97,14 @@ class Card extends Model
         return $this->hasOne('App\Models\Card', 'id', 'agency_id');
     }
 
+    public function CardRequestObjectStatus(){
+        return $this->hasMany('App\Models\CardRequestPosts', 'id', 'card_object_id');
+    }
+
+    public function CardRequestStatus(){
+        return $this->hasMany('App\Models\CardRequestPosts', 'id', 'card_request_id');
+    }
+
     public function CardFiles(){
         return $this->hasMany('App\Models\CardsFile', 'card_id', 'id');
     }
