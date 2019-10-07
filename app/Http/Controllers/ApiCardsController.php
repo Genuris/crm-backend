@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CardRequestPosts;
 use App\Models\CardRequestStatus;
 use App\Models\Role;
 use App\Modules\DataChangeLog\DataChangeLog;
@@ -17,7 +18,7 @@ class ApiCardsController extends Controller
     public $permissions = array(
         'GET' => ['see' => ['api/cards']],
         'PUT' => ['edit' => ['api/cards', 'api/cards_contact_black_list']],
-        'POST' => ['add' => ['api/cards', 'api/cards_contact_phone', 'api/cards_filtered', 'api/near_cards']],
+        'POST' => ['add' => ['api/cards', 'api/cards_contact_phone', 'api/cards_filtered', 'api/near_cards', 'api/cards_request_status', 'api/cards_request_get_statuses', 'api/cards_request_post', 'api/cards_request_get_posts']],
         'DELETE' => ['delete' => ['api/cards', 'api/cards_delete', 'api/cards_contact_delete']],
     );
     public $current_user_id = null;
@@ -1051,6 +1052,116 @@ class ApiCardsController extends Controller
 
         }
         return response()->json($card_request_status, 201);
+    }
+
+    public function getStatusCardRequest(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+
+        if (!$card_request_id && !$card_object_id) {
+            return response()->json(array(), 402);
+        }
+
+        $page = $request->get('page');
+        $size = $request->get('size');
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+
+        $query = CardRequestStatus::query();
+
+        if (isset($card_request_id)) {
+            if (is_array($card_request_id) && !empty($card_request_id)) {
+                $query->where('card_request_id', 'in', $card_request_id);
+            } else {
+                $query->where('card_request_id', '=', $card_request_id);
+            }
+        }
+
+        if (isset($card_object_id)) {
+            if (is_array($card_object_id) && !empty($card_object_id)) {
+                $query->where('card_object_id', 'in', $card_object_id);
+            } else {
+                $query->where('card_object_id', '=', $card_object_id);
+            }
+        }
+
+        $card_request_status = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+
+        return response()->json($card_request_status, 200);
+    }
+
+    public function setCardRequestPost(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+        $post = $request->get('post');
+        $initial_card = $request->get('initial_card');
+
+        if (!$card_request_id || !$card_object_id || !$post || !$initial_card) {
+            return response()->json(array(), 402);
+        }
+
+        $data = [
+            'post' => $post,
+            'initial_card' => $initial_card,
+            'card_request_id' => $card_request_id,
+            'card_object_id' => $card_object_id,
+            'user_id' => $this->current_user_id,
+
+        ];
+        $card_request_post = CardRequestPosts::create($data);
+
+        return response()->json($card_request_post, 201);
+    }
+
+    public function getCardRequestPosts(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+        $initial_card = $request->get('initial_card');
+
+        if (!$card_request_id && !$card_object_id && !$initial_card) {
+            return response()->json(array(), 402);
+        }
+
+        $page = $request->get('page');
+        $size = $request->get('size');
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+
+        $query = CardRequestPosts::query();
+
+        if (isset($card_request_id)) {
+            if (is_array($card_request_id) && !empty($card_request_id)) {
+                $query->where('card_request_id', 'in', $card_request_id);
+            } else {
+                $query->where('card_request_id', '=', $card_request_id);
+            }
+        }
+
+        if (isset($card_object_id)) {
+            if (is_array($card_object_id) && !empty($card_object_id)) {
+                $query->where('card_object_id', 'in', $card_object_id);
+            } else {
+                $query->where('card_object_id', '=', $card_object_id);
+            }
+        }
+
+        if (isset($initial_card)) {
+            $query->where('initial_card', '=', $initial_card);
+        }
+
+        $card_request_post = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+
+        return  $card_request_post;
     }
 
 }
