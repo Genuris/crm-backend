@@ -139,13 +139,168 @@ class ApiCardsController extends Controller
         if (!is_null($subcategory)) {
             $subcategories = explode(",", $subcategory);
             if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
-                $query->whereIn('subcategory', $subcategories);
+                $subcategory_search_array = [];
+                $flagIsNull = false;
+                foreach($subcategories as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $subcategory_search_array[] = $subcat;
+                    }
+                }
+                if (count($subcategory_search_array) > 1) {
+                    $subcategory_search_array = implode("|", $subcategory_search_array);
+                    $query->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
+                    if ($flagIsNull) {
+                        $query->orWhere('subcategory', '=', NULL);
+                    }
+                } else if(count($subcategory_search_array) > 0){
+                    $query->where('subcategory', 'like', $subcategory_search_array[0]);
+                    if ($flagIsNull) {
+                        $query->orWhere('subcategory', '=', NULL);
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhere('subcategory', '=', NULL);
+                    }
+                }
             } else {
-                $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+                if ($subcategory === 'null') {
+                    $query->where('subcategory', '=', NULL);
+                } else {
+                    $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+                }
             }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
         }
 
         if (!is_null($street)) {
+            $streets = explode(",", $street);
+            if (is_array($streets) && !empty($streets) && count($streets) > 1) {
+                $street_search_array = [];
+                $flagIsNull = false;
+                foreach($streets as $i => $str) {
+                    if ($str === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $street_search_array[] = $str;
+                    }
+                }
+                if (count($street_search_array) > 1) {
+                    $street_search_array = implode("|", $street_search_array);
+                    $query->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
+                    if ($flagIsNull) {
+                        $query->orWhere('street', '=', NULL);
+                    }
+                } else if(count($street_search_array) > 0){
+                    $query->where('street', 'like', $street_search_array[0]);
+                    if ($flagIsNull) {
+                        $query->orWhere('street', '=', NULL);
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhere('street', '=', NULL);
+                    }
+                }
+            } else {
+                if ($street === 'null') {
+                    $query->where('street', '=', NULL);
+                } else {
+                    $query->where('street', 'REGEXP', '\b'.$street.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($area)) {
+            $areas = explode(",", $area);
+            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                $areas_search_array = [];
+                $flagIsNull = false;
+                foreach($areas as $i => $str) {
+                    if ($str === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $areas_search_array[] = $str;
+                    }
+                }
+                if (count($areas_search_array) > 1) {
+                    $areas_search_array = implode("|", $areas_search_array);
+                    $query->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
+                    if ($flagIsNull) {
+                        $query->orWhere('area', '=', NULL);
+                    }
+                } else if(count($areas_search_array) > 0){
+                    $query->where('area', 'like', $areas_search_array[0]);
+                    if ($flagIsNull) {
+                        $query->orWhere('area', '=', NULL);
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhere('area', '=', NULL);
+                    }
+                }
+            } else {
+                if ($area === 'null') {
+                    $query->where('area', '=', NULL);
+                } else {
+                    $query->where('area', 'REGEXP', '\b'.$area.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($city)) {
+            $cities = explode(",", $city);
+            if (is_array($cities) && !empty($cities) && count($cities) > 1) {
+                $cities_search_array = [];
+                $flagIsNull = false;
+                foreach($cities as $i => $str) {
+                    if ($str === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $cities_search_array[] = $str;
+                    }
+                }
+                if (count($cities_search_array) > 1) {
+                    $cities_search_array = implode("|", $cities_search_array);
+                    $query->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
+                    if ($flagIsNull) {
+                        $query->orWhere('city', '=', NULL);
+                    }
+                } else if(count($cities_search_array) > 0){
+                    $query->where('city', 'like', $cities_search_array[0]);
+                    if ($flagIsNull) {
+                        $query->orWhere('city', '=', NULL);
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhere('city', '=', NULL);
+                    }
+                }
+            } else {
+                if ($city === 'null') {
+                    $query->where('city', '=', NULL);
+                } else {
+                    $query->where('city', 'REGEXP', '\b'.$city.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        /*if (!is_null($street)) {
             $streets = explode(",", $street);
             if (is_array($streets) && !empty($streets) && count($streets) > 1) {
                 $query->whereIn('street', $streets);
@@ -170,7 +325,7 @@ class ApiCardsController extends Controller
             } else {
                 $query->where('city', 'REGEXP', '\b'.$city.'\b');
             }
-        }
+        }*/
 
         if (!is_null($stage_transaction)) {
             $stage_transactions = explode(",", $stage_transaction);
