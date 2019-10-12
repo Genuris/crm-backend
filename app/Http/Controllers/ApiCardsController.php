@@ -161,11 +161,11 @@ class ApiCardsController extends Controller
                 } else if(count($subcategory_search_array) > 0){
                     if ($flagIsNull) {
                         $query->where(function ($q) use ($subcategory_search_array) {
-                            $q->where('subcategory', 'REGEXP', '\\\\b'.$subcategory_search_array[0].'\\\\b');//
+                            $q->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array[0].'\b');
                             $q->orWhereNull('subcategory');
                         });
                     } else {
-                        $query->where('subcategory', 'REGEXP', '\<'.$subcategory_search_array.'\>');
+                        $query->where('subcategory', 'REGEXP', '\\\\b'.$subcategory_search_array.'\\\\b');
                     }
                 } else {
                     if ($flagIsNull) {
