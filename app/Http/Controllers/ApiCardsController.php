@@ -150,18 +150,26 @@ class ApiCardsController extends Controller
                 }
                 if (count($subcategory_search_array) > 1) {
                     $subcategory_search_array = implode("|", $subcategory_search_array);
-                    $query->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
                     if ($flagIsNull) {
-                        $query->orWhere('subcategory', '=', NULL);
+                        $query->where(function ($q) use ($subcategory_search_array) {
+                            $q->where('subcategory', 'REGEXP', '\b' . $subcategory_search_array . '\b');
+                            $q->orWhereNull('subcategory');
+                        });
+                    } else {
+                        $query->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
                     }
                 } else if(count($subcategory_search_array) > 0){
-                    $query->where('subcategory', 'like', $subcategory_search_array[0]);
                     if ($flagIsNull) {
-                        $query->orWhere('subcategory', '=', NULL);
+                        $query->where(function ($q) use ($subcategory_search_array) {
+                            $q->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array[0].'\b');
+                            $q->orWhereNull('subcategory');
+                        });
+                    } else {
+                        $query->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
                     }
                 } else {
                     if ($flagIsNull) {
-                        $query->orWhere('subcategory', '=', NULL);
+                        $query->orWhereNull('subcategory');
                     }
                 }
             } else {
@@ -332,7 +340,7 @@ class ApiCardsController extends Controller
             if (is_array($stage_transactions) && !empty($stage_transactions) && count($stage_transactions) > 1) {
                 $query->whereIn('stage_transaction', $stage_transactions);
             } else {
-                $query->where('stage_transaction', 'REGEXP', '\b'.$stage_transaction.'\b');
+                $query->where('stage_transaction', 'REGEXP', '\\b'.$stage_transaction.'\\b');
             }
         }
 
@@ -362,6 +370,10 @@ class ApiCardsController extends Controller
                 $flag = true;
             }
         }
+
+        $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+        $query_ = vsprintf($query_, $query->getBindings());
+        dd($query_);
 
         if ($flag) {
             $cards = $query->offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
