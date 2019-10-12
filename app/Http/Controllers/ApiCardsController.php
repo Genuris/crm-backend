@@ -176,7 +176,7 @@ class ApiCardsController extends Controller
                 if ($subcategory === 'null') {
                     $query->where('subcategory', '=', NULL);
                 } else {
-                    $query->where('subcategory', 'REGEXP', '\\\\b'.$subcategory.'\\\\b');
+                    $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
                 }
             }
 
