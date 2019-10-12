@@ -152,20 +152,20 @@ class ApiCardsController extends Controller
                     $subcategory_search_array = implode("|", $subcategory_search_array);
                     if ($flagIsNull) {
                         $query->where(function ($q) use ($subcategory_search_array) {
-                            $q->where('subcategory', 'REGEXP', '\/\b' . $subcategory_search_array . '\/\b');
+                            $q->where('subcategory', 'REGEXP', '/\\b' . $subcategory_search_array . '/\\b');
                             $q->orWhereNull('subcategory');
                         });
                     } else {
-                        $query->where('subcategory', 'REGEXP', '\/\b'.$subcategory_search_array.'\/\b');
+                        $query->where('subcategory', 'REGEXP', '/\\b'.$subcategory_search_array.'/\\b');
                     }
                 } else if(count($subcategory_search_array) > 0){
                     if ($flagIsNull) {
                         $query->where(function ($q) use ($subcategory_search_array) {
-                            $q->where('subcategory', 'REGEXP', '\/\b'.$subcategory_search_array[0].'\/\b');
+                            $q->where('subcategory', 'REGEXP', '/\\b'.$subcategory_search_array[0].'/\\b');
                             $q->orWhereNull('subcategory');
                         });
                     } else {
-                        $query->where('subcategory', 'REGEXP', '\/\b'.$subcategory_search_array.'\/\b');
+                        $query->where('subcategory', 'REGEXP', '/\\b'.$subcategory_search_array.'/\\b');
                     }
                 } else {
                     if ($flagIsNull) {
@@ -176,7 +176,7 @@ class ApiCardsController extends Controller
                 if ($subcategory === 'null') {
                     $query->where('subcategory', '=', NULL);
                 } else {
-                    $query->where('subcategory', 'REGEXP', '\/\b'.$subcategory.'\/\b');
+                    $query->where('subcategory', 'REGEXP', '/\\b'.$subcategory.'/\\b');
                 }
             }
 
