@@ -165,7 +165,7 @@ class ApiCardsController extends Controller
                             $q->orWhereNull('subcategory');
                         });
                     } else {
-                        $query->where('subcategory', 'REGEXP', '\\\\b'.$subcategory_search_array.'\\\\b');
+                        $query->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
                     }
                 } else {
                     if ($flagIsNull) {
