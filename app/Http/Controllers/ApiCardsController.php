@@ -199,18 +199,26 @@ class ApiCardsController extends Controller
                 }
                 if (count($street_search_array) > 1) {
                     $street_search_array = implode("|", $street_search_array);
-                    $query->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
                     if ($flagIsNull) {
-                        $query->orWhere('street', '=', NULL);
+                        $query->where(function ($q) use ($street_search_array) {
+                            $q->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
+                            $q->orWhereNull('street');
+                        });
+                    } else {
+                        $query->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
                     }
                 } else if(count($street_search_array) > 0){
-                    $query->where('street', 'like', $street_search_array[0]);
                     if ($flagIsNull) {
-                        $query->orWhere('street', '=', NULL);
+                        $query->where(function ($q) use ($street_search_array) {
+                            $q->where('street', 'REGEXP', '\b'.$street_search_array[0].'\b');
+                            $q->orWhereNull('street');
+                        });
+                    } else {
+                        $query->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
                     }
                 } else {
                     if ($flagIsNull) {
-                        $query->orWhere('street', '=', NULL);
+                        $query->orWhereNull('street');
                     }
                 }
             } else {
@@ -240,18 +248,26 @@ class ApiCardsController extends Controller
                 }
                 if (count($areas_search_array) > 1) {
                     $areas_search_array = implode("|", $areas_search_array);
-                    $query->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
                     if ($flagIsNull) {
-                        $query->orWhere('area', '=', NULL);
+                        $query->where(function ($q) use ($areas_search_array) {
+                            $q->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
+                            $q->orWhereNull('area');
+                        });
+                    } else {
+                        $query->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
                     }
                 } else if(count($areas_search_array) > 0){
-                    $query->where('area', 'like', $areas_search_array[0]);
                     if ($flagIsNull) {
-                        $query->orWhere('area', '=', NULL);
+                        $query->where(function ($q) use ($areas_search_array) {
+                            $q->where('area', 'REGEXP', '\b'.$areas_search_array[0].'\b');
+                            $q->orWhereNull('area');
+                        });
+                    } else {
+                        $query->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
                     }
                 } else {
                     if ($flagIsNull) {
-                        $query->orWhere('area', '=', NULL);
+                        $query->orWhereNull('area');
                     }
                 }
             } else {
@@ -281,18 +297,26 @@ class ApiCardsController extends Controller
                 }
                 if (count($cities_search_array) > 1) {
                     $cities_search_array = implode("|", $cities_search_array);
-                    $query->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
                     if ($flagIsNull) {
-                        $query->orWhere('city', '=', NULL);
+                        $query->where(function ($q) use ($cities_search_array) {
+                            $q->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
+                            $q->orWhereNull('city');
+                        });
+                    } else {
+                        $query->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
                     }
                 } else if(count($cities_search_array) > 0){
-                    $query->where('city', 'like', $cities_search_array[0]);
                     if ($flagIsNull) {
-                        $query->orWhere('city', '=', NULL);
+                        $query->where(function ($q) use ($cities_search_array) {
+                            $q->where('city', 'REGEXP', '\b'.$cities_search_array[0].'\b');
+                            $q->orWhereNull('city');
+                        });
+                    } else {
+                        $query->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
                     }
                 } else {
                     if ($flagIsNull) {
-                        $query->orWhere('city', '=', NULL);
+                        $query->orWhereNull('city');
                     }
                 }
             } else {
