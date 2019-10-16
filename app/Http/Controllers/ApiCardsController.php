@@ -214,7 +214,7 @@ class ApiCardsController extends Controller
             if (is_array($floor_locations) && !empty($floor_locations) && count($floor_locations) > 1) {
                 $floor_locations_array = [];
                 $flagIsNull = false;
-                foreach($floor_locations_array as $i => $subcat) {
+                foreach($floor_locations as $i => $subcat) {
                     if ($subcat === 'null') {
                         $flagIsNull = true;
                     } else {
