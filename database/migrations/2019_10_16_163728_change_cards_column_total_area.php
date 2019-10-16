@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Doctrine\DBAL\Types\FloatType;
+use Doctrine\DBAL\Types\Type;
 
-class AddCardsFieldTotalAreaEnd extends Migration
+class ChangeCardsColumnTotalArea extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +15,11 @@ class AddCardsFieldTotalAreaEnd extends Migration
      */
     public function up()
     {
-        Schema::table('cards', function (Blueprint $table) {
-            $table->double('total_area_end', 10, 8)->after('total_area')->nullable();
+        if (!Type::hasType('double')) {
+            Type::addType('double', FloatType::class);
+        }
+        Schema::table('cards', function(Blueprint $table) {
+            $table->double('total_area')->change()->nullable();
         });
     }
 
@@ -26,7 +31,7 @@ class AddCardsFieldTotalAreaEnd extends Migration
     public function down()
     {
         Schema::table('cards', function (Blueprint $table) {
-            $table->dropColumn('total_area');
+            $table->string('total_area')->nullable()->change();
         });
     }
 }

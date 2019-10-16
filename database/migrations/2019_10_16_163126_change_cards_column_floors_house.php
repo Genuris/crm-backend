@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCardsFieldTotalAreaEnd extends Migration
+class ChangeCardsColumnFloorsHouse extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddCardsFieldTotalAreaEnd extends Migration
     public function up()
     {
         Schema::table('cards', function (Blueprint $table) {
-            $table->double('total_area_end', 10, 8)->after('total_area')->nullable();
+            $table->integer('floors_house')->nullable()->change();
         });
     }
 
@@ -26,7 +26,7 @@ class AddCardsFieldTotalAreaEnd extends Migration
     public function down()
     {
         Schema::table('cards', function (Blueprint $table) {
-            $table->dropColumn('total_area');
+            $table->string('floors_house')->nullable()->change();
         });
     }
 }
