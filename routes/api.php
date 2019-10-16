@@ -106,6 +106,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('cards_contact_black_list/{id}', 'ApiCardsController@cardsContactIsBlackList');
     Route::delete('cards_delete/{card_id}/file/{file_id}', 'ApiCardsController@cardsDeleteFile');
 
+    Route::post('cards_request_status', 'ApiCardsController@setStatusCardRequest');
+    Route::post('cards_request_get_statuses', 'ApiCardsController@getStatusCardRequest');
+
+    Route::post('cards_request_post', 'ApiCardsController@setCardRequestPost');
+    Route::post('cards_request_get_posts', 'ApiCardsController@getCardRequestPosts');
+
 //roles
     Route::get('roles', 'ApiRolesController@index');
     Route::get('roles/{id}', 'ApiRolesController@show');

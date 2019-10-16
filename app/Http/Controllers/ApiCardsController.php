@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CardRequestPosts;
+use App\Models\CardRequestStatus;
 use App\Models\Role;
 use App\Modules\DataChangeLog\DataChangeLog;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ class ApiCardsController extends Controller
     public $permissions = array(
         'GET' => ['see' => ['api/cards']],
         'PUT' => ['edit' => ['api/cards', 'api/cards_contact_black_list']],
-        'POST' => ['add' => ['api/cards', 'api/cards_contact_phone', 'api/cards_filtered', 'api/near_cards']],
+        'POST' => ['add' => ['api/cards', 'api/cards_contact_phone', 'api/cards_filtered', 'api/near_cards', 'api/cards_request_status', 'api/cards_request_get_statuses', 'api/cards_request_post', 'api/cards_request_get_posts']],
         'DELETE' => ['delete' => ['api/cards', 'api/cards_delete', 'api/cards_contact_delete']],
     );
     public $current_user_id = null;
@@ -137,13 +139,200 @@ class ApiCardsController extends Controller
         if (!is_null($subcategory)) {
             $subcategories = explode(",", $subcategory);
             if (is_array($subcategories) && !empty($subcategories) && count($subcategories) > 1) {
-                $query->whereIn('subcategory', $subcategories);
+                $subcategory_search_array = [];
+                $flagIsNull = false;
+                foreach($subcategories as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $subcategory_search_array[] = $subcat;
+                    }
+                }
+                if (count($subcategory_search_array) > 1) {
+                    $subcategory_search_array = implode("|", $subcategory_search_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($subcategory_search_array) {
+                            $q->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
+                            $q->orWhereNull('subcategory');
+                        });
+                    } else {
+                        $query->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
+                    }
+                } else if(count($subcategory_search_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($subcategory_search_array) {
+                            $q->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array[0].'\b');
+                            $q->orWhereNull('subcategory');
+                        });
+                    } else {
+                        $query->where('subcategory', 'REGEXP', '\b'.$subcategory_search_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('subcategory');
+                    }
+                }
             } else {
-                $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+                if ($subcategory === 'null') {
+                    $query->where('subcategory', '=', NULL);
+                } else {
+                    $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+                }
             }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
         }
 
         if (!is_null($street)) {
+            $streets = explode(",", $street);
+            if (is_array($streets) && !empty($streets) && count($streets) > 1) {
+                $street_search_array = [];
+                $flagIsNull = false;
+                foreach($streets as $i => $str) {
+                    if ($str === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $street_search_array[] = $str;
+                    }
+                }
+                if (count($street_search_array) > 1) {
+                    $street_search_array = implode("|", $street_search_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($street_search_array) {
+                            $q->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
+                            $q->orWhereNull('street');
+                        });
+                    } else {
+                        $query->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
+                    }
+                } else if(count($street_search_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($street_search_array) {
+                            $q->where('street', 'REGEXP', '\b'.$street_search_array[0].'\b');
+                            $q->orWhereNull('street');
+                        });
+                    } else {
+                        $query->where('street', 'REGEXP', '\b'.$street_search_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('street');
+                    }
+                }
+            } else {
+                if ($street === 'null') {
+                    $query->where('street', '=', NULL);
+                } else {
+                    $query->where('street', 'REGEXP', '\b'.$street.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($area)) {
+            $areas = explode(",", $area);
+            if (is_array($areas) && !empty($areas) && count($areas) > 1) {
+                $areas_search_array = [];
+                $flagIsNull = false;
+                foreach($areas as $i => $str) {
+                    if ($str === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $areas_search_array[] = $str;
+                    }
+                }
+                if (count($areas_search_array) > 1) {
+                    $areas_search_array = implode("|", $areas_search_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($areas_search_array) {
+                            $q->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
+                            $q->orWhereNull('area');
+                        });
+                    } else {
+                        $query->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
+                    }
+                } else if(count($areas_search_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($areas_search_array) {
+                            $q->where('area', 'REGEXP', '\b'.$areas_search_array[0].'\b');
+                            $q->orWhereNull('area');
+                        });
+                    } else {
+                        $query->where('area', 'REGEXP', '\b'.$areas_search_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('area');
+                    }
+                }
+            } else {
+                if ($area === 'null') {
+                    $query->where('area', '=', NULL);
+                } else {
+                    $query->where('area', 'REGEXP', '\b'.$area.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($city)) {
+            $cities = explode(",", $city);
+            if (is_array($cities) && !empty($cities) && count($cities) > 1) {
+                $cities_search_array = [];
+                $flagIsNull = false;
+                foreach($cities as $i => $str) {
+                    if ($str === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $cities_search_array[] = $str;
+                    }
+                }
+                if (count($cities_search_array) > 1) {
+                    $cities_search_array = implode("|", $cities_search_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($cities_search_array) {
+                            $q->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
+                            $q->orWhereNull('city');
+                        });
+                    } else {
+                        $query->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
+                    }
+                } else if(count($cities_search_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($cities_search_array) {
+                            $q->where('city', 'REGEXP', '\b'.$cities_search_array[0].'\b');
+                            $q->orWhereNull('city');
+                        });
+                    } else {
+                        $query->where('city', 'REGEXP', '\b'.$cities_search_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('city');
+                    }
+                }
+            } else {
+                if ($city === 'null') {
+                    $query->where('city', '=', NULL);
+                } else {
+                    $query->where('city', 'REGEXP', '\b'.$city.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        /*if (!is_null($street)) {
             $streets = explode(",", $street);
             if (is_array($streets) && !empty($streets) && count($streets) > 1) {
                 $query->whereIn('street', $streets);
@@ -168,14 +357,14 @@ class ApiCardsController extends Controller
             } else {
                 $query->where('city', 'REGEXP', '\b'.$city.'\b');
             }
-        }
+        }*/
 
         if (!is_null($stage_transaction)) {
             $stage_transactions = explode(",", $stage_transaction);
             if (is_array($stage_transactions) && !empty($stage_transactions) && count($stage_transactions) > 1) {
                 $query->whereIn('stage_transaction', $stage_transactions);
             } else {
-                $query->where('stage_transaction', 'REGEXP', '\b'.$stage_transaction.'\b');
+                $query->where('stage_transaction', 'REGEXP', '\\b'.$stage_transaction.'\\b');
             }
         }
 
@@ -205,6 +394,10 @@ class ApiCardsController extends Controller
                 $flag = true;
             }
         }
+
+//        $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+//        $query_ = vsprintf($query_, $query->getBindings());
+//        dd($query_);
 
         if ($flag) {
             $cards = $query->offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
@@ -1021,6 +1214,145 @@ class ApiCardsController extends Controller
             }
         }
         return response()->json($cards, 200);
+    }
+
+    public function setStatusCardRequest(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+        $status = $request->get('status');
+
+        if (!$card_request_id || !$card_object_id || !$status) {
+            return response()->json(array(), 402);
+        }
+
+        $card_request_status = CardRequestStatus::where('card_request_id', '=', $card_request_id)
+            ->where('card_object_id','=', $card_object_id)->first();
+        if ($card_request_status) {
+            $card_request_status->status = $status;
+            $card_request_status->user_id = $this->current_user_id;
+            $card_request_status->save();
+        } else {
+            $data = [
+                'status' => $status,
+                'card_request_id' => $card_request_id,
+                'card_object_id' => $card_object_id,
+                'user_id' => $this->current_user_id,
+
+            ];
+            $card_request_status = CardRequestStatus::create($data);
+
+        }
+        return response()->json($card_request_status, 201);
+    }
+
+    public function getStatusCardRequest(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+
+        if (!$card_request_id && !$card_object_id) {
+            return response()->json(array(), 402);
+        }
+
+        $page = $request->get('page');
+        $size = $request->get('size');
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+
+        $query = CardRequestStatus::query();
+
+        if (isset($card_request_id)) {
+            if (is_array($card_request_id) && !empty($card_request_id)) {
+                $query->where('card_request_id', 'in', $card_request_id);
+            } else {
+                $query->where('card_request_id', '=', $card_request_id);
+            }
+        }
+
+        if (isset($card_object_id)) {
+            if (is_array($card_object_id) && !empty($card_object_id)) {
+                $query->where('card_object_id', 'in', $card_object_id);
+            } else {
+                $query->where('card_object_id', '=', $card_object_id);
+            }
+        }
+
+        $card_request_status = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+
+        return response()->json($card_request_status, 200);
+    }
+
+    public function setCardRequestPost(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+        $post = $request->get('post');
+        $initial_card = $request->get('initial_card');
+
+        if (!$card_request_id || !$card_object_id || !$post || !$initial_card) {
+            return response()->json(array(), 402);
+        }
+
+        $data = [
+            'post' => $post,
+            'initial_card' => $initial_card,
+            'card_request_id' => $card_request_id,
+            'card_object_id' => $card_object_id,
+            'user_id' => $this->current_user_id,
+
+        ];
+        $card_request_post = CardRequestPosts::create($data);
+
+        return response()->json($card_request_post, 201);
+    }
+
+    public function getCardRequestPosts(Request $request) {
+        $card_request_id = $request->get('card_request_id');
+        $card_object_id = $request->get('card_object_id');
+        $initial_card = $request->get('initial_card');
+
+        if (!$card_request_id && !$card_object_id && !$initial_card) {
+            return response()->json(array(), 402);
+        }
+
+        $page = $request->get('page');
+        $size = $request->get('size');
+        if (!$page) {
+            $page = 1;
+        }
+
+        if (!$size) {
+            $size = 10;
+        }
+
+        $query = CardRequestPosts::query();
+
+        if (isset($card_request_id)) {
+            if (is_array($card_request_id) && !empty($card_request_id)) {
+                $query->where('card_request_id', 'in', $card_request_id);
+            } else {
+                $query->where('card_request_id', '=', $card_request_id);
+            }
+        }
+
+        if (isset($card_object_id)) {
+            if (is_array($card_object_id) && !empty($card_object_id)) {
+                $query->where('card_object_id', 'in', $card_object_id);
+            } else {
+                $query->where('card_object_id', '=', $card_object_id);
+            }
+        }
+
+        if (isset($initial_card)) {
+            $query->where('initial_card', '=', $initial_card);
+        }
+
+        $card_request_post = $query->offset($page * $size)->orderBy("created_at", 'desc')->paginate($size);
+
+        return  $card_request_post;
     }
 
 }

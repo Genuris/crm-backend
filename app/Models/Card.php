@@ -98,10 +98,18 @@ class Card extends Model
     }
 
     public function CardRequestObjectStatus(){
-        return $this->hasMany('App\Models\CardRequestPosts', 'id', 'card_object_id');
+        return $this->hasMany('App\Models\CardRequestStatus', 'id', 'card_object_id');
     }
 
     public function CardRequestStatus(){
+        return $this->hasMany('App\Models\CardRequestStatus', 'id', 'card_request_id');
+    }
+
+    public function CardRequestObjectPosts(){
+        return $this->hasMany('App\Models\CardRequestPosts', 'id', 'card_object_id');
+    }
+
+    public function CardRequestPosts(){
         return $this->hasMany('App\Models\CardRequestPosts', 'id', 'card_request_id');
     }
 
