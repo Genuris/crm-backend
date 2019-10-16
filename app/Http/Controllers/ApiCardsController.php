@@ -103,9 +103,11 @@ class ApiCardsController extends Controller
         $size = $request->get('size');
         $type = $request->get('type');
         $contacts_id = $request->get('contacts_id');
+        $is_archived = $request->get('is_archived');
         $sale_type = $request->get('sale_type');
         $category = $request->get('category');
         $subcategory = $request->get('subcategory');
+        $floor_location = $request->get('floor_location');
         $stage_transaction = $request->get('stage_transaction');
         $user_id = $request->get('user_id');
         $price_from = $request->get('price_from');
@@ -136,6 +138,10 @@ class ApiCardsController extends Controller
         $query = Card::query();
         if ($type) {
             $query->where('type', 'like', $type);
+        }
+
+        if (isset($is_archived) && !empty($is_archived)) {
+            $query->where('is_archived', '=', $is_archived);
         }
 
         if ($contacts_id) {
@@ -195,6 +201,55 @@ class ApiCardsController extends Controller
                     $query->where('subcategory', '=', NULL);
                 } else {
                     $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($floor_location)) {
+            $floor_locations = explode(",", $floor_location);
+            if (is_array($floor_locations) && !empty($floor_locations) && count($floor_locations) > 1) {
+                $floor_locations_array = [];
+                $flagIsNull = false;
+                foreach($floor_locations_array as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $floor_locations_array[] = $subcat;
+                    }
+                }
+                if (count($floor_locations_array) > 1) {
+                    $floor_locations_array = implode("|", $floor_locations_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($floor_locations_array) {
+                            $q->where('floor_location', 'REGEXP', '\b'.$floor_locations_array.'\b');
+                            $q->orWhereNull('floor_location');
+                        });
+                    } else {
+                        $query->where('floor_location', 'REGEXP', '\b'.$floor_locations_array.'\b');
+                    }
+                } else if(count($floor_locations_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($floor_locations_array) {
+                            $q->where('floor_location', 'REGEXP', '\b'.$floor_locations_array[0].'\b');
+                            $q->orWhereNull('floor_location');
+                        });
+                    } else {
+                        $query->where('floor_location', 'REGEXP', '\b'.$floor_locations_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('floor_location');
+                    }
+                }
+            } else {
+                if ($floor_location === 'null') {
+                    $query->where('floor_location', '=', NULL);
+                } else {
+                    $query->where('floor_location', 'REGEXP', '\b'.$floor_location.'\b');
                 }
             }
 
