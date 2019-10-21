@@ -141,7 +141,7 @@ class ApiCardsController extends Controller
         }
 
         if ($is_archived) {
-            $query->where('is_archived', 'like', $is_archived);
+            $query->where('is_archived', '=', (int)$is_archived);
         }
 
         if ($contacts_id) {
