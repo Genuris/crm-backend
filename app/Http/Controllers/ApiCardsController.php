@@ -555,9 +555,9 @@ class ApiCardsController extends Controller
             }
         }
 
-//        $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
-//        $query_ = vsprintf($query_, $query->getBindings());
-//        dd($query_);
+        $query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+        $query_ = vsprintf($query_, $query->getBindings());
+        dd($query_);
 
         if ($flag) {
             $cards = $query->offset($page * $size)->orderBy($sort[0], $sort[1])->paginate($size);
