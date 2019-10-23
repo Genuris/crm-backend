@@ -725,7 +725,7 @@ class ApiCardsController extends Controller
             $card_data['contract_expiration_date'] = null;
         }
 
-        $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
+        $card_data['is_archived'] = (int)$card_data['is_archived'];
         $card_data['creator_id'] = $this->current_user_id;
 
         if (isset($card_data['currency'])  && !is_null($card_data['currency']) && isset($card_data['price']) && !is_null($card_data['price'])) {
@@ -834,7 +834,7 @@ class ApiCardsController extends Controller
             }
 
             if (isset($card_data['is_archived'])) {
-                $card_data['is_archived'] = (($card_data['is_archived'] == 'true') ? true : false);
+                $card_data['is_archived'] = (int)$card_data['is_archived'];
             }
 
             if (
