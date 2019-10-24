@@ -453,13 +453,23 @@ class ApiCardsController extends Controller
             $query->where('price', '<=', (float)$price_to);
         }
 
-        if ($total_area_from) {
-            $query->where('total_area', '>=', (float)$total_area_from);
-        }
+        if ($total_area_from || $total_area_to) {
+            $temp = [$total_area_from, $total_area_to];
 
-        if ($total_area_to) {
-            $query->where('total_area', '<=', (float)$total_area_to);
+            $query->where(function ($q) use ($temp) {
+                if ($temp[0]){
+                    $q->where('total_area', '>=', (float)$temp[0]);
+                }
+                if ($temp[1]){
+                    $q->where('total_area', '<=', (float)$temp[1]);
+                }
+                $q->orWhereNull('total_area');
+            });
+            //$query->where('total_area', '>=', (float)$total_area_from);
         }
+        /*if ($total_area_to) {
+            $query->where('total_area', '<=', (float)$total_area_to);
+        }*/
 
         /*if ($total_area_to || $total_area_to) {
             $query->where(function ($q){
