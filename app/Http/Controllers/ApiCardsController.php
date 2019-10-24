@@ -140,7 +140,7 @@ class ApiCardsController extends Controller
             $query->where('type', 'like', $type);
         }
 
-        if (isset($is_archived) and !isNull($is_archived)) {
+        if (isset($is_archived)) {
             $query->where('is_archived', '=', (int)$is_archived);
         }
 
