@@ -103,9 +103,11 @@ class ApiCardsController extends Controller
         $size = $request->get('size');
         $type = $request->get('type');
         $contacts_id = $request->get('contacts_id');
+        $is_archived = $request->get('is_archived');
         $sale_type = $request->get('sale_type');
         $category = $request->get('category');
         $subcategory = $request->get('subcategory');
+        $floor_location = $request->get('floor_location');
         $stage_transaction = $request->get('stage_transaction');
         $user_id = $request->get('user_id');
         $price_from = $request->get('price_from');
@@ -136,6 +138,10 @@ class ApiCardsController extends Controller
         $query = Card::query();
         if ($type) {
             $query->where('type', 'like', $type);
+        }
+
+        if (isset($is_archived)) {
+            $query->where('is_archived', '=', (int)$is_archived);
         }
 
         if ($contacts_id) {
@@ -195,6 +201,55 @@ class ApiCardsController extends Controller
                     $query->where('subcategory', '=', NULL);
                 } else {
                     $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($floor_location)) {
+            $floor_locations = explode(",", $floor_location);
+            if (is_array($floor_locations) && !empty($floor_locations) && count($floor_locations) > 1) {
+                $floor_locations_array = [];
+                $flagIsNull = false;
+                foreach($floor_locations as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $floor_locations_array[] = $subcat;
+                    }
+                }
+                if (count($floor_locations_array) > 1) {
+                    $floor_locations_array = implode("|", $floor_locations_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($floor_locations_array) {
+                            $q->where('floor_location', 'REGEXP', '\b'.$floor_locations_array.'\b');
+                            $q->orWhereNull('floor_location');
+                        });
+                    } else {
+                        $query->where('floor_location', 'REGEXP', '\b'.$floor_locations_array.'\b');
+                    }
+                } else if(count($floor_locations_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($floor_locations_array) {
+                            $q->where('floor_location', 'REGEXP', '\b'.$floor_locations_array[0].'\b');
+                            $q->orWhereNull('floor_location');
+                        });
+                    } else {
+                        $query->where('floor_location', 'REGEXP', '\b'.$floor_locations_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('floor_location');
+                    }
+                }
+            } else {
+                if ($floor_location === 'null') {
+                    $query->where('floor_location', '=', NULL);
+                } else {
+                    $query->where('floor_location', 'REGEXP', '\b'.$floor_location.'\b');
                 }
             }
 
@@ -398,52 +453,88 @@ class ApiCardsController extends Controller
             $query->where('price', '<=', (float)$price_to);
         }
 
-        if ($total_area_from) {
-            $query->where('total_area', '>=', (float)$total_area_from);
+        if ($total_area_from || $total_area_to) {
+            $temp = [$total_area_from, $total_area_to];
+
+            $query->where(function ($q) use ($temp) {
+                if ($temp[0]){
+                    $q->where('total_area', '>=', (float)$temp[0]);
+                }
+                if ($temp[1]){
+                    $q->where('total_area', '<=', (float)$temp[1]);
+                }
+                $q->orWhereNull('total_area');
+            });
         }
 
-        if ($total_area_to) {
-            $query->where('total_area', '<=', (float)$total_area_to);
+        if ($total_area_end_from || $total_area_end_to) {
+            $temp = [$total_area_end_from, $total_area_end_to];
+
+            $query->where(function ($q) use ($temp) {
+                if ($temp[0]){
+                    $q->where('total_area_end', '>=', (float)$temp[0]);
+                }
+                if ($temp[1]){
+                    $q->where('total_area_end', '<=', (float)$temp[1]);
+                }
+                $q->orWhereNull('total_area_end');
+            });
         }
 
-        if ($total_area_end_from) {
-            $query->where('total_area_end', '>=', (float)$total_area_end_from);
+        if ($floors_house_from || $floors_house_to) {
+            $temp = [$floors_house_from, $floors_house_to];
+
+            $query->where(function ($q) use ($temp) {
+                if ($temp[0]){
+                    $q->where('floors_house', '>=', (float)$temp[0]);
+                }
+                if ($temp[1]){
+                    $q->where('floors_house', '<=', (float)$temp[1]);
+                }
+                $q->orWhereNull('floors_house');
+            });
         }
 
-        if ($total_area_end_to) {
-            $query->where('total_area_end', '<=', (float)$total_area_end_to);
+        if ($floors_house_end_from || $floors_house_end_to) {
+            $temp = [$floors_house_end_from, $floors_house_end_to];
+
+            $query->where(function ($q) use ($temp) {
+                if ($temp[0]){
+                    $q->where('floors_house_end', '>=', (float)$temp[0]);
+                }
+                if ($temp[1]){
+                    $q->where('floors_house_end', '<=', (float)$temp[1]);
+                }
+                $q->orWhereNull('floors_house_end');
+            });
         }
 
-        if ($floors_house_from) {
-            $query->where('floors_house', '>=', (int)$floors_house_from);
+        if ($number_of_floors_from || $number_of_floors_to) {
+            $temp = [$number_of_floors_from, $number_of_floors_to];
+
+            $query->where(function ($q) use ($temp) {
+                if ($temp[0]){
+                    $q->where('number_of_floors', '>=', (float)$temp[0]);
+                }
+                if ($temp[1]){
+                    $q->where('number_of_floors', '<=', (float)$temp[1]);
+                }
+                $q->orWhereNull('number_of_floors');
+            });
         }
 
-        if ($floors_house_to) {
-            $query->where('floors_house', '<=', (int)$floors_house_to);
-        }
+        if ($number_of_floors_end_from || $number_of_floors_end_to) {
+            $temp = [$number_of_floors_end_from, $number_of_floors_end_to];
 
-        if ($floors_house_end_from) {
-            $query->where('floors_house_end', '>=', (int)$floors_house_end_from);
-        }
-
-        if ($floors_house_end_to) {
-            $query->where('floors_house_end', '<=', (int)$floors_house_end_to);
-        }
-
-        if ($number_of_floors_from) {
-            $query->where('number_of_floors', '>=', (int)$number_of_floors_from);
-        }
-
-        if ($number_of_floors_to) {
-            $query->where('number_of_floors', '<=', (int)$number_of_floors_to);
-        }
-
-        if ($number_of_floors_end_from) {
-            $query->where('number_of_floors_end', '>=', (int)$number_of_floors_end_from);
-        }
-
-        if ($number_of_floors_end_to) {
-            $query->where('number_of_floors_end', '<=', (int)$number_of_floors_end_to);
+            $query->where(function ($q) use ($temp) {
+                if ($temp[0]){
+                    $q->where('number_of_floors_end', '>=', (float)$temp[0]);
+                }
+                if ($temp[1]){
+                    $q->where('number_of_floors_end', '<=', (float)$temp[1]);
+                }
+                $q->orWhereNull('number_of_floors_end');
+            });
         }
 
         if (!$page) {
@@ -646,7 +737,7 @@ class ApiCardsController extends Controller
             $card_data['contract_expiration_date'] = null;
         }
 
-        $card_data['is_archived'] = ((isset($card_data['is_archived']) && $card_data['is_archived'] == 'true') ? true : false);
+        $card_data['is_archived'] = (int)$card_data['is_archived'];
         $card_data['creator_id'] = $this->current_user_id;
 
         if (isset($card_data['currency'])  && !is_null($card_data['currency']) && isset($card_data['price']) && !is_null($card_data['price'])) {
@@ -755,7 +846,7 @@ class ApiCardsController extends Controller
             }
 
             if (isset($card_data['is_archived'])) {
-                $card_data['is_archived'] = (($card_data['is_archived'] == 'true') ? true : false);
+                $card_data['is_archived'] = (int)$card_data['is_archived'];
             }
 
             if (
