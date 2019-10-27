@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+dd('time update');
+
 Route::group(['namespace' => 'Api'], function () {
     Route::get('check-api', 'ApiTestController@checkApi');
 });
