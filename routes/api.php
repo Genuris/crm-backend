@@ -123,6 +123,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('card_contacts', 'ApiCardContactsController@index');
     Route::get('card_contacts/{id}', 'ApiCardContactsController@show');
     Route::put('card_contacts/{id}', 'ApiCardContactsController@update');
+    Route::post('card_contacts', 'ApiCardContactsController@store');
     //    Route::post('card_contacts', 'ApiCardContactsController@store');
 //    Route::delete('card_contacts/{id}', 'ApiCardContactsController@delete');
 

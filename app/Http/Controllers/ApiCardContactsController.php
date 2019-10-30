@@ -29,13 +29,13 @@ class ApiCardContactsController extends Controller
                 return response()->json(array('error' => array('status' => 401, 'message' => 'User is deleted')), 401);
             }
 
-            $card_contacts = Role::find($user->role_id);
+            $role = Role::find($user->role_id);
 
-            if (!$card_contacts) {
+            if (!$role) {
                 return response()->json(array('error' => array('status' => 401, 'message' => 'Unauthorized. The user needs to be authenticated.')), 401);
             }
 
-            if (!$card_contacts->checkAction($request->path(), $request->method(), $this->permissions, new Role())) {
+            if (!$role->checkAction($request->path(), $request->method(), $this->permissions, new Role())) {
                 return response()->json(array('error' => array('status' => 403, 'message' => 'Forbidden. The user is authenticated, but does not have the permissions to perform an action.')), 403);
             }
 
@@ -84,11 +84,81 @@ class ApiCardContactsController extends Controller
     {
         $card_contacts = CardContacts::find($id);
 
-        if($card_contacts) {
+        if ($card_contacts) {
             $card_contacts->CardsContactsPhones;
         }
 
         return response()->json($card_contacts, 200);
+    }
+
+    public function store(Request $request)
+    {
+        $card_contact_data = $request->all();
+        $cards_contacts_id = null;
+
+        if (isset($card_contact_data['cards_contacts_phones']) and is_array($card_contact_data['cards_contacts_phones'])) {
+
+            foreach ($card_contact_data['cards_contacts_phones'] as $key => $value) {
+
+                $card_contacts_phone = CardContactsPhones::where('phone', 'like', $value['phone'])->where('agency_id', '=', $request->get('agency_id'))->first();
+
+                if ($card_contacts_phone) {
+
+                    $cards_contacts_id = $card_contacts_phone->cards_contacts_id;
+                    break;
+
+                }
+
+            }
+
+        } else {
+            return response()->json(array(), 402);
+        }
+
+        if (!$cards_contacts_id) {
+
+            $card_contact = CardContacts::create([
+                'name' => (isset($card_contact_data['name']) ? $card_contact_data['name'] : ''),
+                'email' => (isset($card_contact_data['email']) ? $card_contact_data['email'] : ''),
+                'children' => (isset($card_contact_data['children']) ? $card_contact_data['children'] : 0),
+                'car' => (isset($card_contact_data['car']) ? $card_contact_data['car'] : ''),
+                'work_place' => (isset($card_contact_data['work_place']) ? $card_contact_data['work_place'] : ''),
+                'is_married' => (isset($card_contact_data['is_married']) ? $card_contact_data['is_married'] : ''),
+                'is_client' => (isset($card_contact_data['is_client']) ? $card_contact_data['is_client'] : ''),
+                'is_partner' => (isset($card_contact_data['is_partner']) ? $card_contact_data['is_partner'] : ''),
+                'is_realtor' => (isset($card_contact_data['is_realtor']) ? $card_contact_data['is_realtor'] : ''),
+                'years' => (isset($card_contact_data['years']) ? $card_contact_data['years'] : ''),
+                'leisure' => (isset($card_contact_data['leisure']) ? $card_contact_data['leisure'] : ''),
+                'kind_of_activity' => (isset($card_contact_data['kind_of_activity']) ? $card_contact_data['kind_of_activity'] : ''),
+                'animals' => (isset($card_contact_data['animals']) ? $card_contact_data['animals'] : ''),
+                'decision_makers' => (isset($card_contact_data['decision_makers']) ? $card_contact_data['decision_makers'] : ''),
+                'is_black_list' => (isset($card_contact_data['is_black_list']) ? $card_contact_data['is_black_list'] : ''),
+                'agency_id' => $request->get('agency_id')
+            ]);
+
+            if (!$card_contact) {
+                return response()->json(array(), 402);
+            }
+
+            $cards_contacts_id = $card_contact->id;
+
+            foreach ($card_contact_data['cards_contacts_phones'] as $key => $value) {
+
+                CardContactsPhones::create([
+                    'cards_contacts_id' => $cards_contacts_id,
+                    'phone' => (isset($value['phone']) ? $value['phone'] : ''),
+                    'agency_id' => $request->get('agency_id')
+                ]);
+
+            }
+
+            if ($card_contact) {
+                $card_contact->CardsContactsPhones;
+            }
+
+            return response()->json($card_contact, 201);
+        }
+        return response()->json(array(), 402);
     }
 
     public function update(Request $request, $id)
@@ -157,7 +227,7 @@ class ApiCardContactsController extends Controller
         }
 
         $card_contacts = CardContacts::find($id);
-        if($card_contacts) {
+        if ($card_contacts) {
             $card_contacts->CardsContactsPhones;
         }
 
