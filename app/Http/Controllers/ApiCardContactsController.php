@@ -13,7 +13,7 @@ class ApiCardContactsController extends Controller
         'GET' => ['see' => ['api/card_contacts']],
         'PUT' => ['edit' => ['api/card_contacts']],
         'DELETE' => ['delete' => ['api/card_contacts']],
-        'post' => ['add' => ['api/card_contacts']],
+        'POST' => ['add' => ['api/card_contacts']],
     );
 
     public function __construct()
