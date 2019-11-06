@@ -115,6 +115,11 @@ class ApiCardsController extends Controller
         $city = $request->get('city');
         $area = $request->get('area');
         $street = $request->get('street');
+        $apartment_type = $request->get('apartment_type');
+        $layout = $request->get('layout');
+        $household_appliances = $request->get('household_appliances');
+        $will_live = $request->get('will_live');
+        $balcony = $request->get('balcony');
         $sort = explode(',', $request->get('sort'));
 
         $total_area_from = $request->get('total_area_from');
@@ -159,6 +164,254 @@ class ApiCardsController extends Controller
 //        if ($subcategory) {
 //            $query->where('subcategory', 'REGEXP', '\b'.$subcategory.'\b');
 //        }
+
+        //add new filters
+        if (!is_null($apartment_type)) {
+            $apartment_types = explode(",", $apartment_type);
+            if (is_array($apartment_types) && !empty($apartment_types) && count($apartment_types) > 1) {
+                $apartment_type_array = [];
+                $flagIsNull = false;
+                foreach($apartment_types as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $apartment_type_array[] = $subcat;
+                    }
+                }
+                if (count($apartment_type_array) > 1) {
+                    $apartment_type_array = implode("|", $apartment_type_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($apartment_type_array) {
+                            $q->where('apartment_type', 'REGEXP', '\b'.$apartment_type_array.'\b');
+                            $q->orWhereNull('apartment_type');
+                        });
+                    } else {
+                        $query->where('apartment_type', 'REGEXP', '\b'.$apartment_type_array.'\b');
+                    }
+                } else if(count($apartment_type_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($apartment_type_array) {
+                            $q->where('apartment_type', 'REGEXP', '\b'.$apartment_type_array[0].'\b');
+                            $q->orWhereNull('apartment_type');
+                        });
+                    } else {
+                        $query->where('apartment_type', 'REGEXP', '\b'.$apartment_type_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('apartment_type');
+                    }
+                }
+            } else {
+                if ($apartment_type === 'null') {
+                    $query->where('apartment_type', '=', NULL);
+                } else {
+                    $query->where('apartment_type', 'REGEXP', '\b'.$apartment_type.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($layout)) {
+            $layouts = explode(",", $layout);
+            if (is_array($layouts) && !empty($layouts) && count($layouts) > 1) {
+                $layouts_array = [];
+                $flagIsNull = false;
+                foreach($layouts as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $layouts_array[] = $subcat;
+                    }
+                }
+                if (count($layouts_array) > 1) {
+                    $layouts_array = implode("|", $layouts_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('layout', 'REGEXP', '\b'.$layouts_array.'\b');
+                            $q->orWhereNull('layout');
+                        });
+                    } else {
+                        $query->where('layout', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else if(count($layouts_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('layout', 'REGEXP', '\b'.$layouts_array[0].'\b');
+                            $q->orWhereNull('layout');
+                        });
+                    } else {
+                        $query->where('layout', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('layout');
+                    }
+                }
+            } else {
+                if ($layout === 'null') {
+                    $query->where('layout', '=', NULL);
+                } else {
+                    $query->where('layout', 'REGEXP', '\b'.$layout.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($household_appliances)) {
+            $layouts = explode(",", $household_appliances);
+            if (is_array($layouts) && !empty($layouts) && count($layouts) > 1) {
+                $layouts_array = [];
+                $flagIsNull = false;
+                foreach($layouts as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $layouts_array[] = $subcat;
+                    }
+                }
+                if (count($layouts_array) > 1) {
+                    $layouts_array = implode("|", $layouts_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('household_appliances', 'REGEXP', '\b'.$layouts_array.'\b');
+                            $q->orWhereNull('household_appliances');
+                        });
+                    } else {
+                        $query->where('household_appliances', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else if(count($layouts_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('household_appliances', 'REGEXP', '\b'.$layouts_array[0].'\b');
+                            $q->orWhereNull('household_appliances');
+                        });
+                    } else {
+                        $query->where('household_appliances', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('household_appliances');
+                    }
+                }
+            } else {
+                if ($household_appliances === 'null') {
+                    $query->where('household_appliances', '=', NULL);
+                } else {
+                    $query->where('household_appliances', 'REGEXP', '\b'.$household_appliances.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($will_live)) {
+            $layouts = explode(",", $will_live);
+            if (is_array($layouts) && !empty($layouts) && count($layouts) > 1) {
+                $layouts_array = [];
+                $flagIsNull = false;
+                foreach($layouts as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $layouts_array[] = $subcat;
+                    }
+                }
+                if (count($layouts_array) > 1) {
+                    $layouts_array = implode("|", $layouts_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('will_live', 'REGEXP', '\b'.$layouts_array.'\b');
+                            $q->orWhereNull('will_live');
+                        });
+                    } else {
+                        $query->where('will_live', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else if(count($layouts_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('will_live', 'REGEXP', '\b'.$layouts_array[0].'\b');
+                            $q->orWhereNull('will_live');
+                        });
+                    } else {
+                        $query->where('will_live', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('will_live');
+                    }
+                }
+            } else {
+                if ($will_live === 'null') {
+                    $query->where('will_live', '=', NULL);
+                } else {
+                    $query->where('will_live', 'REGEXP', '\b'.$will_live.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($balcony)) {
+            $layouts = explode(",", $balcony);
+            if (is_array($layouts) && !empty($layouts) && count($layouts) > 1) {
+                $layouts_array = [];
+                $flagIsNull = false;
+                foreach($layouts as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $layouts_array[] = $subcat;
+                    }
+                }
+                if (count($layouts_array) > 1) {
+                    $layouts_array = implode("|", $layouts_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('balcony', 'REGEXP', '\b'.$layouts_array.'\b');
+                            $q->orWhereNull('balcony');
+                        });
+                    } else {
+                        $query->where('balcony', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else if(count($layouts_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('balcony', 'REGEXP', '\b'.$layouts_array[0].'\b');
+                            $q->orWhereNull('balcony');
+                        });
+                    } else {
+                        $query->where('balcony', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('balcony');
+                    }
+                }
+            } else {
+                if ($balcony === 'null') {
+                    $query->where('balcony', '=', NULL);
+                } else {
+                    $query->where('balcony', 'REGEXP', '\b'.$balcony.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        //end new filters
 
         if (!is_null($subcategory)) {
             $subcategories = explode(",", $subcategory);
