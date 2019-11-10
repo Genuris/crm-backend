@@ -120,6 +120,7 @@ class ApiCardsController extends Controller
         $household_appliances = $request->get('household_appliances');
         $will_live = $request->get('will_live');
         $balcony = $request->get('balcony');
+        $heating = $request->get('heating');
         $sort = explode(',', $request->get('sort'));
 
         $total_area_from = $request->get('total_area_from');
@@ -403,6 +404,55 @@ class ApiCardsController extends Controller
                     $query->where('balcony', '=', NULL);
                 } else {
                     $query->where('balcony', 'REGEXP', '\b'.$balcony.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($heating)) {
+            $heatings = explode(",", $heating);
+            if (is_array($heatings) && !empty($heatings) && count($heatings) > 1) {
+                $layouts_array = [];
+                $flagIsNull = false;
+                foreach($heatings as $i => $subcat) {
+                    if ($subcat === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $layouts_array[] = $subcat;
+                    }
+                }
+                if (count($layouts_array) > 1) {
+                    $layouts_array = implode("|", $layouts_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('heating', 'REGEXP', '\b'.$layouts_array.'\b');
+                            $q->orWhereNull('heating');
+                        });
+                    } else {
+                        $query->where('heating', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else if(count($layouts_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($layouts_array) {
+                            $q->where('heating', 'REGEXP', '\b'.$layouts_array[0].'\b');
+                            $q->orWhereNull('heating');
+                        });
+                    } else {
+                        $query->where('heating', 'REGEXP', '\b'.$layouts_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('heating');
+                    }
+                }
+            } else {
+                if ($heating === 'null') {
+                    $query->where('heating', '=', NULL);
+                } else {
+                    $query->where('heating', 'REGEXP', '\b'.$heating.'\b');
                 }
             }
 
