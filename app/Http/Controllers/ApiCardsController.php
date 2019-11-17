@@ -1690,10 +1690,10 @@ class ApiCardsController extends Controller
             ->where('card_object_id','=', $card_object_id)->first();
         if ($card_request_status) {
             if (isset($status)) {
-                $card_request_status->status = ($status === '' ? null : $status);
+                $card_request_status->status = ((is_null($status) || $status === 'null') ? null : $status);
             }
             if (isset($show_time)) {
-                $card_request_status->show_time = ($show_time === '' ? null : (int)$show_time);
+                $card_request_status->show_time = ((is_null($show_time) || $show_time === 'null') ? null : (int)$show_time);
             }
             $card_request_status->user_id = $this->current_user_id;
             $card_request_status->save();
@@ -1706,10 +1706,10 @@ class ApiCardsController extends Controller
                 //'show_time' => ($show_time === '' ? null : (int)$show_time),
             ];
             if (isset($status)) {
-                $data['status'] = ($status === '' ? null : $status);
+                $data['status'] = ((is_null($status) || $status === 'null') ? null : $status);
             }
             if (isset($show_time)) {
-                $data['show_time'] = ($show_time === '' ? null : (int)$show_time);
+                $data['show_time'] = ((is_null($show_time) || $show_time === 'null') ? null : (int)$show_time);
             }
 
             $card_request_status = CardRequestStatus::create($data);
