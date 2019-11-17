@@ -1682,7 +1682,7 @@ class ApiCardsController extends Controller
         $show_time = $request->get('show_time');
         $status = $request->get('status');
 
-        if (!$card_request_id || !$card_object_id || !$status) {
+        if (!$card_request_id || !$card_object_id) {
             return response()->json(array(), 402);
         }
 
