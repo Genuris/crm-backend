@@ -1689,18 +1689,29 @@ class ApiCardsController extends Controller
         $card_request_status = CardRequestStatus::where('card_request_id', '=', $card_request_id)
             ->where('card_object_id','=', $card_object_id)->first();
         if ($card_request_status) {
-            $card_request_status->status = $status;
+            if (isset($status)) {
+                $card_request_status->status = ($status === '' ? null : $status);
+            }
+            if (isset($show_time)) {
+                $card_request_status->show_time = ($show_time === '' ? null : (int)$show_time);
+            }
             $card_request_status->user_id = $this->current_user_id;
-            $card_request_status->show_time = (int)$show_time;
             $card_request_status->save();
         } else {
             $data = [
-                'status' => $status,
+                //'status' => ($status === '' ? null : $status),
                 'card_request_id' => $card_request_id,
                 'card_object_id' => $card_object_id,
                 'user_id' => $this->current_user_id,
-                'show_time' => (int)$show_time,
+                //'show_time' => ($show_time === '' ? null : (int)$show_time),
             ];
+            if (isset($status)) {
+                $data['status'] = ($status === '' ? null : $status);
+            }
+            if (isset($show_time)) {
+                $data['show_time'] = ($show_time === '' ? null : (int)$show_time);
+            }
+
             $card_request_status = CardRequestStatus::create($data);
 
         }
