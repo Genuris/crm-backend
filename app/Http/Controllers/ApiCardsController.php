@@ -1679,6 +1679,7 @@ class ApiCardsController extends Controller
     public function setStatusCardRequest(Request $request) {
         $card_request_id = $request->get('card_request_id');
         $card_object_id = $request->get('card_object_id');
+        $show_time = $request->get('show_time');
         $status = $request->get('status');
 
         if (!$card_request_id || !$card_object_id || !$status) {
@@ -1690,7 +1691,7 @@ class ApiCardsController extends Controller
         if ($card_request_status) {
             $card_request_status->status = $status;
             $card_request_status->user_id = $this->current_user_id;
-            $card_request_status->show_time = (int)$this->show_time;
+            $card_request_status->show_time = (int)$show_time;
             $card_request_status->save();
         } else {
             $data = [
@@ -1698,7 +1699,7 @@ class ApiCardsController extends Controller
                 'card_request_id' => $card_request_id,
                 'card_object_id' => $card_object_id,
                 'user_id' => $this->current_user_id,
-                'show_time' => (int)$this->show_time,
+                'show_time' => (int)$show_time,
             ];
             $card_request_status = CardRequestStatus::create($data);
 
