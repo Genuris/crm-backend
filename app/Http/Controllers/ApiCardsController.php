@@ -115,6 +115,7 @@ class ApiCardsController extends Controller
         $city = $request->get('city');
         $area = $request->get('area');
         $street = $request->get('street');
+        $building = $request->get('building');
         $apartment_type = $request->get('apartment_type');
         $layout = $request->get('layout');
         $household_appliances = $request->get('household_appliances');
@@ -602,6 +603,55 @@ class ApiCardsController extends Controller
                     $query->where('street', '=', NULL);
                 } else {
                     $query->where('street', 'REGEXP', '\b'.$street.'\b');
+                }
+            }
+
+            /*$query_ = str_replace(array('?'), array('\'%s\''), $query->toSql());
+            $query_ = vsprintf($query_, $query->getBindings());
+            dd($query_);*/
+        }
+
+        if (!is_null($building)) {
+            $buildings = explode(",", $building);
+            if (is_array($buildings) && !empty($buildings) && count($buildings) > 1) {
+                $street_search_array = [];
+                $flagIsNull = false;
+                foreach($buildings as $i => $str) {
+                    if ($str === 'null') {
+                        $flagIsNull = true;
+                    } else {
+                        $street_search_array[] = $str;
+                    }
+                }
+                if (count($street_search_array) > 1) {
+                    $street_search_array = implode("|", $street_search_array);
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($street_search_array) {
+                            $q->where('building', 'REGEXP', '\b'.$street_search_array.'\b');
+                            $q->orWhereNull('building');
+                        });
+                    } else {
+                        $query->where('building', 'REGEXP', '\b'.$street_search_array.'\b');
+                    }
+                } else if(count($street_search_array) > 0){
+                    if ($flagIsNull) {
+                        $query->where(function ($q) use ($street_search_array) {
+                            $q->where('building', 'REGEXP', '\b'.$street_search_array[0].'\b');
+                            $q->orWhereNull('building');
+                        });
+                    } else {
+                        $query->where('building', 'REGEXP', '\b'.$street_search_array.'\b');
+                    }
+                } else {
+                    if ($flagIsNull) {
+                        $query->orWhereNull('building');
+                    }
+                }
+            } else {
+                if ($building === 'null') {
+                    $query->where('building', '=', NULL);
+                } else {
+                    $query->where('building', 'REGEXP', '\b'.$building.'\b');
                 }
             }
 

@@ -83,6 +83,7 @@ class Card extends Model
         'will_live',
         'data_change_prices',
         'floor_location',
+        'site_url',
         'created_at',
         'updated_at'
     ];
