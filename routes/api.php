@@ -148,6 +148,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 //data_change_logs
     Route::get('data_change_logs', 'ApiDataChangeLogsController@index');
 
+//parser_cards
+    Route::post('parser_cards_filtered', 'ApiParserCardsController@index');
+    Route::post('parser_cards', 'ApiParserCardsController@store');
+    Route::put('parser_cards/{id}', 'ApiParserCardsController@update');
+
 });
 
 
