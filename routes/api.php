@@ -152,6 +152,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('parser_cards_filtered', 'ApiParserCardsController@index');
     Route::post('parser_cards', 'ApiParserCardsController@store');
     Route::put('parser_cards/{id}', 'ApiParserCardsController@update');
+    Route::delete('parser_cards/{id}', 'ApiParserCardsController@delete');
 
 });
 

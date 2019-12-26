@@ -182,4 +182,18 @@ class ApiParserCardsController extends Controller
         $parser_card->save();
         return response()->json($parser_card, 200);
     }
+
+    public function delete(Request $request, $id) {
+        $parser_card = ParserCard::find($id);
+        if ($parser_card) {
+            $parser_card_phones = ParserCardPhones::where('parser_cards_id', '=', $id)->get();
+            if (!empty($parser_card_phones)) {
+                foreach($parser_card_phones as $parser_card_phone) {
+                    $parser_card_phone->delete();
+                }
+            }
+            $parser_card->delete();
+        }
+        return response()->json(null, 204);
+    }
 }
