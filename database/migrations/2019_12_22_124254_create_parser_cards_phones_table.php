@@ -16,7 +16,7 @@ class CreateParserCardsPhonesTable extends Migration
         Schema::create('parser_cards_phones', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parser_cards_id')->unsigned();
-            $table->string('phone')->unique();
+            $table->string('phone')->nullable();
             $table->timestamps();
             $table->foreign('parser_cards_id')->references('id')->on('parser_cards')
                 ->onUpdate('cascade')->onDelete('cascade');
