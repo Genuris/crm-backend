@@ -22,6 +22,9 @@ Route::group(['namespace' => 'Api'], function () {
 //сreate user
 Route::post('create_user', 'ApiRegisterController@store');
 
+//cards_share
+Route::get('share_cards/{hash}', 'ApiCardsShareController@show');
+
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/user_profile', function (Request $request) {
@@ -154,6 +157,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('parser_cards/{id}', 'ApiParserCardsController@update');
     Route::delete('parser_cards/{id}', 'ApiParserCardsController@delete');
 
+    //cards_share
+    Route::post('share_cards', 'ApiCardsShareController@set');
 });
 
 
