@@ -56,11 +56,19 @@ class ApiCardsShareController extends Controller
             $cards = Card::whereIn('id', $card_ids)->get();
             if (!empty($cards)) {
                 foreach ($cards as $card) {
+
+                    $files = $card->CardFiles;
+                    if (!empty($files)) {
+                        foreach ($files as $key => $cardFile) {
+                            $files[$key] = $cardFile->file;
+                        }
+                    }
+
                     $share_cards_data[] = array(
                         'id' => $card->id,
                         'price' => $card->price,
                         'currency' => $card->currency,
-                        'files' => $card->CardFiles
+                        'files' => $files
                     );
                 }
             }
