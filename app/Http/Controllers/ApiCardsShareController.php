@@ -53,7 +53,7 @@ class ApiCardsShareController extends Controller
         $share_cards_data = [];
         if (is_array($card_ids) && !empty($card_ids)) {
 
-            $cards = Card::where('id', 'in', $card_ids)->get();
+            $cards = Card::whereIn('id', $card_ids)->get();
             if (!empty($cards)) {
                 foreach ($cards as $card) {
                     $share_cards_data[] = array(
