@@ -159,6 +159,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //cards_share
     Route::post('share_cards', 'ApiCardsShareController@set');
+    Route::get('share_cards_only_cards/{hash}', 'ApiCardsShareController@get');
 });
 
 

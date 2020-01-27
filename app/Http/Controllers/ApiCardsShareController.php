@@ -77,6 +77,30 @@ class ApiCardsShareController extends Controller
         return response()->json($share_cards_data, 200);
     }
 
+    public function get($hash)
+    {
+        if (!$hash) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
+
+        $share_card = CardShare::where('hash', '=', $hash)->first();
+        if (!$share_card) {
+            return response()->json(array(
+                'error' => array(
+                    'message' => 'Bad request. The standard option for requests that fail to pass validation.'
+                )
+            ), 400);
+        }
+
+        $card_ids =  json_decode($share_card->cards, true);
+
+        return response()->json($card_ids, 200);
+    }
+
     public function set(Request $request)
     {
         if (!$request->get('user_id') || !$request->get('card_id') || !$request->get('cards')) {
