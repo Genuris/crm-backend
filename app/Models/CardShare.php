@@ -11,7 +11,7 @@ class CardShare extends Model
         'card_id',
         'user_id',
         'hash',
-        'share_cards',
+        'cards',
         'created_at',
         'updated_at'
     ];
@@ -21,7 +21,7 @@ class CardShare extends Model
     }
 
     public function User(){
-        return $this->hasOne('App\Models\Card', 'id', 'user_id');
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
 
     public function getFields() {

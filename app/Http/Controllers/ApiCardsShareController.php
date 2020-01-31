@@ -68,13 +68,86 @@ class ApiCardsShareController extends Controller
                         'id' => $card->id,
                         'price' => $card->price,
                         'currency' => $card->currency,
+                        'agency_id'=> $card->agency_id,
+                        'user_id'=> $card->user_id,
+                        'office_id'=> $card->office_id,
+                        'type'=> $card->type,
+                        'sale_type'=> $card->sale_type,
+                        'city'=> $card->city,
+                        'area'=> $card->area,
+                        'street'=> $card->street,
+                        'landmark'=> $card->landmark,
+                        'owner_or_realtor'=> $card->owner_or_realtor,
+                        'year_built'=> $card->year_built,
+                        'floors_house'=> $card->floors_house,
+                        'floors_house_end'=> $card->floors_house_end,
+                        'number_rooms'=> $card->number_rooms,
+                        'type_building'=> $card->type_building,
+                        'roof'=> $card->roof,
+                        'total_area'=> $card->total_area,
+                        'total_area_end'=> $card->total_area_end,
+                        'living_area'=> $card->living_area,
+                        'kitchen_area'=> $card->kitchen_area,
+                        'ceiling_height'=> $card->ceiling_height,
+                        'condition'=> $card->condition,
+                        'heating'=> $card->heating,
+                        'electricity'=> $card->electricity,
+                        'water_pipes'=> $card->water_pipes,
+                        'bathroom'=> $card->bathroom,
+                        'sewage'=> $card->sewage,
+                        'internet'=> $card->internet,
+                        'gas'=> $card->gas,
+                        'security'=> $card->security,
+                        'land_area'=> $card->land_area,
+                        'how_plot_fenced'=> $card->how_plot_fenced,
+                        'entrance_door'=> $card->entrance_door,
+                        'furniture'=> $card->furniture,
+                        'window'=> $card->window,
+                        'limes'=> $card->limes,
+                        'garage_height'=> $card->garage_height,
+                        'garage_length'=> $card->garage_length,
+                        'garage_width'=> $card->garage_width,
+                        'ceiling'=> $card->ceiling,
+                        'basement'=> $card->basement,
+                        'balcony'=> $card->balcony,
+                        'corner'=> $card->corner,
+                        'gate_height'=> $card->gate_height,
+                        'gate_width'=> $card->gate_width,
+                        'view_from_windows'=> $card->view_from_windows,
+                        'garbage_chute'=> $card->garbage_chute,
+                        'number_of_floors'=> $card->number_of_floors,
+                        'number_of_floors_end'=> $card->number_of_floors_end,
+                        'layout'=> $card->layout,
+                        'reason_for_sale'=> $card->reason_for_sale,
+                        'category'=> $card->category,
+                        'subcategory'=> $card->subcategory,
+                        'stage_transaction'=> $card->stage_transaction,
+                        'is_archived'=> $card->is_archived,
+                        'elevator'=> $card->elevator,
+                        'apartment_type'=> $card->apartment_type,
+                        'payments'=> $card->payments,
+                        'household_appliances'=> $card->household_appliances,
+                        'archive_date'=> $card->archive_date,
+                        'will_live'=> $card->will_live,
+                        'data_change_prices'=> $card->data_change_prices,
+                        'floor_location'=> $card->floor_location,
+                        'created_at'=> $card->created_at,
                         'files' => $files
                     );
                 }
             }
         }
 
-        return response()->json($share_cards_data, 200);
+        $user = $share_card->User;
+        if ($user) {
+            if ($user->UserDetails) {
+                $user->UserDetails->profileImage;
+            }
+            $user->UserPhones;
+            $user->UserSocials;
+        }
+
+        return response()->json(array('user' => $user, 'content' => $share_cards_data), 200);
     }
 
     public function get($hash)
@@ -103,7 +176,7 @@ class ApiCardsShareController extends Controller
 
     public function set(Request $request)
     {
-        if (!$request->get('user_id') || !$request->get('card_id') || !$request->get('cards')) {
+        if (!$request->get('user_id') || !$request->get('card_id')) {
             return response()->json(array(), 402);
         }
 
