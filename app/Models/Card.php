@@ -84,6 +84,7 @@ class Card extends Model
         'data_change_prices',
         'floor_location',
         'site_url',
+        'complete_percent',
         'created_at',
         'updated_at'
     ];
