@@ -85,6 +85,7 @@ class ApiCardsShareController extends Controller
                         'type_building'=> $card->type_building,
                         'roof'=> $card->roof,
                         'total_area'=> $card->total_area,
+                        'complete_percent'=> $card->complete_percent,
                         'total_area_end'=> $card->total_area_end,
                         'living_area'=> $card->living_area,
                         'kitchen_area'=> $card->kitchen_area,
