@@ -1354,6 +1354,9 @@ class ApiCardsController extends Controller
     public function deleteCardsContactById(Request $request, $id) {
         $card = CardContacts::find($id);
         if ($card) {
+            if ($card->CardsContactsPhones->count() > 0) {
+                $card->CardsContactsPhones()->delete();
+            }
             $card->delete();
         }
         return response()->json(null, 204);
